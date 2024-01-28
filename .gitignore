@@ -1,0 +1,8 @@
+/build
+*.DS_Store
+/.vscode
+/.idea
+
+/include/head.h
+/src/sub.c
+/src/topic.c
