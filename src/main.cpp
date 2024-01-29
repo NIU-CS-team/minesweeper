@@ -16,8 +16,8 @@ int main(int argc, char* argv[]) {
     }
 
     // set board defaults
-    int8_t row = 40;
-    int8_t col = 50;
+    int8_t row = 8;
+    int8_t col = 8;
     int8_t mines = 10;
 
     Board board(row, col, mines);
@@ -28,10 +28,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    SDL_Rect block = {50, 50, 50, 50};
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderFillRect(renderer, &block);
-    // board.render_blocks(renderer);
+    // SDL_Rect block = {50, 50, 50, 50};
+    // SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    // SDL_RenderFillRect(renderer, &block);
+    // for (uint16_t i=0; i<board.blocks.size(); i++) {
+    //     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    //     SDL_RenderFillRect(renderer, &board.blocks[i].self);
+    // }
 
     SDL_RenderPresent(renderer);
 
@@ -42,8 +45,21 @@ int main(int argc, char* argv[]) {
         if (event.type == SDL_MOUSEBUTTONDOWN) {
             int mouse_x, mouse_y;
             SDL_GetMouseState(&mouse_x, &mouse_y);
-            if (mouse_x >= block.x && mouse_x <= block.x + block.w && mouse_y >= block.y && mouse_y <= block.y + block.h) break;
+            // if (mouse_x >= block.x && mouse_x <= block.x + block.w && mouse_y >= block.y && mouse_y <= block.y + block.h) break;
         }
+
+        // Clear the window to black
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
+        // Redraw all blocks
+        for (uint16_t i=0; i<board.blocks.size(); i++) {
+            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+            SDL_RenderFillRect(renderer, &board.blocks[i].self);
+        }
+
+        // Update the window
+        SDL_RenderPresent(renderer);
     }
 
     SDL_DestroyRenderer(renderer);
