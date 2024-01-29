@@ -28,15 +28,21 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    SDL_Rect block = {50, 50, 50, 50};
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_RenderFillRect(renderer, &block);
+    // board.render_blocks(renderer);
+
     SDL_RenderPresent(renderer);
 
-    bool quit = false;
     SDL_Event event;
-    while (!quit) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                quit = true;
-            }
+    while (1) {
+        SDL_PollEvent(&event);
+        if (event.type == SDL_QUIT) break;
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            int mouse_x, mouse_y;
+            SDL_GetMouseState(&mouse_x, &mouse_y);
+            if (mouse_x >= block.x && mouse_x <= block.x + block.w && mouse_y >= block.y && mouse_y <= block.y + block.h) break;
         }
     }
 

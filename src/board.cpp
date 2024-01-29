@@ -39,4 +39,12 @@ Board::Board(uint8_t row, uint8_t col, uint16_t n_mines):
 
 Board::~Board() {}
 
-// Board::show_
+int Board::show_all_mine() {}
+
+int Board::render_blocks(SDL_Renderer* renderer) {
+    SDL_Rect block = {50, 50, 50, 50};
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_RenderFillRect(renderer, &block);
+}
+
+
