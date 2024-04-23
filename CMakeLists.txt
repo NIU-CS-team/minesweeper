@@ -5,10 +5,17 @@ set(CMAKE_CXX_STANDARD 23)
 
 include_directories(./include)
 
-find_package(SDL2 REQUIRED)
+find_package(OpenGL REQUIRED)
+
+set(LIB_LINKS
+    glfw
+    GLAD
+    glm::glm
+    ${OPENGL_LIBRARIES}
+)
 
 file(GLOB_RECURSE SRC_FILES ./src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SRC_FILES})
 
-target_link_libraries(${PROJECT_NAME} SDL2::SDL2)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw)

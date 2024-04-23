@@ -3,15 +3,13 @@
 
 #include <vector>
 #include <cstdint>
-#include <SDL2/SDL.h>
 
 struct block {
     const int8_t size = 50;
     int16_t x;
     int16_t y;
-    SDL_Rect self;
-
-    block() : self{x, y, size, size} {}
+    int8_t state = 0; // 0: hidden, 1: revealed, 2: flagged
+    int8_t value = 0; // 0: empty, 1-8: number of mines around, 9: mine
 };
 
 class Board {
