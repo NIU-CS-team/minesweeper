@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include <OpenGL/gl.h>
-
 #include "board.h"
+#include "gl.h"
+#include "network.h"
 
 int main(int argc, char* argv[]) {
     

@@ -9,7 +9,6 @@ find_package(OpenGL REQUIRED)
 
 set(LIB_LINKS
     OpenGL::GL
-    ${OPENGL_LIBRARIES}
 )
 
 file(GLOB_RECURSE SRC_FILES ./src/*.cpp)
