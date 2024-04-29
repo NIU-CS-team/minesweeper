@@ -50,6 +50,15 @@ Board::Board(uint8_t row, uint8_t col, uint16_t n_mines):
 
 Board::~Board() {}
 
-int Board::show_all_mine() {}
+int Board::show_all_mine() {
+    for (size_t i = 0; i < blocks.size(); ++i) {
+        if (blocks[i].value == 9 && blocks[i].state != 1) {
+            blocks[i].state = 1;
+            std::cout << "Revealed mine at position: (" << blocks[i].x << ", " << blocks[i].y << ")\n";
+        }
+        status=LOST;
+    }
+    return 0;
+}
 
 
