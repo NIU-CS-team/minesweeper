@@ -26,6 +26,8 @@ class Board {
         int show_all_mine();
         int timer();
         std::pair<int8_t, int8_t> get_input(int16_t x, int16_t y);
+        int start_game();
+        int print_board();
 
         const int8_t border = 10;
 

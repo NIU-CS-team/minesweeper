@@ -88,3 +88,43 @@ std::pair<int8_t, int8_t> get_input(int16_t x, int16_t y) {
 
     return result;
 }
+
+int Board::start_game() {
+    while (status == PLAYING) {
+        print_board();
+        this->timer();
+        std::pair<int8_t, int8_t> input = get_input(row, col);
+        int16_t index = input.first + input.second * row;
+        if (board[index] == 9) {
+            show_all_mine();
+            break;
+        }
+
+        blocks[index].state = 1;
+        revealed++;
+        if (revealed == row * col - n_mines) {
+            status = WON;
+            break;
+        }
+    }
+
+    return 0;
+}
+
+int Board::print_board() {
+    for (int16_t i=0; i<row*col; i++) {
+        if (blocks[i].state == 0) {
+            std::cout << "X ";
+        } else if (blocks[i].state == 1) {
+            std::cout << blocks[i].value << " ";
+        } else {
+            std::cout << "F ";
+        }
+
+        if (i % row == row - 1) {
+            std::cout << std::endl;
+        }
+    }
+
+    return 0;
+}
