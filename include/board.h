@@ -25,6 +25,7 @@ class Board {
 
         int show_all_mine();
         int timer();
+        std::pair<int8_t, int8_t> get_input(int16_t x, int16_t y);
 
         const int8_t border = 10;
 
@@ -34,6 +35,7 @@ class Board {
         int8_t n_flags = 0;
         int8_t revealed = 0;
         int8_t status;
+        int revealed_blocks = 0;
 
         std::vector<block> blocks;
 
