@@ -29,7 +29,7 @@ class Board {
         int print_board();
         int flagged(size_t x, size_t y);
         int canceled(size_t x, size_t y);
-        int flag_counter();
+        int flag_counter(int n_mines);
 
         const int border = 10;
 

@@ -135,20 +135,19 @@ int Board::flagged(size_t x, size_t y){
 
 int Board::canceled(size_t x, size_t y){
     size_t i =  y * row + x;
-    blocks[i].state = 0; //還原成未開，不知道state是多少
+    blocks[i].state = 0;
     std::cout << "("<<blocks[i].x<<", "<<blocks[i].y<<") canceled.\n";
     return 0;
 }
 
-int Board::flag_counter(int n_mines){
+int Board::flag_counter(int n_mines) {
     int flag = n_mines;
-    while (1){
-        std::cout << flag;
-        if(this->flagged() == 0){
+    for (size_t i = 0; i < blocks.size(); ++i) {
+        if (blocks[i].state == 2) { 
             flag--;
-        }
-        if(this->canceled() == 0){
+        } else if (blocks[i].state == 0) { 
             flag++;
         }
     }
+    return flag;
 }
