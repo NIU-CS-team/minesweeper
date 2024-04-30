@@ -2,6 +2,7 @@
 
 #include <random>
 #include <iostream>
+#include <chrono>
 
 Board::Board(uint8_t row, uint8_t col, uint16_t n_mines):
        row(row),
@@ -57,6 +58,17 @@ int Board::show_all_mine() {
             std::cout << "Revealed mine at position: (" << blocks[i].x << ", " << blocks[i].y << ")\n";
         }
         status=LOST;
+    }
+    return 0;
+}
+
+int Board::timer() {
+    auto startpoint = std::chrono::steady_clock::now();
+    if (status == LOST || status == WON) {
+        auto endpoint = std::chrono::steady_clock::now();
+        std::chrono::steady_clock::duration elapsed = endpoint - startpoint;
+        double elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(elapsed).count();
+        std::cout << "End time: (" << elapsed_seconds << "s)\n";
     }
     return 0;
 }

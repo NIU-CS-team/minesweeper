@@ -24,6 +24,7 @@ class Board {
         ~Board();
 
         int show_all_mine();
+        int timer();
 
         const int8_t border = 10;
 
