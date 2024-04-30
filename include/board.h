@@ -2,14 +2,13 @@
 #define BOARD_H
 
 #include <vector>
-#include <cstdint>
 
 struct block {
-    const int8_t size = 50;
-    int16_t x;
-    int16_t y;
-    int8_t state = 0; // 0: hidden, 1: revealed, 2: flagged
-    int8_t value = 0; // 0: empty, 1-8: number of mines around, 9: mine
+    const int size = 50;
+    int x;
+    int y;
+    int state = 0; // 0: hidden, 1: revealed, 2: flagged
+    int value = 0; // 0: empty, 1-8: number of mines around, 9: mine
 };
 
 class Board {
@@ -20,29 +19,28 @@ class Board {
             LOST
         };
 
-        Board(uint8_t row, uint8_t col, uint16_t mines);
+        Board(int row, int col, int mines);
         ~Board();
 
         int show_all_mine();
         int timer();
-        std::pair<int8_t, int8_t> get_input(int16_t x, int16_t y);
+        std::pair<int, int> get_input();
         int start_game();
         int print_board();
 
-        const int8_t border = 10;
+        const int border = 10;
 
-        uint8_t row = 8;
-        uint8_t col = 8;
-        uint16_t n_mines = 10;
-        int8_t n_flags = 0;
-        int8_t revealed = 0;
-        int8_t status;
+        int row = 0;
+        int col = 0;
+        int n_mines;
+        int n_flags = 0;
+        int status = PLAYING;
         int revealed_blocks = 0;
 
         std::vector<block> blocks;
 
     private:
-        std::vector<uint16_t> board;
+        std::vector<int> board;
 };
 
 #endif

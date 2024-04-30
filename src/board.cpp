@@ -4,22 +4,19 @@
 #include <iostream>
 #include <chrono>
 
-Board::Board(uint8_t row, uint8_t col, uint16_t n_mines):
+Board::Board(int row, int col, int n_mines):
        row(row),
        col(col),
        n_mines(n_mines),
-       n_flags(0),
-       revealed(0),
-       status(PLAYING),
        board(row * col, 0) {
 
     // Generate Mines Locations
 
     std::random_device rd;  // 取得隨機數種子
     std::mt19937 gen(rd()); // 使用 Mersenne Twister 引擎
-    std::uniform_int_distribution<uint16_t> dis(0, this->row * this->col - 1);
+    std::uniform_int_distribution<int> dis(0, this->row * this->col - 1);
     for (int i=0; i<this->n_mines; i++) {
-        uint16_t rand = dis(gen);
+        int rand = dis(gen);
         if (this->board[rand] == 9) {
             i--;
             continue;
@@ -39,7 +36,7 @@ Board::Board(uint8_t row, uint8_t col, uint16_t n_mines):
     }
 
     this->blocks.resize(row * col);
-    for (int16_t i=0; i<row * col; i++) {
+    for (int i=0; i<row * col; i++) {
         auto temp_x = i%col;
         auto temp_y = i/col;
         this->blocks[i].x = temp_x*this->blocks[i].size + (temp_x)*this->border;
@@ -57,7 +54,7 @@ int Board::show_all_mine() {
             blocks[i].state = 1;
             std::cout << "Revealed mine at position: (" << blocks[i].x << ", " << blocks[i].y << ")\n";
         }
-        status=LOST;
+        status = LOST;
     }
     return 0;
 }
@@ -73,12 +70,12 @@ int Board::timer() {
     return 0;
 }
 
-std::pair<int8_t, int8_t> get_input(int16_t x, int16_t y) {
-    std::pair<int8_t, int8_t> result;
+std::pair<int, int> Board::get_input() {
+    std::pair<int, int> result;
     while (1) {
         std::cout << "Please enter the x and y coordinates of the block you want to reveal: ";
         std::cin >> result.first >> result.second;
-        if (result.first < 0 || result.first >= x || result.second < 0 || result.second >= y) {
+        if (result.first < 0 || result.first >= row || result.second < 0 || result.second >= col) {
             std::cout << "Invalid input, please try again.\n";
             continue;
         }
@@ -93,16 +90,16 @@ int Board::start_game() {
     while (status == PLAYING) {
         print_board();
         this->timer();
-        std::pair<int8_t, int8_t> input = get_input(row, col);
-        int16_t index = input.first + input.second * row;
+        std::pair<int, int> input = get_input();
+        int index = input.first + input.second * row;
         if (board[index] == 9) {
             show_all_mine();
             break;
         }
 
         blocks[index].state = 1;
-        revealed++;
-        if (revealed == row * col - n_mines) {
+        revealed_blocks++;
+        if (this->revealed_blocks == row * col - n_mines) {
             status = WON;
             break;
         }
@@ -112,7 +109,7 @@ int Board::start_game() {
 }
 
 int Board::print_board() {
-    for (int16_t i=0; i<row*col; i++) {
+    for (int i=0; i<row*col; i++) {
         if (blocks[i].state == 0) {
             std::cout << "X ";
         } else if (blocks[i].state == 1) {
