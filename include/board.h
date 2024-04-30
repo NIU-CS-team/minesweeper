@@ -28,6 +28,8 @@ class Board {
         int start_game();
         int print_board();
         int flagged(size_t x, size_t y);
+        int canceled(size_t x, size_t y);
+        int flag_counter();
 
         const int border = 10;
 

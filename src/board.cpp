@@ -125,9 +125,30 @@ int Board::print_board() {
 
     return 0;
 }
+
 int Board::flagged(size_t x, size_t y){
     size_t i =  y * row + x;
     blocks[i].state = 2;
     std::cout<<"("<<blocks[i].x<<", "<<blocks[i].y<<") flagged.\n";
     return 0;
+}
+
+int Board::canceled(size_t x, size_t y){
+    size_t i =  y * row + x;
+    blocks[i].state = 0; //還原成未開，不知道state是多少
+    std::cout << "("<<blocks[i].x<<", "<<blocks[i].y<<") canceled.\n";
+    return 0;
+}
+
+int Board::flag_counter(int n_mines){
+    int flag = n_mines;
+    while (1){
+        std::cout << flag;
+        if(this->flagged() == 0){
+            flag--;
+        }
+        if(this->canceled() == 0){
+            flag++;
+        }
+    }
 }
