@@ -73,4 +73,18 @@ int Board::timer() {
     return 0;
 }
 
+std::pair<int8_t, int8_t> get_input(int16_t x, int16_t y) {
+    std::pair<int8_t, int8_t> result;
+    while (1) {
+        std::cout << "Please enter the x and y coordinates of the block you want to reveal: ";
+        std::cin >> result.first >> result.second;
+        if (result.first < 0 || result.first >= x || result.second < 0 || result.second >= y) {
+            std::cout << "Invalid input, please try again.\n";
+            continue;
+        }
 
+        break;
+    }
+
+    return result;
+}
