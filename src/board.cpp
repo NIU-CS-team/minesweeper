@@ -67,7 +67,7 @@ int Board::timer() {
     if (status == LOST || status == WON) {
         auto endpoint = std::chrono::steady_clock::now();
         std::chrono::steady_clock::duration elapsed = endpoint - startpoint;
-        double elapsed_seconds = std::chrono::duration_cast<std::chrono::millisecond>(elapsed).count();
+        double elapsed_seconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
         std::cout << "End time: (" << elapsed_seconds << "s)\n";
     }
     return 0;
