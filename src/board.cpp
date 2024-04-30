@@ -128,3 +128,9 @@ int Board::print_board() {
 
     return 0;
 }
+int Board::flagged(size_t x, size_t y){
+    size_t i =  y * row + x;
+    blocks[i].state = 2;
+    std::cout<<"("<<blocks[i].x<<", "<<blocks[i].y<<") flagged.\n";
+    return 0;
+}

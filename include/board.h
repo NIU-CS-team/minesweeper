@@ -28,6 +28,7 @@ class Board {
         std::pair<int8_t, int8_t> get_input(int16_t x, int16_t y);
         int start_game();
         int print_board();
+        int flagged(size_t x, size_t y);
 
         const int8_t border = 10;
 
