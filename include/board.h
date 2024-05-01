@@ -5,8 +5,6 @@
 
 struct block {
     const int size = 50;
-    int x;
-    int y;
     int state = 0; // 0: hidden, 1: revealed, 2: flagged
     int value = 0; // 0: empty, 1-8: number of mines around, 9: mine
 };

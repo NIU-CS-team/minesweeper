@@ -37,24 +37,24 @@ Board::Board(int row, int col, int n_mines):
     }
 
     this->blocks.resize(row * col);
-    for (int i=0; i<row * col; i++) {
-        auto temp_x = i%col;
-        auto temp_y = i/col;
-        this->blocks[i].x = temp_x*this->blocks[i].size + (temp_x)*this->border;
-        this->blocks[i].y = temp_y*this->blocks[i].size + (temp_y)*this->border;
-    }
 }
 
 Board::~Board() {}
 
 int Board::show_all_mine() {
     for (size_t i = 0; i < blocks.size(); ++i) {
-        if (blocks[i].value == 9 && blocks[i].state != 1) {
-            blocks[i].state = 1;
-            std::cout << "Revealed mine at position: (" << blocks[i].x << ", " << blocks[i].y << ")\n";
+        if (i % row == 0) {
+            std::cout << std::endl;
         }
-        status = LOST;
+
+        if (blocks[i].value >= 9) {
+            std::cout << "M ";
+        } else {
+            std::cout << blocks[i].value << " ";
+        }
     }
+
+    status = LOST;
     return 0;
 }
 
@@ -87,11 +87,12 @@ std::pair<int, int> Board::get_input() {
 
 int Board::start_game() {
     while (status == PLAYING) {
+        system("clear");
         print_board();
         this->timer();
         std::pair<int, int> input = get_input();
         int index = input.first + input.second * row;
-        if (blocks[index].value == 9) {
+        if (blocks[index].value >= 9) {
             show_all_mine();
             break;
         }
@@ -128,7 +129,7 @@ int Board::print_board() {
 int Board::flagged(size_t x, size_t y){
     size_t i =  y * row + x;
     blocks[i].state = 2;
-    std::cout<<"("<<blocks[i].x<<", "<<blocks[i].y<<") flagged.\n";
+    std::cout<<"(" << x << ", " << y << ") flagged.\n";
 
     return 0;
 }
@@ -136,7 +137,7 @@ int Board::flagged(size_t x, size_t y){
 int Board::remove_flagged(size_t x, size_t y){
     size_t i =  y * row + x;
     blocks[i].state = 0;
-    std::cout<<"("<<blocks[i].x<<", "<<blocks[i].y<<")'s flag has been removed.\n";
+    std::cout<<"(" << x << ", " << y << ")'s flag has been removed.\n";
 
     return 0;
 }
