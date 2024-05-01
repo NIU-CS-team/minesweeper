@@ -90,15 +90,8 @@ int Board::start_game() {
         system("clear");
         print_board();
         this->timer();
-        std::pair<int, int> input = get_input();
-        int index = input.first + input.second * row;
-        if (blocks[index].value >= 9) {
-            show_all_mine();
-            break;
-        }
+        reveal(get_input());
 
-        blocks[index].state = 1;
-        n_revealed++;
         if (this->n_revealed == row * col - n_mines) {
             status = WON;
             break;
@@ -121,6 +114,23 @@ int Board::print_board() {
         if (i % row == row - 1) {
             std::cout << std::endl;
         }
+    }
+
+    return 0;
+}
+
+int Board::reveal(std::pair<int, int> input) {
+    size_t index =  input.second * row + input.first;
+    if (blocks[index].value >= 9) {
+        show_all_mine();
+        this->status = LOST;
+        return 0;
+    }
+
+    blocks[index].state = 1;
+    this->n_revealed++;
+    if (this->n_revealed == row * col - n_mines) {
+        this->status = WON;
     }
 
     return 0;

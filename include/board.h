@@ -25,6 +25,7 @@ class Board {
         std::pair<int, int> get_input();
         int start_game();
         int print_board();
+        int reveal(std::pair<int, int> input);
         int flagged(size_t x, size_t y);
         int remove_flagged(size_t x, size_t y);
 
