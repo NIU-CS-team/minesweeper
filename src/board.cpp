@@ -125,9 +125,19 @@ int Board::print_board() {
 
     return 0;
 }
+
 int Board::flagged(size_t x, size_t y){
     size_t i =  y * row + x;
     blocks[i].state = 2;
     std::cout<<"("<<blocks[i].x<<", "<<blocks[i].y<<") flagged.\n";
+
+    return 0;
+}
+
+int Board::remove_flagged(size_t x, size_t y){
+    size_t i =  y * row + x;
+    blocks[i].state = 0;
+    std::cout<<"("<<blocks[i].x<<", "<<blocks[i].y<<")'s flag has been removed.\n";
+
     return 0;
 }
