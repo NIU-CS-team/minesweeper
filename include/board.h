@@ -37,12 +37,10 @@ class Board {
         int n_mines;
         int n_flags = 0;
         int status = PLAYING;
-        int revealed_blocks = 0;
+        int n_revealed = 0;
 
         std::vector<block> blocks;
-
-    private:
-        std::vector<int> board;
+        std::vector<block> revealed_blocks;
 };
 
 #endif

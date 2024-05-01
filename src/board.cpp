@@ -7,9 +7,10 @@
 Board::Board(int row, int col, int n_mines):
        row(row),
        col(col),
-       n_mines(n_mines),
-       board(row * col, 0) {
-
+       n_mines(n_mines) {
+    blocks.resize(row * col);
+    this->col = col;
+    this->row = row;
     // Generate Mines Locations
 
     std::random_device rd;  // 取得隨機數種子
@@ -17,12 +18,12 @@ Board::Board(int row, int col, int n_mines):
     std::uniform_int_distribution<int> dis(0, this->row * this->col - 1);
     for (int i=0; i<this->n_mines; i++) {
         int rand = dis(gen);
-        if (this->board[rand] == 9) {
+        if (this->blocks[rand].value == 9) {
             i--;
             continue;
         }
 
-        this->board[rand] = 9;
+        this->blocks[rand].value = 9;
         for (int j=-1; j<=1; j++) {
             if (rand < row && j == -1) continue;
             if (rand >= row * (col - 1) && j == 1) continue;
@@ -30,7 +31,7 @@ Board::Board(int row, int col, int n_mines):
             for (int k = -1; k <= 1; k++) {
                 if (rand % row == 0 && k == -1) continue;
                 if (rand % row == row - 1 && k == 1) continue;
-                this->board[rand + j * row + k]++;
+                this->blocks[rand + j * row + k].value++;
             }
         }
     }
@@ -41,8 +42,6 @@ Board::Board(int row, int col, int n_mines):
         auto temp_y = i/col;
         this->blocks[i].x = temp_x*this->blocks[i].size + (temp_x)*this->border;
         this->blocks[i].y = temp_y*this->blocks[i].size + (temp_y)*this->border;
-        std::cout << "blocks[" << i << "].x = " << this->blocks[i].x << std::endl;
-        std::cout << "blocks[" << i << "].y = " << this->blocks[i].y << std::endl;
     }
 }
 
@@ -92,14 +91,14 @@ int Board::start_game() {
         this->timer();
         std::pair<int, int> input = get_input();
         int index = input.first + input.second * row;
-        if (board[index] == 9) {
+        if (blocks[index].value == 9) {
             show_all_mine();
             break;
         }
 
         blocks[index].state = 1;
-        revealed_blocks++;
-        if (this->revealed_blocks == row * col - n_mines) {
+        n_revealed++;
+        if (this->n_revealed == row * col - n_mines) {
             status = WON;
             break;
         }
