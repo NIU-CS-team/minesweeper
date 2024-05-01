@@ -133,6 +133,23 @@ int Board::reveal(std::pair<int, int> input) {
         this->status = WON;
     }
 
+    // fast reveal if the block is empty
+    if (blocks[index].value == 0) {
+        for (int i=-1; i<=1; i++) {
+            if (input.second < row && i == -1) continue;
+            if (input.second >= row * (col - 1) && i == 1) continue;
+
+            for (int j = -1; j <= 1; j++) {
+                if (input.first % row == 0 && j == -1) continue;
+                if (input.first % row == row - 1 && j == 1) continue;
+                if (blocks[index + i * row + j].state == 0) {
+                    system("clear");
+                    reveal(std::make_pair(input.first + j, input.second + i));
+                }
+            }
+        }
+    }
+
     return 0;
 }
 
