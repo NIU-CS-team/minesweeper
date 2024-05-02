@@ -7,6 +7,8 @@
 
 #ifdef __linux__
     #include <GL/gl.h>
+    #include <GLFW/glfw3.h>
+    // #include <glad/glad.h>
 #endif
 
 #endif

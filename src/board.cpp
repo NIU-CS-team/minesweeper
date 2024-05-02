@@ -1,4 +1,5 @@
 #include "board.h"
+#include "gl.h"
 
 #include <random>
 #include <iostream>
@@ -166,5 +167,38 @@ int Board::remove_flagged(size_t x, size_t y){
     blocks[i].state = 0;
     std::cout<<"(" << x << ", " << y << ")'s flag has been removed.\n";
 
+    return 0;
+}
+
+int Board::gl_open_board() {
+    if (!glfwInit()) {
+        std::cerr << "無法初始化GLFW" << std::endl;
+        return -1;
+    }
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL 視窗", NULL, NULL);
+    if (window == NULL) {
+        std::cerr << "無法創建窗口" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+
+    glfwMakeContextCurrent(window);
+    void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
+    while (!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glfwSwapBuffers(window);
+    }
+
+    glfwTerminate();
     return 0;
 }

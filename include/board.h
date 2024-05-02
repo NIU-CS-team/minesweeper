@@ -29,6 +29,12 @@ class Board {
         int flagged(size_t x, size_t y);
         int remove_flagged(size_t x, size_t y);
 
+        int gl_open_board();
+        int gl_reveal(int x, int y);
+        int gl_flagged(int x, int y);
+        int gl_remove_flagged(int x, int y);
+        int gl_show_all_mine();
+
         const int border = 10;
 
         int row = 0;
