@@ -4,6 +4,7 @@
 #include <random>
 #include <iostream>
 #include <chrono>
+#include <cstddef>
 
 Board::Board(int row, int col, int n_mines):
        row(row),
