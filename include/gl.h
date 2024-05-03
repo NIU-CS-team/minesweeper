@@ -2,7 +2,9 @@
 #define GL_H
 
 #ifdef __APPLE__
-    #include <OpenGL/gl.h>
+    #include <OpenGL/gl3.h>
+    #include <GLUT/glut.h>
+    #include <GLFW/glfw3.h>
 #endif
 
 #ifdef __linux__
