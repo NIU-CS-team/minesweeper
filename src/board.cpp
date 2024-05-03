@@ -170,35 +170,85 @@ int Board::remove_flagged(size_t x, size_t y){
     return 0;
 }
 
-int Board::gl_open_board() {
-    if (!glfwInit()) {
-        std::cerr << "無法初始化GLFW" << std::endl;
-        return -1;
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL 視窗", NULL, NULL);
+int Board::gl_init_board() {
+    glfwInit();
+    GLFWwindow* window = glfwCreateWindow(800, 800, "Minesweeper", NULL, NULL);
     if (window == NULL) {
-        std::cerr << "無法創建窗口" << std::endl;
+        std::cerr << "無法建立 GLFW視窗" << std::endl;
         glfwTerminate();
         return -1;
     }
 
     glfwMakeContextCurrent(window);
-    void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glewExperimental = GL_TRUE;
+    if (glewInit() != GLEW_OK) {
+        std::cerr << "無法初始化 GLEW" << std::endl;
+        return -1;
+    }
+
+    for (int i=0; i<row*col; i++) {
+        blocks[i].gl_x = (i % row) * 2.0f / row - 1.0f;
+        blocks[i].gl_y = (i / row) * 2.0f / col - 1.0f;
+    }
 
     while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glfwPollEvents();
+        gl_draw_board(window);
         glfwSwapBuffers(window);
     }
 
     glfwTerminate();
+
+
+    return 0;
+}
+
+int Board::gl_draw_board(GLFWwindow* window) {
+    for (int i=0; i<row*col; i++) {
+        gl_draw_block(window, blocks[i]);
+    }
+
+    return 0;
+}
+
+int Board::gl_draw_block(GLFWwindow* window, block b) {
+    double vertices[] = {
+        b.gl_x, b.gl_y, 0.0f,
+        b.gl_x + b.size, b.gl_y, 0.0f,
+        b.gl_x + b.size, b.gl_y + b.size, 0.0f,
+        b.gl_x, b.gl_y + b.size, 0.0f
+    };
+
+    unsigned int indices[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
+
+    unsigned int VBO, VAO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    return 0;
+}
+
+int Board::gl_reveal(GLFWwindow* window, double x, double y) {
+    std::cout << "Reveal (" << x << ", " << y << ")" << std::endl;
     return 0;
 }

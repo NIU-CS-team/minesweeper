@@ -3,10 +3,14 @@
 
 #include <vector>
 
+#include "gl.h"
+
 struct block {
-    const int size = 50;
+    const int size = 8;
     int state = 0; // 0: hidden, 1: revealed, 2: flagged
     int value = 0; // 0: empty, 1-8: number of mines around, 9: mine
+    double gl_x = 0;
+    double gl_y = 0;
 };
 
 class Board {
@@ -29,8 +33,10 @@ class Board {
         int flagged(size_t x, size_t y);
         int remove_flagged(size_t x, size_t y);
 
-        int gl_open_board();
-        int gl_reveal(int x, int y);
+        int gl_init_board();
+        int gl_draw_board(GLFWwindow* window);
+        int gl_draw_block(GLFWwindow* window, block b);
+        int gl_reveal(GLFWwindow* window, double x, double y);
         int gl_flagged(int x, int y);
         int gl_remove_flagged(int x, int y);
         int gl_show_all_mine();
@@ -45,7 +51,6 @@ class Board {
         int n_revealed = 0;
 
         std::vector<block> blocks;
-        std::vector<block> revealed_blocks;
 };
 
 #endif
