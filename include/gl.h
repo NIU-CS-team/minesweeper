@@ -2,6 +2,7 @@
 #define GL_H
 
 #ifdef __APPLE__
+    #include <GL/glew.h>
     #include <OpenGL/gl3.h>
     #include <GLUT/glut.h>
     #include <GLFW/glfw3.h>
