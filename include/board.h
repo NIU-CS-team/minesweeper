@@ -30,8 +30,9 @@ class Board {
         int start_game();
         int print_board();
         int reveal(std::pair<int, int> input);
-        int flagged(size_t x, size_t y);
-        int remove_flagged(size_t x, size_t y);
+        int flagged(std::size_t x, std::size_t y);
+        int remove_flagged(std::size_t x, std::size_t y);
+        int flag_counter(int n_mines);
 
         int gl_init_board();
         int gl_draw_board(GLFWwindow* window);

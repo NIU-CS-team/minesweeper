@@ -4,7 +4,6 @@
 #include <random>
 #include <iostream>
 #include <chrono>
-#include <cstddef>
 
 Board::Board(int row, int col, int n_mines):
        row(row),
@@ -44,7 +43,7 @@ Board::Board(int row, int col, int n_mines):
 Board::~Board() {}
 
 int Board::show_all_mine() {
-    for (size_t i = 0; i < blocks.size(); ++i) {
+    for (std::size_t i = 0; i < blocks.size(); ++i) {
         if (i % row == 0) {
             std::cout << std::endl;
         }
@@ -122,7 +121,7 @@ int Board::print_board() {
 }
 
 int Board::reveal(std::pair<int, int> input) {
-    size_t index =  input.second * row + input.first;
+    std::size_t index =  input.second * row + input.first;
     if (blocks[index].value >= 9) {
         show_all_mine();
         this->status = LOST;
@@ -155,20 +154,31 @@ int Board::reveal(std::pair<int, int> input) {
     return 0;
 }
 
-int Board::flagged(size_t x, size_t y){
-    size_t i =  y * row + x;
+int Board::flagged(std::size_t x, std::size_t y){
+    std::size_t i =  y * row + x;
     blocks[i].state = 2;
     std::cout<<"(" << x << ", " << y << ") flagged.\n";
 
     return 0;
 }
 
-int Board::remove_flagged(size_t x, size_t y){
-    size_t i =  y * row + x;
+int Board::remove_flagged(std::size_t x, std::size_t y){
+    std::size_t i =  y * row + x;
     blocks[i].state = 0;
     std::cout<<"(" << x << ", " << y << ")'s flag has been removed.\n";
 
     return 0;
+}
+
+int Board::flag_counter(int n_mines){
+    int flag = n_mines;
+    for(std::size_t i = 0; i < blocks.size(); ++i){
+        if(blocks[i].state == 2){
+            flag --;
+        }else if(blocks[i].state == 0){
+            flag ++;
+        }
+    }
 }
 
 int Board::gl_init_board() {
