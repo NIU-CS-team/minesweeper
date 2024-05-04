@@ -1,11 +1,11 @@
+#include <filesystem>
 #include <iostream>
 #include <vector>
-#include <filesystem>
 
 #include "board.h"
 #include "gl.h"
-#include "network.h"
 #include "json.h"
+#include "network.h"
 
 int main(int argc, char* argv[]) {
     std::vector<int> config = read_json(std::filesystem::path("config.json"));

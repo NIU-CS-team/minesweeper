@@ -1,23 +1,22 @@
 #include "board.h"
+
+#include <chrono>
+#include <iostream>
+#include <random>
+
 #include "gl.h"
 
-#include <random>
-#include <iostream>
-#include <chrono>
-
-Board::Board(int row, int col, int n_mines):
-       row(row),
-       col(col),
-       n_mines(n_mines) {
+Board::Board(int row, int col, int n_mines)
+    : row(row), col(col), n_mines(n_mines) {
     blocks.resize(row * col);
     this->col = col;
     this->row = row;
     // Generate Mines Locations
 
-    std::random_device rd;  // 取得隨機數種子
-    std::mt19937 gen(rd()); // 使用 Mersenne Twister 引擎
+    std::random_device rd;   // 取得隨機數種子
+    std::mt19937 gen(rd());  // 使用 Mersenne Twister 引擎
     std::uniform_int_distribution<int> dis(0, this->row * this->col - 1);
-    for (int i=0; i<this->n_mines; i++) {
+    for (int i = 0; i < this->n_mines; i++) {
         int rand = dis(gen);
         if (this->blocks[rand].value == 9) {
             i--;
@@ -25,7 +24,7 @@ Board::Board(int row, int col, int n_mines):
         }
 
         this->blocks[rand].value = 9;
-        for (int j=-1; j<=1; j++) {
+        for (int j = -1; j <= 1; j++) {
             if (rand < row && j == -1) continue;
             if (rand >= row * (col - 1) && j == 1) continue;
 
@@ -64,7 +63,9 @@ int Board::timer() {
     if (status == LOST || status == WON) {
         auto endpoint = std::chrono::steady_clock::now();
         std::chrono::steady_clock::duration elapsed = endpoint - startpoint;
-        double elapsed_seconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+        double elapsed_seconds =
+            std::chrono::duration_cast<std::chrono::milliseconds>(elapsed)
+                .count();
         std::cout << "End time: (" << elapsed_seconds << "s)\n";
     }
     return 0;
@@ -73,9 +74,11 @@ int Board::timer() {
 std::pair<int, int> Board::get_input() {
     std::pair<int, int> result;
     while (1) {
-        std::cout << "Please enter the x and y coordinates of the block you want to reveal: ";
+        std::cout << "Please enter the x and y coordinates of the block you "
+                     "want to reveal: ";
         std::cin >> result.first >> result.second;
-        if (result.first < 0 || result.first >= row || result.second < 0 || result.second >= col) {
+        if (result.first < 0 || result.first >= row || result.second < 0 ||
+            result.second >= col) {
             std::cout << "Invalid input, please try again.\n";
             continue;
         }
@@ -103,7 +106,7 @@ int Board::start_game() {
 }
 
 int Board::print_board() {
-    for (int i=0; i<row*col; i++) {
+    for (int i = 0; i < row * col; i++) {
         if (blocks[i].state == 0) {
             std::cout << "X ";
         } else if (blocks[i].state == 1) {
@@ -121,7 +124,7 @@ int Board::print_board() {
 }
 
 int Board::reveal(std::pair<int, int> input) {
-    std::size_t index =  input.second * row + input.first;
+    std::size_t index = input.second * row + input.first;
     if (blocks[index].value >= 9) {
         show_all_mine();
         this->status = LOST;
@@ -136,7 +139,7 @@ int Board::reveal(std::pair<int, int> input) {
 
     // fast reveal if the block is empty
     if (blocks[index].value == 0) {
-        for (int i=-1; i<=1; i++) {
+        for (int i = -1; i <= 1; i++) {
             if (input.second < row && i == -1) continue;
             if (input.second >= row * (col - 1) && i == 1) continue;
 
@@ -154,29 +157,29 @@ int Board::reveal(std::pair<int, int> input) {
     return 0;
 }
 
-int Board::flagged(std::size_t x, std::size_t y){
-    std::size_t i =  y * row + x;
+int Board::flagged(std::size_t x, std::size_t y) {
+    std::size_t i = y * row + x;
     blocks[i].state = 2;
-    std::cout<<"(" << x << ", " << y << ") flagged.\n";
+    std::cout << "(" << x << ", " << y << ") flagged.\n";
 
     return 0;
 }
 
-int Board::remove_flagged(std::size_t x, std::size_t y){
-    std::size_t i =  y * row + x;
+int Board::remove_flagged(std::size_t x, std::size_t y) {
+    std::size_t i = y * row + x;
     blocks[i].state = 0;
-    std::cout<<"(" << x << ", " << y << ")'s flag has been removed.\n";
+    std::cout << "(" << x << ", " << y << ")'s flag has been removed.\n";
 
     return 0;
 }
 
-int Board::flag_counter(int n_mines){
+int Board::flag_counter(int n_mines) {
     int flag = n_mines;
-    for(std::size_t i = 0; i < blocks.size(); ++i){
-        if(blocks[i].state == 2){
-            flag --;
-        }else if(blocks[i].state == 0){
-            flag ++;
+    for (std::size_t i = 0; i < blocks.size(); ++i) {
+        if (blocks[i].state == 2) {
+            flag--;
+        } else if (blocks[i].state == 0) {
+            flag++;
         }
     }
 }
@@ -185,7 +188,7 @@ int Board::gl_init_board() {
     glfwInit();
     GLFWwindow* window = glfwCreateWindow(800, 800, "Minesweeper", NULL, NULL);
     if (window == NULL) {
-        std::cerr << "無法建立 GLFW視窗" << std::endl;
+        std::cerr << "無法建立 GLFW 視窗" << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -198,7 +201,7 @@ int Board::gl_init_board() {
         return -1;
     }
 
-    for (int i=0; i<row*col; i++) {
+    for (int i = 0; i < row * col; i++) {
         blocks[i].gl_x = (i % row) * 2.0f / row - 1.0f;
         blocks[i].gl_y = (i / row) * 2.0f / col - 1.0f;
     }
@@ -213,13 +216,11 @@ int Board::gl_init_board() {
     }
 
     glfwTerminate();
-
-
     return 0;
 }
 
 int Board::gl_draw_board(GLFWwindow* window) {
-    for (int i=0; i<row*col; i++) {
+    for (int i = 0; i < row * col; i++) {
         gl_draw_block(window, blocks[i]);
     }
 
@@ -227,17 +228,12 @@ int Board::gl_draw_board(GLFWwindow* window) {
 }
 
 int Board::gl_draw_block(GLFWwindow* window, block b) {
-    double vertices[] = {
-        b.gl_x, b.gl_y, 0.0f,
-        b.gl_x + b.size, b.gl_y, 0.0f,
-        b.gl_x + b.size, b.gl_y + b.size, 0.0f,
-        b.gl_x, b.gl_y + b.size, 0.0f
-    };
+    double vertices[] = {b.gl_x,          b.gl_y,          0.0f,
+                         b.gl_x + b.size, b.gl_y,          0.0f,
+                         b.gl_x + b.size, b.gl_y + b.size, 0.0f,
+                         b.gl_x,          b.gl_y + b.size, 0.0f};
 
-    unsigned int indices[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
+    unsigned int indices[] = {0, 1, 2, 2, 3, 0};
 
     unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
@@ -250,9 +246,11 @@ int Board::gl_draw_block(GLFWwindow* window, block b) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+                 GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+                          (void*)0);
     glEnableVertexAttribArray(0);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
