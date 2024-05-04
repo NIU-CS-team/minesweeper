@@ -1,8 +1,35 @@
 # Minesweeper
 
-This is a minesweeper game made by SDL2 and C++.
+This is a multiplayer minesweeper game made by C++ and OpenGL.
 
 ## Installation
+
+### Dependencies
+
+- CMake
+- OpenGL
+- GLFW
+- GLEW
+
+#### Ubuntu
+
+```bash
+sudo apt install cmake libglfw3-dev libglew-dev
+```
+
+#### Fedora
+
+```bash
+sudo dnf install cmake glfw-devel glew-devel
+```
+
+#### macOS
+
+```bash
+brew install cmake glfw glew
+```
+
+### Build
 
 We use `cmake` to build this project.
 
@@ -23,7 +50,7 @@ Every block have 3 type with 11 status:
 
 - covered
 - uncovered(0-8)
-- flagged(right, wrong)
+- flagged
 
 and 2 type:
 
