@@ -10,7 +10,7 @@
 int main(int argc, char* argv[]) {
     std::vector<int> config = read_json(std::filesystem::path("config.json"));
 
-    Board game(10, 10, 10);
+    Board game(8, 8, 10);
     game.gl_init_board();
     return 0;
 }

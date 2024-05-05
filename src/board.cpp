@@ -182,6 +182,8 @@ int Board::flag_counter(int n_mines) {
             flag++;
         }
     }
+
+    return 0;
 }
 
 int Board::gl_init_board() {
@@ -201,14 +203,20 @@ int Board::gl_init_board() {
         return -1;
     }
 
-    for (int i = 0; i < row * col; i++) {
-        blocks[i].gl_x = (i % row) * 2.0f / row - 1.0f;
-        blocks[i].gl_y = (i / row) * 2.0f / col - 1.0f;
+    for (int i=0; i<row*col; i++) {
+        blocks[i].gl_x = ((i % row) + 0.1f) * 2.0f / row - 1.0f;
+        blocks[i].gl_y = ((i / row) + 0.1f) * 2.0f / col - 1.0f;
     }
 
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
+        glClearColor(0.2f, 0.2f, 0.2f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            double xpos, ypos;
+            glfwGetCursorPos(window, &xpos, &ypos);
+            gl_reveal(window, xpos, ypos);
+        }
 
         glfwPollEvents();
         gl_draw_board(window);
@@ -235,6 +243,37 @@ int Board::gl_draw_block(GLFWwindow* window, block b) {
 
     unsigned int indices[] = {0, 1, 2, 2, 3, 0};
 
+    if (b.state == 0) {
+        glColor3f(1.0f, 1.0f, 1.0f); // 如果方塊未被揭示，設定顏色為白色
+    } else if (b.state == 1) {
+        glColor3f(0.5f, 0.5f, 0.5f); // 如果方塊被揭示，設定顏色為灰色
+    } else {
+        glColor3f(1.0f, 0.0f, 0.0f); // 如果方塊被標記為地雷，設定顏色為紅色
+    }
+
+    // draw the block by value
+    if (b.value == 0) {
+        glColor3f(0.0f, 0.0f, 0.0f);
+    } else if (b.value == 1) {
+        glColor3f(0.0f, 0.0f, 1.0f);
+    } else if (b.value == 2) {
+        glColor3f(0.0f, 1.0f, 0.0f);
+    } else if (b.value == 3) {
+        glColor3f(1.0f, 0.0f, 0.0f);
+    } else if (b.value == 4) {
+        glColor3f(0.0f, 0.0f, 1.0f);
+    } else if (b.value == 5) {
+        glColor3f(0.0f, 1.0f, 1.0f);
+    } else if (b.value == 6) {
+        glColor3f(1.0f, 1.0f, 0.0f);
+    } else if (b.value == 7) {
+        glColor3f(0.5f, 0.5f, 0.5f);
+    } else if (b.value == 8) {
+        glColor3f(0.5f, 0.5f, 0.5f);
+    } else {
+        glColor3f(1.0f, 0.0f, 0.0f);
+    }
+
     unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -258,6 +297,21 @@ int Board::gl_draw_block(GLFWwindow* window, block b) {
 }
 
 int Board::gl_reveal(GLFWwindow* window, double x, double y) {
-    std::cout << "Reveal (" << x << ", " << y << ")" << std::endl;
+    std::pair<int, int> target_block;
+    target_block = std::make_pair((x + 1) * row / 2, (y + 1) * col / 2);
+    std::cout << "Reveal (" << target_block.first << ", " << target_block.second << ")\n";
+    reveal(target_block);
+
+    return 0;
+}
+
+int Board::gl_show_all_mine() {
+    for (auto i : blocks) {
+        if (i.value >= 9) {
+            i.state = 1;
+        }
+    }
+
+    gl_draw_board(glfwGetCurrentContext());
     return 0;
 }
