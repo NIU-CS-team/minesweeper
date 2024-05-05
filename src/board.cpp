@@ -71,14 +71,14 @@ int Board::timer() {
     return 0;
 }
 
-std::pair<int, int> Board::get_input() {
-    std::pair<int, int> result;
+int Board::get_input() {
+    int x, y;
     while (1) {
         std::cout << "Please enter the x and y coordinates of the block you "
                      "want to reveal: ";
-        std::cin >> result.first >> result.second;
-        if (result.first < 0 || result.first >= row || result.second < 0 ||
-            result.second >= col) {
+        std::cin >> x >> y;
+        if (x < 0 || x >= row || y < 0 ||
+            y >= col) {
             std::cout << "Invalid input, please try again.\n";
             continue;
         }
@@ -86,7 +86,7 @@ std::pair<int, int> Board::get_input() {
         break;
     }
 
-    return result;
+    return y * row + x;
 }
 
 int Board::start_game() {
@@ -94,7 +94,8 @@ int Board::start_game() {
         system("clear");
         print_board();
         this->timer();
-        reveal(get_input());
+        block target_block = blocks[get_input()];
+        reveal(target_block);
 
         if (this->n_revealed == row * col - n_mines) {
             status = WON;
@@ -123,32 +124,31 @@ int Board::print_board() {
     return 0;
 }
 
-int Board::reveal(std::pair<int, int> input) {
-    std::size_t index = input.second * row + input.first;
-    if (blocks[index].value >= 9) {
+int Board::reveal(block input) {
+    if (input.value >= 9) {
         show_all_mine();
         this->status = LOST;
         return 0;
     }
 
-    blocks[index].state = 1;
+    input.state = 1;
     this->n_revealed++;
     if (this->n_revealed == row * col - n_mines) {
         this->status = WON;
     }
 
     // fast reveal if the block is empty
-    if (blocks[index].value == 0) {
+    if (input.value == 0) {
         for (int i = -1; i <= 1; i++) {
-            if (input.second < row && i == -1) continue;
-            if (input.second >= row * (col - 1) && i == 1) continue;
+            if (input.index < row && i == -1) continue;
+            if (input.index >= row * (col - 1) && i == 1) continue;
 
             for (int j = -1; j <= 1; j++) {
-                if (input.first % row == 0 && j == -1) continue;
-                if (input.first % row == row - 1 && j == 1) continue;
-                if (blocks[index + i * row + j].state == 0) {
-                    system("clear");
-                    reveal(std::make_pair(input.first + j, input.second + i));
+                if (input.index % row == 0 && j == -1) continue;
+                if (input.index % row == row - 1 && j == 1) continue;
+
+                if (blocks[input.index + i * row + j].state == 0) {
+                    reveal(blocks[input.index + i * row + j]);
                 }
             }
         }
@@ -203,8 +203,9 @@ int Board::gl_init_board() {
         return -1;
     }
 
-    for (int i=0; i<row*col; i++) {
-        blocks[i].gl_x = ((i % row) + 0.1f) * 2.0f / row - 1.0f;
+    for (int i=0; i<=row*col; i++) {
+        double currnent_gl_x = ((i % row) + 0.1f) * 2.0f / row - 1.0f;
+        blocks[i].gl_x = currnent_gl_x;
         blocks[i].gl_y = ((i / row) + 0.1f) * 2.0f / col - 1.0f;
     }
 
@@ -215,7 +216,7 @@ int Board::gl_init_board() {
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
             double xpos, ypos;
             glfwGetCursorPos(window, &xpos, &ypos);
-            gl_reveal(window, xpos, ypos);
+            gl_reveal(gl_get_block(window, xpos, ypos));
         }
 
         glfwPollEvents();
@@ -243,35 +244,46 @@ int Board::gl_draw_block(GLFWwindow* window, block b) {
 
     unsigned int indices[] = {0, 1, 2, 2, 3, 0};
 
-    if (b.state == 0) {
-        glColor3f(1.0f, 1.0f, 1.0f); // 如果方塊未被揭示，設定顏色為白色
-    } else if (b.state == 1) {
-        glColor3f(0.5f, 0.5f, 0.5f); // 如果方塊被揭示，設定顏色為灰色
-    } else {
-        glColor3f(1.0f, 0.0f, 0.0f); // 如果方塊被標記為地雷，設定顏色為紅色
-    }
+    // if (b.state == 0) {
+    //     glColor3f(1.0f, 1.0f, 1.0f); // 如果方塊未被揭示，設定顏色為白色
+    // } else if (b.state == 1) {
+    //     glColor3f(0.5f, 0.5f, 0.5f); // 如果方塊被揭示，設定顏色為灰色
+    // } else {
+    //     glColor3f(1.0f, 0.0f, 0.0f); // 如果方塊被標記為地雷，設定顏色為紅色
+    // }
 
     // draw the block by value
-    if (b.value == 0) {
-        glColor3f(0.0f, 0.0f, 0.0f);
-    } else if (b.value == 1) {
-        glColor3f(0.0f, 0.0f, 1.0f);
-    } else if (b.value == 2) {
-        glColor3f(0.0f, 1.0f, 0.0f);
-    } else if (b.value == 3) {
-        glColor3f(1.0f, 0.0f, 0.0f);
-    } else if (b.value == 4) {
-        glColor3f(0.0f, 0.0f, 1.0f);
-    } else if (b.value == 5) {
-        glColor3f(0.0f, 1.0f, 1.0f);
-    } else if (b.value == 6) {
-        glColor3f(1.0f, 1.0f, 0.0f);
-    } else if (b.value == 7) {
-        glColor3f(0.5f, 0.5f, 0.5f);
-    } else if (b.value == 8) {
-        glColor3f(0.5f, 0.5f, 0.5f);
-    } else {
-        glColor3f(1.0f, 0.0f, 0.0f);
+    switch (b.value) {
+        case 0:
+            glColor3f(0.5f, 0.5f, 0.5f);
+            break;
+        case 1:
+            glColor3f(0.0f, 0.0f, 1.0f);
+            break;
+        case 2:
+            glColor3f(0.0f, 1.0f, 0.0f);
+            break;
+        case 3:
+            glColor3f(1.0f, 0.0f, 0.0f);
+            break;
+        case 4:
+            glColor3f(0.0f, 0.0f, 1.0f);
+            break;
+        case 5:
+            glColor3f(0.0f, 1.0f, 1.0f);
+            break;
+        case 6:
+            glColor3f(1.0f, 1.0f, 0.0f);
+            break;
+        case 7:
+            glColor3f(0.5f, 0.5f, 0.5f);
+            break;
+        case 8:
+            glColor3f(0.5f, 0.5f, 0.5f);
+            break;
+        default:
+            glColor3f(1.0f, 0.0f, 0.0f);
+            break;
     }
 
     unsigned int VBO, VAO, EBO;
@@ -296,10 +308,20 @@ int Board::gl_draw_block(GLFWwindow* window, block b) {
     return 0;
 }
 
-int Board::gl_reveal(GLFWwindow* window, double x, double y) {
-    std::pair<int, int> target_block;
-    target_block = std::make_pair((x + 1) * row / 2, (y + 1) * col / 2);
-    std::cout << "Reveal (" << target_block.first << ", " << target_block.second << ")\n";
+block Board::gl_get_block(GLFWwindow* window, double x, double y) {
+    block target_block;
+    target_block.gl_x = (x + 1) * row / 2;
+    target_block.gl_y = (y + 1) * col / 2;
+    return target_block;
+}
+
+int Board::gl_reveal(block target_block) {
+    // if the block is already revealed or flagged, do nothing
+    if (target_block.state != 0) {
+        return 0;
+    }
+
+    std::cout << "Reveal (" << target_block.gl_x << ", " << target_block.gl_y << ")\n";
     reveal(target_block);
 
     return 0;
