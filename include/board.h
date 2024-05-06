@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include <vector>
+#include <map>
 
 #include "gl.h"
 
@@ -17,6 +18,29 @@ struct block {
 class Board {
 public:
     enum game_status { PLAYING, WON, LOST };
+    enum bomb_count_color {
+        BLACK,
+        BLUE,
+        GREEN,
+        RED,
+        PURPLE,
+        MAROON,
+        TURQUOISE,
+        GRAY,
+        WHITE,
+    };
+
+    std::map<int, std::vector<float>> bomb_count_color_map = {
+        {BLACK, {0.0f, 0.0f, 0.0f}},
+        {BLUE, {0.0f, 0.0f, 1.0f}},
+        {GREEN, {0.0f, 1.0f, 0.0f}},
+        {RED, {1.0f, 0.0f, 0.0f}},
+        {PURPLE, {1.0f, 0.0f, 1.0f}},
+        {MAROON, {0.5f, 0.0f, 0.0f}},
+        {TURQUOISE, {0.0f, 1.0f, 1.0f}},
+        {GRAY, {0.5f, 0.5f, 0.5f}},
+        {WHITE, {1.0f, 1.0f, 1.0f}},
+    };
 
     Board(int row, int col, int mines);
     ~Board();
@@ -33,7 +57,8 @@ public:
 
     int gl_init_board();
     int gl_draw_board(GLFWwindow *window);
-    int gl_draw_block(GLFWwindow *window, block b);
+    int gl_setup_block(block b, unsigned int& VBO, unsigned int& VAO, unsigned int& EBO);
+    int gl_draw_block(unsigned int VAO, block b);
     block gl_get_block(GLFWwindow *window, double x, double y);
     int gl_reveal(block target_block);
     int gl_flagged(int x, int y);

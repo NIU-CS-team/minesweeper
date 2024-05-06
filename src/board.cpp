@@ -18,7 +18,7 @@ Board::Board(int row, int col, int n_mines)
     std::uniform_int_distribution<int> dis(0, this->row * this->col - 1);
     for (int i = 0; i < this->n_mines; i++) {
         int rand = dis(gen);
-        if (this->blocks[rand].value == 9) {
+        if (this->blocks[rand].value >= 9) {
             i--;
             continue;
         }
@@ -31,12 +31,16 @@ Board::Board(int row, int col, int n_mines)
             for (int k = -1; k <= 1; k++) {
                 if (rand % row == 0 && k == -1) continue;
                 if (rand % row == row - 1 && k == 1) continue;
-                this->blocks[rand + j * row + k].value++;
+                if (this->blocks[rand + j * row + k].value < 9) {
+                    this->blocks[rand + j * row + k].value++;
+                }
             }
         }
     }
 
-    this->blocks.resize(row * col);
+    for (auto i : blocks) {
+        i.index = &i - &blocks[0];
+    }
 }
 
 Board::~Board() {}
@@ -206,14 +210,17 @@ int Board::gl_init_board() {
     for (int i=0; i<=row*col; i++) {
         double currnent_gl_x = ((i % row) + 0.1f) * 2.0f / row - 1.0f;
         blocks[i].gl_x = currnent_gl_x;
-        blocks[i].gl_y = ((i / row) + 0.1f) * 2.0f / col - 1.0f;
+        blocks[i].gl_y = ((static_cast<float>(i) / row) + 0.1f) * 2.0f / col - 1.0f;
     }
 
+    bool mouse_button_pressed = false;
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.2f, 0.2f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            mouse_button_pressed = true;
+        } else if (mouse_button_pressed && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
             double xpos, ypos;
             glfwGetCursorPos(window, &xpos, &ypos);
             gl_reveal(gl_get_block(window, xpos, ypos));
@@ -228,82 +235,48 @@ int Board::gl_init_board() {
     return 0;
 }
 
-int Board::gl_draw_board(GLFWwindow* window) {
-    for (int i = 0; i < row * col; i++) {
-        gl_draw_block(window, blocks[i]);
-    }
-
-    return 0;
-}
-
-int Board::gl_draw_block(GLFWwindow* window, block b) {
+int Board::gl_setup_block(block b, unsigned int& VBO, unsigned int& VAO, unsigned int& EBO) {
     double vertices[] = {b.gl_x,          b.gl_y,          0.0f,
                          b.gl_x + b.size, b.gl_y,          0.0f,
                          b.gl_x + b.size, b.gl_y + b.size, 0.0f,
                          b.gl_x,          b.gl_y + b.size, 0.0f};
 
     unsigned int indices[] = {0, 1, 2, 2, 3, 0};
-
-    // if (b.state == 0) {
-    //     glColor3f(1.0f, 1.0f, 1.0f); // 如果方塊未被揭示，設定顏色為白色
-    // } else if (b.state == 1) {
-    //     glColor3f(0.5f, 0.5f, 0.5f); // 如果方塊被揭示，設定顏色為灰色
-    // } else {
-    //     glColor3f(1.0f, 0.0f, 0.0f); // 如果方塊被標記為地雷，設定顏色為紅色
-    // }
-
-    // draw the block by value
-    switch (b.value) {
-        case 0:
-            glColor3f(0.5f, 0.5f, 0.5f);
-            break;
-        case 1:
-            glColor3f(0.0f, 0.0f, 1.0f);
-            break;
-        case 2:
-            glColor3f(0.0f, 1.0f, 0.0f);
-            break;
-        case 3:
-            glColor3f(1.0f, 0.0f, 0.0f);
-            break;
-        case 4:
-            glColor3f(0.0f, 0.0f, 1.0f);
-            break;
-        case 5:
-            glColor3f(0.0f, 1.0f, 1.0f);
-            break;
-        case 6:
-            glColor3f(1.0f, 1.0f, 0.0f);
-            break;
-        case 7:
-            glColor3f(0.5f, 0.5f, 0.5f);
-            break;
-        case 8:
-            glColor3f(0.5f, 0.5f, 0.5f);
-            break;
-        default:
-            glColor3f(1.0f, 0.0f, 0.0f);
-            break;
-    }
-
-    unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
-
     glBindVertexArray(VAO);
-
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
-                 GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
-                          (void*)0);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    return 0;
+}
 
+int Board::gl_draw_board(GLFWwindow* window) {
+    for (int i = 0; i < row * col; i++) {
+        unsigned int VBO, VAO, EBO;
+        gl_setup_block(blocks[i], VBO, VAO, EBO);
+        gl_draw_block(VAO, blocks[i]);
+        glDeleteBuffers(1, &VBO);
+        glDeleteBuffers(1, &EBO);
+        glDeleteVertexArrays(1, &VAO);
+    }
+
+    return 0;
+}
+
+int Board::gl_draw_block(unsigned int VAO, block b) {
+    if (bomb_count_color_map.find(b.value) == bomb_count_color_map.end()) {
+        std::cerr << "錯誤: b.value: " << b.value << " 不在 bomb_count_color_map 的範圍內" << std::endl;
+        return -1;
+    }
+
+    std::vector<float> rgb = bomb_count_color_map[b.value];
+    glBindVertexArray(VAO);
+    glColor3f(rgb[0], rgb[1], rgb[2]);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     return 0;
 }
