@@ -64,6 +64,7 @@ public:
     int gl_flagged(int x, int y);
     int gl_remove_flagged(int x, int y);
     int gl_show_all_mine();
+    int gl_main_menu();
 
     const int border = 10;
 
@@ -75,6 +76,7 @@ public:
     int n_revealed = 0;
 
     std::vector<block> blocks;
+    GLFWwindow* window;
 };
 
 #endif

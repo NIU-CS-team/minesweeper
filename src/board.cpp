@@ -191,22 +191,6 @@ int Board::flag_counter(int n_mines) {
 }
 
 int Board::gl_init_board() {
-    glfwInit();
-    GLFWwindow* window = glfwCreateWindow(800, 800, "Minesweeper", NULL, NULL);
-    if (window == NULL) {
-        std::cerr << "無法建立 GLFW 視窗" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK) {
-        std::cerr << "無法初始化 GLEW" << std::endl;
-        return -1;
-    }
-
     for (int i=0; i<=row*col; i++) {
         double currnent_gl_x = ((i % row) + 0.1f) * 2.0f / row - 1.0f;
         blocks[i].gl_x = currnent_gl_x;
@@ -308,5 +292,47 @@ int Board::gl_show_all_mine() {
     }
 
     gl_draw_board(glfwGetCurrentContext());
+    return 0;
+}
+
+int Board::gl_main_menu() {
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        return -1;
+    }
+
+    GLFWwindow* window = glfwCreateWindow(800, 800, "Minesweeper", NULL, NULL);
+    if (!window) {
+        std::cerr << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+
+    glfwMakeContextCurrent(window);
+
+    GLenum err = glewInit();
+    if (err != GLEW_OK) {
+        std::cerr << "Failed to initialize GLEW: " << glewGetErrorString(err) << std::endl;
+        return -1;
+    }
+
+    while (!glfwWindowShouldClose(window)) {
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glBegin(GL_QUADS);
+        glVertex2f(0.5f, 0.5f);
+        glVertex2f(0.5f, -0.5f);
+        glVertex2f(-0.5f, -0.5f);
+        glVertex2f(-0.5f, 0.5f);
+        glColor3f(0.0f, 1.0f, 2.0f);
+        glEnd();
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
     return 0;
 }
