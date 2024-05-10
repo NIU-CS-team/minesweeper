@@ -35,4 +35,5 @@ int host_game(int port, int member) {
         return -3;
     }
 
+    return 0;
 }
