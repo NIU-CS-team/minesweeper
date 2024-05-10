@@ -11,7 +11,8 @@ int host_game(int port, int member) {
 
     // AF_INET: use IPv4
     // SOCK_DGRAM: UDP, SOCK_STREAM: TCP
-    socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    sockaddr_in remote_address;
 
     if (socket_fd < 0) {
         return socket_fd;
