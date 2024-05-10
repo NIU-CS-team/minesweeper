@@ -191,7 +191,7 @@ int Board::flag_counter(int n_mines) {
 }
 
 int Board::gl_init_board() {
-    for (int i=0; i<=row*col; i++) {
+    for (int i=0; i<row*col; i++) {
         double currnent_gl_x = ((i % row) + 0.1f) * 2.0f / row - 1.0f;
         blocks[i].gl_x = currnent_gl_x;
         blocks[i].gl_y = ((static_cast<float>(i) / row) + 0.1f) * 2.0f / col - 1.0f;
