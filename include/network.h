@@ -8,7 +8,14 @@
 #else
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
 
 #endif
+
+int host_game(); // 開放起遊戲房間
+
+int join_game(int host_address); // 加入遊戲
+
+int close_host(); // 關閉房間
 
 #endif
