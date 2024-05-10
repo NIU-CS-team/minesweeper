@@ -12,7 +12,11 @@
 
 #endif
 
-int host_game(); // 開放起遊戲房間
+int socket_fd;
+
+sockaddr_in address;
+
+int host_game(int port, int member); // 開放起遊戲房間
 
 int join_game(int host_address); // 加入遊戲
 
