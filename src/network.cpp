@@ -19,12 +19,12 @@ int host_game(int port, int member) {
     }
 
     // connection information
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY; // vaild address accept
-    address.sin_port = htons(port); // use specify (include) port
+    remote_address.sin_family = AF_INET;
+    remote_address.sin_addr.s_addr = INADDR_ANY; // vaild address accept
+    remote_address.sin_port = htons(port); // use specify (include) port
 
     // bind port on host
-    if (bind(socket_fd, (const struct sockaddr *)&address, sizeof(address)) < 0) {
+    if (bind(socket_fd, (const struct sockaddr *)&remote_address, sizeof(remote_address)) < 0) {
         close(socket_fd);
         return -2;
     }
