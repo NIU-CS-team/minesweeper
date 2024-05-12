@@ -4,8 +4,6 @@
 #include <iostream>
 
 #include <GL/glew.h>
-#include <ft2build.h>
-#include FT_FREETYPE_H
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -143,40 +141,9 @@ int GL::main_menu() {
         return -1;
     }
 
-    /*FT_Library ft;
-    if (FT_Init_FreeType(&ft)) {
-        std::cerr << "Could not init FreeType Library" << std::endl;
-        return -1;
-    }
-
-    FT_Face face;
-    if (FT_New_Face(ft, "/usr/share/fonts/font.ttf", 0, &face)) {
-        std::cerr << "Failed to load font" << std::endl;
-        return -1;
-    }
-
-    FT_Set_Pixel_Sizes(face, 0, 48);*/
-
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
-        /*FT_Load_Char(face, 'A', FT_LOAD_RENDER);
-
-        GLuint texture;
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(
-            GL_TEXTURE_2D,
-            0,
-            GL_RED,
-            face->glyph->bitmap.width,
-            face->glyph->bitmap.rows,
-            0,
-            GL_RED,
-            GL_UNSIGNED_BYTE,
-            face->glyph->bitmap.buffer
-        );*/
 
         glBegin(GL_QUADS);
         glVertex2f(0.5f, 0.5f);

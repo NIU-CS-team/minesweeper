@@ -8,18 +8,11 @@ include_directories(./include)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
-find_package(Freetype REQUIRED)
-
-include_directories(./include ${FREETYPE_INCLUDE_DIRS})
-
-include_directories(/usr/local/include/freetype2)
-include_directories(/usr/include/freetype2)
 
 set(LIB_LINKS
     OpenGL::GL
     glfw
     GLEW::GLEW
-    -lfreetype
 )
 
 file(GLOB_RECURSE SRC_FILES ./src/*.cpp)
