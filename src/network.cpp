@@ -8,6 +8,7 @@ int host_game(int port, int member) {
     // -1: socket create failed
     // -2: bind failed
     // -3: listen error
+    // -4: socket close error
 
     // AF_INET: use IPv4
     // SOCK_DGRAM: UDP, SOCK_STREAM: TCP
@@ -31,9 +32,13 @@ int host_game(int port, int member) {
     }
 
     // listen init
-    if(listen(socket_fd, member) == -1) {
+    if (listen(socket_fd, member) == -1) {
         close(socket_fd);
         return -3;
+    }
+
+    if (close(socket_fd) < 0) {
+        return -4;
     }
 
     return 0;
