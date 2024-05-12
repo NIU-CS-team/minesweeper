@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include <GL/glew.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -157,7 +159,5 @@ int GL::main_menu() {
         glfwPollEvents();
     }
 
-    glfwDestroyWindow(window);
-    glfwTerminate();
     return 0;
 }
