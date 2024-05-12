@@ -12,11 +12,14 @@ find_package(Freetype REQUIRED)
 
 include_directories(./include ${FREETYPE_INCLUDE_DIRS})
 
+include_directories(/usr/local/include/freetype2)
+include_directories(/usr/include/freetype2)
+
 set(LIB_LINKS
     OpenGL::GL
     glfw
     GLEW::GLEW
-    Freetype
+    -lfreetype
 )
 
 file(GLOB_RECURSE SRC_FILES ./src/*.cpp)
