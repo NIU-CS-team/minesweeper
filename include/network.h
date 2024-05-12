@@ -14,7 +14,7 @@
 
 extern int socket_fd;
 
-extern sockaddr_in remote_address;
+extern sockaddr_in server_address;
 
 int host_game(int port, int member); // 開放起遊戲房間
 
