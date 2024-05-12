@@ -74,3 +74,9 @@ You can change the game setting in `config.json`.
 - `height`: the height of the game board
 - `mine`: the number of mines
 - `protect`: protect you from the first click
+
+## Host or Join
+
+You can host a game by choosing `Host` in the main menu.
+
+If you want to join a game, you need to enter the IP address of the host and press `Join`.

@@ -1,5 +1,7 @@
 #include <filesystem>
 #include <vector>
+#include <thread>
+#include <future>
 
 #include "board.h"
 #include "gl.h"
@@ -12,6 +14,7 @@ int main(int argc, char* argv[]) {
     Board game(8, 8, 10);
     GL gl;
     gl.main_menu();
+    // if gl.main_menu() == 1 -> host game, 2 -> join game
     game.start_game();
     return 0;
 }
