@@ -86,9 +86,14 @@ int GL::draw_block(unsigned int VAO, block b) {
 }
 
 block GL::get_block(GLFWwindow* window, double x, double y, int row, int col) {
+    int window_width, window_height;
+    glfwGetWindowSize(window, &window_width, &window_height);
+
+    x = (x / window_width) * 2.0 - 1.0;
+    y = ((window_height - y) / window_height) * 2.0 - 1.0;
+
     block target_block;
-    target_block.gl_x = (x + 1) * row / 2;
-    target_block.gl_y = (y + 1) * col / 2;
+    target_block.index = static_cast<int>((y + 1.0) / 2.0 * col) * row + static_cast<int>((x + 1.0) / 2.0 * row);
     return target_block;
 }
 
