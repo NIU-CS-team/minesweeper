@@ -2,7 +2,8 @@
 
 #include <unistd.h>
 
-int host_game(int port, int member) {
+int host_game(int port, int max_member) {
+    max_member -= 1;  // exclude host
     // return code:
     //  0: success
     // -1: socket create failed
@@ -32,13 +33,38 @@ int host_game(int port, int member) {
     }
 
     // listen init
-    if (listen(socket_fd, member) == -1) {
+    if (listen(socket_fd, max_member) == -1) {
         close(socket_fd);
         return -3;
     }
 
     if (close(socket_fd) < 0) {
         return -4;
+    }
+
+    // client connection information
+    int reply_sockfd;
+    sockaddr_in client_address;
+    int client_index = 0;
+    unsigned int client_len = sizeof(client_address);
+    // 留著預備用
+    /*
+    struct client_info {
+        int sockfd;
+        struct client_address;
+    };
+    */
+
+    pthread_t clients[max_member];
+    pthread_t tid;
+
+    bool game_status = true;
+
+    while (game_status) {
+        reply_sockfd = accept(socket_fd, (struct sockaddr *)&client_address, &client_len);
+
+        // 遊戲互動環節
+        
     }
 
     return 0;

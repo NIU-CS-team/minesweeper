@@ -16,7 +16,7 @@ extern int socket_fd;
 
 extern sockaddr_in server_address;
 
-int host_game(int port, int member); // 開放起遊戲房間
+int host_game(int port, int max_member); // 開放起遊戲房間
 
 int join_game(int host_address); // 加入遊戲
 
