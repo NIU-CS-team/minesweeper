@@ -1,5 +1,4 @@
 #include <filesystem>
-#include <iostream>
 #include <vector>
 
 #include "board.h"
@@ -11,7 +10,8 @@ int main(int argc, char* argv[]) {
     std::vector<int> config = read_json(std::filesystem::path("config.json"));
 
     Board game(8, 8, 10);
-    game.gl_main_menu();
-    game.gl_init_board();
+    GL gl;
+    gl.main_menu();
+    game.start_game();
     return 0;
 }
