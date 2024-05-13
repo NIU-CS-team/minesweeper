@@ -67,5 +67,9 @@ int host_game(int port, int max_member) {
         
     }
 
+    if (close(socket_fd) < 0) {
+        return -4;
+    }
+
     return 0;
 }
