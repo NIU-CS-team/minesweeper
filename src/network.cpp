@@ -64,7 +64,59 @@ int host_game(int port, int max_member) {
         reply_sockfd = accept(socket_fd, (struct sockaddr *)&client_address, &client_len);
 
         // 遊戲互動環節
+        // 接收: recv(int sockfd, void *buf, size_t len, int flags)
+        // -> recv(socket_fd, RECV_MESSENGE, sizeof(RECV_MESSENGE), 0);
+        // 傳送: send(int sockfd, const void *buf, size_t len, int flags)
+        // -> send(socket_fd, MESSENGE, sizeof(MESSENGE), 0);
+        // flags填入0即可
         
+    }
+
+    if (close(socket_fd) < 0) {
+        return -4;
+    }
+
+    return 0;
+}
+
+int join_game(uint32_t host_address, uint16_t host_port) {
+    bool status = true;
+    // return code:
+    //  0: success
+    // -1: socket create failed
+    // -2: connect failed (May server not listen)
+    // -3: empty
+    // -4: socket close error
+    // -5: messenge send error
+    int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (socket_fd < 0) {
+        status = false;
+        return -1;
+    }
+
+    // server information
+    sockaddr_in server_address;
+    server_address.sin_family = AF_INET6;
+    server_address.sin_addr.s_addr = host_address;
+    server_address.sin_port = htons(host_port);
+    int server_len = sizeof(server_address);
+
+    // try connect to server
+    if (connect(socket_fd, (struct sockaddr *)&server_address, server_len) == -1) {
+        status = false;
+        close(socket_fd);
+        return -2;
+    }
+
+    while (status) {
+
+        // 遊戲互動環節
+        // 接收: recv(int sockfd, void *buf, size_t len, int flags)
+        // -> recv(socket_fd, RECV_MESSENGE, sizeof(RECV_MESSENGE), 0);
+        // 傳送: send(int sockfd, const void *buf, size_t len, int flags)
+        // -> send(socket_fd, MESSENGE, sizeof(MESSENGE), 0);
+        // flags填入0即可
+
     }
 
     if (close(socket_fd) < 0) {

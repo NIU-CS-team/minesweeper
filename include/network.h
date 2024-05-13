@@ -12,13 +12,9 @@
 
 #endif
 
-extern int socket_fd;
-
-extern sockaddr_in server_address;
-
 int host_game(int port, int max_member); // 開放起遊戲房間
 
-int join_game(int host_address); // 加入遊戲
+int join_game(uint32_t host_address, uint16_t host_port); // 加入遊戲
 
 int close_host(); // 關閉房間
 
