@@ -12,7 +12,7 @@
 
 #endif
 
-int host_game(int port, int max_member); // 開放起遊戲房間
+int host_game(u_int16_t port, int max_member); // 開放起遊戲房間
 
 int join_game(uint32_t host_address, uint16_t host_port); // 加入遊戲
 

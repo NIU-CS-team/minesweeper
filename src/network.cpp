@@ -2,7 +2,7 @@
 
 #include <unistd.h>
 
-int host_game(int port, int max_member) {
+int host_game(u_int16_t port, int max_member) {
     max_member -= 1;  // exclude host
     // return code:
     //  0: success
@@ -80,7 +80,6 @@ int host_game(int port, int max_member) {
 }
 
 int join_game(uint32_t host_address, uint16_t host_port) {
-    bool status = true;
     // return code:
     //  0: success
     // -1: socket create failed
@@ -90,7 +89,6 @@ int join_game(uint32_t host_address, uint16_t host_port) {
     // -5: messenge send error
     int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_fd < 0) {
-        status = false;
         return -1;
     }
 
@@ -103,12 +101,13 @@ int join_game(uint32_t host_address, uint16_t host_port) {
 
     // try connect to server
     if (connect(socket_fd, (struct sockaddr *)&server_address, server_len) == -1) {
-        status = false;
         close(socket_fd);
         return -2;
     }
 
-    while (status) {
+    bool game_status = true;
+    
+    while (game_status) {
 
         // 遊戲互動環節
         // 接收: recv(int sockfd, void *buf, size_t len, int flags)
