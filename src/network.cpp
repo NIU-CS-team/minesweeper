@@ -94,7 +94,7 @@ int join_game(uint32_t host_address, uint16_t host_port) {
 
     // server information
     sockaddr_in server_address;
-    server_address.sin_family = AF_INET6;
+    server_address.sin_family = AF_INET;
     server_address.sin_addr.s_addr = host_address;
     server_address.sin_port = htons(host_port);
     int server_len = sizeof(server_address);
@@ -106,7 +106,7 @@ int join_game(uint32_t host_address, uint16_t host_port) {
     }
 
     bool game_status = true;
-    
+
     while (game_status) {
 
         // 遊戲互動環節
