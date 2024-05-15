@@ -4,6 +4,7 @@
 
 int host_game(u_int16_t port, int max_member) {
     max_member -= 1;  // exclude host
+    /*
     enum host_game_status {
         SUCCESS = 0,
         SOCKET_CREATE_FAILED = -1,
@@ -11,6 +12,7 @@ int host_game(u_int16_t port, int max_member) {
         LISTEN_ERROR = -3,
         SOCKET_CLOSE_ERROR = -4,
     };
+    */
 
     // AF_INET: use IPv4
     // SOCK_DGRAM: UDP, SOCK_STREAM: TCP
@@ -18,7 +20,7 @@ int host_game(u_int16_t port, int max_member) {
     sockaddr_in server_address;
 
     if (socket_fd < 0) {
-        return socket_fd;
+        return SOCKET_CREATE_FAILED;
         // if failed is -1
     }
 
@@ -77,10 +79,11 @@ int host_game(u_int16_t port, int max_member) {
         return SOCKET_CLOSE_ERROR;
     }
 
-    return 0;
+    return SUCESS;
 }
 
 int join_game(uint32_t host_address, uint16_t host_port) {
+    /*
     enum join_game_status {
         SUCCESS = 0,
         SOCKET_CREATE_FAILED = -1,
@@ -89,6 +92,7 @@ int join_game(uint32_t host_address, uint16_t host_port) {
         SOCKET_CLOSE_ERROR = -4,
         MESSENGE_SEND_ERROR = -5,
     };
+    */
 
     int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_fd < 0) {
@@ -125,5 +129,5 @@ int join_game(uint32_t host_address, uint16_t host_port) {
         return SOCKET_CLOSE_ERROR;
     }
 
-    return 0;
+    return SUCESS;
 }
