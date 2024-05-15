@@ -17,14 +17,16 @@ enum connect_status {
     SUCESS,
     SOCKET_CREATE_FAILED,
     SOCKET_CLOSE_ERROR,
+    MESSENGE_SEND_ERROR,
 
     // host connect error: 1XX
-    BIND_FAILED = 101,
-    LISTEN_ERROR = 102,
+    HOST_ERROR_CODE_SERIES = 100,
+    BIND_FAILED,
+    LISTEN_ERROR,
 
     // client connect error: 2XX
-    CONNECT_FAILED = 201,
-    MESSENGE_SEND_ERROR = 202
+    CLIENT_ERROR_CODE_SERIES = 200,
+    CONNECT_FAILED
 };
 
 int host_game(u_int16_t port, int max_member); // 開放起遊戲房間
