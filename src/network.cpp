@@ -30,17 +30,17 @@ int host_game(u_int16_t port, int max_member) {
     // bind port on host
     if (bind(socket_fd, (const struct sockaddr *)&server_address, sizeof(server_address)) < 0) {
         close(socket_fd);
-        return -2;
+        return BIND_FAILED;
     }
 
     // listen init
-    if (listen(socket_fd, max_member) == -1) {
+    if (listen(socket_fd, max_member) == SOCKET_CREATE_FAILED) {
         close(socket_fd);
-        return -3;
+        return LISTEN_ERROR;
     }
 
     if (close(socket_fd) < 0) {
-        return -4;
+        return SOCKET_CLOSE_ERROR;
     }
 
     // client connection information
@@ -74,7 +74,7 @@ int host_game(u_int16_t port, int max_member) {
     }
 
     if (close(socket_fd) < 0) {
-        return -4;
+        return SOCKET_CLOSE_ERROR;
     }
 
     return 0;
@@ -92,7 +92,7 @@ int join_game(uint32_t host_address, uint16_t host_port) {
 
     int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_fd < 0) {
-        return -1;
+        return SOCKET_CREATE_FAILED;
     }
 
     // server information
@@ -103,9 +103,9 @@ int join_game(uint32_t host_address, uint16_t host_port) {
     int server_len = sizeof(server_address);
 
     // try connect to server
-    if (connect(socket_fd, (struct sockaddr *)&server_address, server_len) == -1) {
+    if (connect(socket_fd, (struct sockaddr *)&server_address, server_len) == SOCKET_CREATE_FAILED) {
         close(socket_fd);
-        return -2;
+        return CONNECT_FAILED;
     }
 
     bool game_status = true;
@@ -122,7 +122,7 @@ int join_game(uint32_t host_address, uint16_t host_port) {
     }
 
     if (close(socket_fd) < 0) {
-        return -4;
+        return SOCKET_CLOSE_ERROR;
     }
 
     return 0;
