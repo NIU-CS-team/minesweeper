@@ -4,12 +4,13 @@
 
 int host_game(u_int16_t port, int max_member) {
     max_member -= 1;  // exclude host
-    // return code:
-    //  0: success
-    // -1: socket create failed
-    // -2: bind failed
-    // -3: listen error
-    // -4: socket close error
+    enum host_game_status {
+        SUCCESS = 0,
+        SOCKET_CREATE_FAILED = -1,
+        BIND_FAILED = -2,
+        LISTEN_ERROR = -3,
+        SOCKET_CLOSE_ERROR = -4,
+    };
 
     // AF_INET: use IPv4
     // SOCK_DGRAM: UDP, SOCK_STREAM: TCP
