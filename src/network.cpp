@@ -69,7 +69,7 @@ int host_game(u_int16_t port, int max_member) {
         // 傳送: send(int sockfd, const void *buf, size_t len, int flags)
         // -> send(socket_fd, MESSENGE, sizeof(MESSENGE), 0);
         // flags填入0即可
-        
+
     }
 
     if (close(socket_fd) < 0) {
@@ -80,13 +80,15 @@ int host_game(u_int16_t port, int max_member) {
 }
 
 int join_game(uint32_t host_address, uint16_t host_port) {
-    // return code:
-    //  0: success
-    // -1: socket create failed
-    // -2: connect failed (May server not listen)
-    // -3: empty
-    // -4: socket close error
-    // -5: messenge send error
+    enum join_game_status {
+        SUCCESS = 0,
+        SOCKET_CREATE_FAILED = -1,
+        CONNECT_FAILED = -2, // (May server not listen)
+        EMPTY = -3,
+        SOCKET_CLOSE_ERROR = -4,
+        MESSENGE_SEND_ERROR = -5,
+    };
+
     int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_fd < 0) {
         return -1;
