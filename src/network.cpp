@@ -129,16 +129,8 @@ int join_game(uint32_t host_address, uint16_t host_port) {
 
     bool game_status = true;
 
-    while (game_status) {
-
-        // 遊戲互動環節
-        // 接收: recv(int sockfd, void *buf, size_t len, int flags)
-        // -> recv(socket_fd, RECV_MESSENGE, sizeof(RECV_MESSENGE), 0);
-        // 傳送: send(int sockfd, const void *buf, size_t len, int flags)
-        // -> send(socket_fd, MESSENGE, sizeof(MESSENGE), 0);
-        // flags填入0即可
-
-    }
+    game_data data;
+    std::thread(game_interaction, socket_fd, &data).detach();
 
     if (close(socket_fd) < 0) {
         return SOCKET_CLOSE_ERROR;
