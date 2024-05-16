@@ -144,6 +144,7 @@ int GL::show_all_mine(std::vector<block> blocks, int row, int col) {
 }
 
 int GL::main_menu() {
+    // wait for user choose host or join
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -159,6 +160,9 @@ int GL::main_menu() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    // if user choose host, wait for another player to join
+    // if user choose join, show ip address input box
 
     return 0;
 }
