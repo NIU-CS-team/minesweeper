@@ -2,6 +2,21 @@
 
 #include <unistd.h>
 
+int game_interaction(int sockfd, game_data* data) {
+    while (data -> game_statu) {
+        char buffer[sizeof(game_data)];
+        
+        if (recv(sockfd, buffer, sizeof(buffer), 0) <= 0) {
+            return -1;
+        }
+
+        // 遊戲互動環節
+        
+        send(sockfd, data, sizeof(game_data), 0);
+    }
+    return 0;
+}
+
 int host_game(u_int16_t port, int max_member) {
     max_member -= 1;  // exclude host
     /*
