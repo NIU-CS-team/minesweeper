@@ -50,10 +50,10 @@ public:
     int init();
     int init_board(Board board);
     int draw_board(Board board);
-    int setup_block(block b, unsigned int& VBO, unsigned int& VAO, unsigned int& EBO);
-    int draw_block(unsigned int VAO, block b);
+    int setup_block(block b);
+    int draw_block(block b);
     block get_block(GLFWwindow *window, double x, double y, int row, int col);
-    int reveal(block target_block);
+    int reveal(Board board, block target_block);
     int flagged(block target_block);
     int remove_flagged(block target_block);
     int show_all_mine(Board board);
