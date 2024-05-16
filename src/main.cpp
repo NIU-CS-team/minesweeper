@@ -12,10 +12,10 @@ int main(int argc, char* argv[]) {
     std::vector<int> config = read_json(std::filesystem::path("config.json"));
 
     Board game(8, 8, 10);
-    // game.gl_main_menu();
-    
+
     GL gl;
-    int result = gl.main_menu();
-    assert(result == 0);
+    gl.init();
+    gl.main_menu();
+    gl.init_board(game.blocks, game.row, game.col, gl.window);
     return 0;
 }

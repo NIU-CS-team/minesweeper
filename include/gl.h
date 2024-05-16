@@ -47,6 +47,7 @@ public:
         {WHITE, {1.0f, 1.0f, 1.0f}},
     };
 
+    int init();
     int init_board(std::vector<block> blocks, int row, int col, GLFWwindow* window);
     int draw_board(GLFWwindow* window, std::vector<block> blocks, int row, int col);
     int setup_block(block b, unsigned int& VBO, unsigned int& VAO, unsigned int& EBO);
