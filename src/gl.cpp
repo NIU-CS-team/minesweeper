@@ -33,11 +33,11 @@ int GL::init() {
     return 0;
 }
 
-int GL::init_board(std::vector<block> blocks, int row, int col, GLFWwindow* window) {
-    for (int i=0; i<row*col; i++) {
-        double currnent_gl_x = ((i % row) + 0.1f) * 2.0f / row - 1.0f;
-        blocks[i].gl_x = currnent_gl_x;
-        blocks[i].gl_y = ((static_cast<float>(i) / row) + 0.1f) * 2.0f / col - 1.0f;
+int GL::init_board(Board board) {
+    for (int i=0; i<board.row*board.col; i++) {
+        double currnent_gl_x = ((i % board.row) + 0.1f) * 2.0f / board.row - 1.0f;
+        board.blocks[i].gl_x = currnent_gl_x;
+        board.blocks[i].gl_y = ((static_cast<float>(i) / board.row) + 0.1f) * 2.0f / board.col - 1.0f;
     }
 
     bool mouse_button_pressed = false;
@@ -50,11 +50,11 @@ int GL::init_board(std::vector<block> blocks, int row, int col, GLFWwindow* wind
         } else if (mouse_button_pressed && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
             double xpos, ypos;
             glfwGetCursorPos(window, &xpos, &ypos);
-            this->reveal(this->get_block(window, xpos, ypos, row, col));
+            this->reveal(this->get_block(window, xpos, ypos, board.row, board.col));
         }
 
         glfwPollEvents();
-        this->draw_board(window, blocks, row, col);
+        this->draw_board(board);
         glfwSwapBuffers(window);
     }
 
@@ -82,11 +82,14 @@ int GL::setup_block(block b, unsigned int& VBO, unsigned int& VAO, unsigned int&
     return 0;
 }
 
-int GL::draw_board(GLFWwindow* window, std::vector<block> blocks, int row, int col) {
-    for (int i = 0; i < row * col; i++) {
+int GL::draw_board(Board board) {
+    for (int i = 0; i < board.row * board.col; i++) {
         unsigned int VBO, VAO, EBO;
-        this->setup_block(blocks[i], VBO, VAO, EBO);
-        this->draw_block(VAO, blocks[i]);
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+        glGenBuffers(1, &EBO);
+        this->setup_block(board.blocks[i], VBO, VAO, EBO);
+        this->draw_block(VAO, board.blocks[i]);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
         glDeleteVertexArrays(1, &VAO);
@@ -126,20 +129,19 @@ int GL::reveal(block target_block) {
         return 0;
     }
 
-    std::cout << "Reveal (" << target_block.gl_x << ", " << target_block.gl_y << ")\n";
     reveal(target_block);
 
     return 0;
 }
 
-int GL::show_all_mine(std::vector<block> blocks, int row, int col) {
-    for (auto i : blocks) {
+int GL::show_all_mine(Board board) {
+    for (auto i : board.blocks) {
         if (i.value >= 9) {
             i.state = 1;
         }
     }
 
-    this->draw_board(glfwGetCurrentContext(), blocks, row, col);
+    this->draw_board(board);
     return 0;
 }
 
@@ -169,7 +171,7 @@ int GL::main_menu() {
 
 int GL::play_single(Board board) {
     while (!glfwWindowShouldClose(window)) {
-        draw_board(window, board.blocks, board.row, board.col);
+        draw_board(board);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

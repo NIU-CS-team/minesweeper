@@ -48,15 +48,15 @@ public:
     };
 
     int init();
-    int init_board(std::vector<block> blocks, int row, int col, GLFWwindow* window);
-    int draw_board(GLFWwindow* window, std::vector<block> blocks, int row, int col);
+    int init_board(Board board);
+    int draw_board(Board board);
     int setup_block(block b, unsigned int& VBO, unsigned int& VAO, unsigned int& EBO);
     int draw_block(unsigned int VAO, block b);
     block get_block(GLFWwindow *window, double x, double y, int row, int col);
     int reveal(block target_block);
     int flagged(block target_block);
     int remove_flagged(block target_block);
-    int show_all_mine(std::vector<block> blocks, int row, int col);
+    int show_all_mine(Board board);
     int main_menu();
     int play_single(Board board);
 

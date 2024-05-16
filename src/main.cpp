@@ -15,7 +15,8 @@ int main(int argc, char* argv[]) {
 
     GL gl;
     gl.init();
-    gl.main_menu();
-    gl.init_board(game.blocks, game.row, game.col, gl.window);
+    // gl.main_menu();
+    gl.init_board(game);
+    gl.play_single(game);
     return 0;
 }
