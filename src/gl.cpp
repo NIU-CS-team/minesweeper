@@ -41,25 +41,6 @@ int GL::init_board(Board board) {
         board.blocks[i].gl_y = ((static_cast<float>(i) / board.row) + 0.1f) * 2.0f / board.col - 1.0f;
     }
 
-    bool mouse_button_pressed = false;
-    while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.2f, 0.2f, 0.2f, 0.5f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-            mouse_button_pressed = true;
-        } else if (mouse_button_pressed && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
-            double xpos, ypos;
-            glfwGetCursorPos(window, &xpos, &ypos);
-            this->reveal(board, this->get_block(window, xpos, ypos, board.row, board.col));
-        }
-
-        glfwPollEvents();
-        this->draw_board(board);
-        glfwSwapBuffers(window);
-    }
-
-    glfwTerminate();
     return 0;
 }
 
@@ -105,15 +86,14 @@ int GL::draw_block(block b) {
     return 0;
 }
 
-block GL::get_block(GLFWwindow* window, double x, double y, int row, int col) {
+block GL::get_block(Board board, double x, double y) {
     int window_width, window_height;
     glfwGetWindowSize(window, &window_width, &window_height);
-
-    x = (x / window_width) * 2.0 - 1.0;
+    block target_block;
+    y = (x / window_width) * 2.0 - 1.0;
     y = ((window_height - y) / window_height) * 2.0 - 1.0;
 
-    block target_block;
-    target_block.index = static_cast<int>((y + 1.0) / 2.0 * col) * row + static_cast<int>((x + 1.0) / 2.0 * row);
+    target_block.index = static_cast<int>((y + 1.0) / 2.0 * board.col) * board.row + static_cast<int>((x + 1.0) / 2.0 * board.row);
     return target_block;
 }
 
@@ -189,8 +169,14 @@ int GL::main_menu() {
 }
 
 int GL::play_single(Board board) {
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window) && board.status == board.PLAYING) {
         draw_board(board);
+        double xpos, ypos;  // 修改這裡
+        // get cursorpos when mouse button is pressed
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            glfwGetCursorPos(window, &xpos, &ypos);  // 修改這裡
+        }
+        reveal(board, get_block(board, xpos, ypos));
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

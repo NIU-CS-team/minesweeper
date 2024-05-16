@@ -52,7 +52,7 @@ public:
     int draw_board(Board board);
     int setup_block(block b);
     int draw_block(block b);
-    block get_block(GLFWwindow *window, double x, double y, int row, int col);
+    block get_block(Board board, double x, double y);
     int reveal(Board board, block target_block);
     int flagged(block target_block);
     int remove_flagged(block target_block);
