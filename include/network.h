@@ -12,6 +12,13 @@
 
 #endif
 
+struct game_data {
+    int game_statu;
+    int action;
+    int x;
+    int y;
+};
+
 enum connect_status {
     // Universal error
     SUCESS,
