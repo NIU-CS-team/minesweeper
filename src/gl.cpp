@@ -166,3 +166,13 @@ int GL::main_menu() {
 
     return 0;
 }
+
+int GL::play_single(Board board) {
+    while (!glfwWindowShouldClose(window)) {
+        draw_board(window, board.blocks, board.row, board.col);
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    return 0;
+}

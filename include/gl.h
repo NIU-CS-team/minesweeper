@@ -58,6 +58,7 @@ public:
     int remove_flagged(block target_block);
     int show_all_mine(std::vector<block> blocks, int row, int col);
     int main_menu();
+    int play_single(Board board);
 
     GLFWwindow* window;
 };
