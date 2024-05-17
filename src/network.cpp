@@ -26,15 +26,6 @@ int game_interaction(int sockfd, game_data* data) {
 
 int host_game(u_int16_t port, int max_member) {
     max_member -= 1;  // exclude host
-    /*
-    enum host_game_status {
-        SUCCESS = 0,
-        SOCKET_CREATE_FAILED = -1,
-        BIND_FAILED = -2,
-        LISTEN_ERROR = -3,
-        SOCKET_CLOSE_ERROR = -4,
-    };
-    */
 
     // AF_INET: use IPv4
     // SOCK_DGRAM: UDP, SOCK_STREAM: TCP
@@ -43,7 +34,6 @@ int host_game(u_int16_t port, int max_member) {
 
     if (socket_fd < 0) {
         return SOCKET_CREATE_FAILED;
-        // if failed is -1
     }
 
     // server connection information
@@ -72,13 +62,6 @@ int host_game(u_int16_t port, int max_member) {
     sockaddr_in client_address;
     int client_index = 0;
     unsigned int client_len = sizeof(client_address);
-    // 留著預備用
-    /*
-    struct client_info {
-        int sockfd;
-        struct client_address;
-    };
-    */
 
    GL gl;
     bool game_started = false;
