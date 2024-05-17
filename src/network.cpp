@@ -66,7 +66,7 @@ int host_game(u_int16_t port, int max_member) {
    GL gl;
     bool game_started = false;
 
-    while (game_started) {
+    while (!game_started) {
         reply_sockfd = accept(socket_fd, (struct sockaddr *)&client_address, &client_len);
     }
 
@@ -74,7 +74,8 @@ int host_game(u_int16_t port, int max_member) {
     Board game(8, 8, 10);
     gl.init_board(game);
     // send board information to client
-    //send(socket_fd, game, sizeof(game), 0);
+    send(socket_fd, &game, sizeof(game), 0);
+    // need consider client accept later disconnect
 
     // 遊戲互動環節
     game_data data;
