@@ -151,8 +151,16 @@ void GL::mouse_button_callback(GLFWwindow* window, int button, int action, int m
 
         // Check if the mouse is inside the button
         if (xpos >= -0.5f && xpos <= 0.5f &&
-            ypos >= -0.5f && ypos <= 0.5f) {
-            // The button was clicked
+            ypos >= 0.2f && ypos <= 0.5f) {
+            // The first button was clicked
+        }
+        if (xpos >= -0.5f && xpos <= 0.5f &&
+            ypos >= -0.1f && ypos <= 0.1f) {
+            // The second button was clicked
+        }
+        if (xpos >= -0.5f && xpos <= 0.5f &&
+            ypos >= -0.5f && ypos <= -0.2f) {
+            // The third button was clicked
         }
     }
 }
