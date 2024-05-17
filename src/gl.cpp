@@ -144,6 +144,19 @@ int GL::show_all_mine(Board board) {
     return 0;
 }
 
+void GL::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+
+        // Check if the mouse is inside the button
+        if (xpos >= -0.5f && xpos <= 0.5f &&
+            ypos >= -0.5f && ypos <= 0.5f) {
+            // The button was clicked
+        }
+    }
+}
+
 int GL::main_menu() {
     // wait for user choose host or join
     while (!glfwWindowShouldClose(window)) {

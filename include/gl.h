@@ -59,6 +59,7 @@ public:
     int show_all_mine(Board board);
     int main_menu();
     int play_single(Board board);
+    static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
     GLFWwindow* window;
 };
