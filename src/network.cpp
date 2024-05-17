@@ -1,8 +1,15 @@
 #include "network.h"
 
 #include <unistd.h>
+#include "gl.h"
+#include <vector>
 
 int game_interaction(int sockfd, game_data* data) {
+    // 接收: recv(int sockfd, void *buf, size_t len, int flags)
+    // -> recv(socket_fd, RECV_MESSENGE, sizeof(RECV_MESSENGE), 0);
+    // 傳送: send(int sockfd, const void *buf, size_t len, int flags)
+    // -> send(socket_fd, MESSENGE, sizeof(MESSENGE), 0);
+    // flags填入0即可
     while (data -> game_statu) {
         char buffer[sizeof(game_data)];
         
@@ -73,22 +80,22 @@ int host_game(u_int16_t port, int max_member) {
     };
     */
 
-    pthread_t clients[max_member];
-    pthread_t tid;
+   GL gl;
+    bool game_started = false;
 
-    bool game_status = true;
-
-    while (game_status) {
+    while (game_started) {
         reply_sockfd = accept(socket_fd, (struct sockaddr *)&client_address, &client_len);
-
-        // 遊戲互動環節
-        // 接收: recv(int sockfd, void *buf, size_t len, int flags)
-        // -> recv(socket_fd, RECV_MESSENGE, sizeof(RECV_MESSENGE), 0);
-        // 傳送: send(int sockfd, const void *buf, size_t len, int flags)
-        // -> send(socket_fd, MESSENGE, sizeof(MESSENGE), 0);
-        // flags填入0即可
-
     }
+
+    // init board
+    Board game(8, 8, 10);
+    gl.init_board(game);
+    // send board information to client
+    //send(socket_fd, game, sizeof(game), 0);
+
+    // 遊戲互動環節
+    game_data data;
+    std::thread(game_interaction, socket_fd, &data).detach();
 
     if (close(socket_fd) < 0) {
         return SOCKET_CLOSE_ERROR;
@@ -98,17 +105,6 @@ int host_game(u_int16_t port, int max_member) {
 }
 
 int join_game(uint32_t host_address, uint16_t host_port) {
-    /*
-    enum join_game_status {
-        SUCCESS = 0,
-        SOCKET_CREATE_FAILED = -1,
-        CONNECT_FAILED = -2, // (May server not listen)
-        EMPTY = -3,
-        SOCKET_CLOSE_ERROR = -4,
-        MESSENGE_SEND_ERROR = -5,
-    };
-    */
-
     int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_fd < 0) {
         return SOCKET_CREATE_FAILED;
