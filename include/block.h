@@ -2,7 +2,7 @@
 #define BLOCK_H
 
 struct block {
-    const int size = 8;
+    const float size = 0.02f;
     int state = 0;  // 0: hidden, 1: revealed, 2: flagged
     int value = 0;  // 0: empty, 1-8: number of mines around, 9: mine
     double gl_x = 0;

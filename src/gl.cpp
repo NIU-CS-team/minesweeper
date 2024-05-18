@@ -45,31 +45,27 @@ int GL::init_board(Board board) {
 }
 
 int GL::setup_block(block b) {
-    double vertices[] = {b.gl_x,          b.gl_y,          0.0f,
-                         b.gl_x + b.size, b.gl_y,          0.0f,
-                         b.gl_x + b.size, b.gl_y + b.size, 0.0f,
-                         b.gl_x,          b.gl_y + b.size, 0.0f};
+    b.gl_x = ((b.index % 8) + 0.1f) * 2.0f / 8 - 1.0f;
+    b.gl_y = ((static_cast<float>(b.index) / 8) + 0.1f) * 2.0f / 8 - 1.0f;
 
-    unsigned int indices[] = {0, 1, 2, 2, 3, 0};
-    glGenVertexArrays(1, &b.VAO);
-    glGenBuffers(1, &b.VBO);
-    glGenBuffers(1, &b.EBO);
-    glBindVertexArray(b.VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, b.VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, b.EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    glVertex2f(b.gl_x - b.size, b.gl_y - b.size);
+    glVertex2f(b.gl_x + b.size, b.gl_y - b.size);
+    glVertex2f(b.gl_x + b.size, b.gl_y + b.size);
+    glVertex2f(b.gl_x - b.size, b.gl_y + b.size);
+
     return 0;
 }
 
 int GL::draw_board(Board board) {
     for (int i = 0; i < board.row * board.col; i++) {
+        glBegin(GL_QUADS);
         this->setup_block(board.blocks[i]);
+        glEnd();
         this->draw_block(board.blocks[i]);
     }
 
+    glfwSwapBuffers(window);
+    glfwPollEvents();
     return 0;
 }
 
@@ -80,7 +76,7 @@ int GL::draw_block(block b) {
     }
 
     std::vector<float> rgb = bomb_count_color_map[b.value];
-    glBindVertexArray(b.VAO);
+
     glColor3f(rgb[0], rgb[1], rgb[2]);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     return 0;
@@ -111,22 +107,29 @@ int GL::reveal(Board board, block target_block) {
         return 0;
     }
 
-    // reveal surrounding blocks
-    // (you need to implement this part according to your game logic)
-    // for (block surrounding_block : get_surrounding_blocks(target_block)) {
-    //     reveal(surrounding_block);
-    // }
-
     if (target_block.value == 0) {
-        for (int i = -1; i <= 1; i++) {
-            reveal(board, board.blocks[(target_block.index + i) * board.row]);
+        if (!(target_block.index < board.row * board.col && target_block.index >= 0)) {
+            return 0;
         }
 
-        reveal(board, board.blocks[target_block.index - 1]);
-        reveal(board, board.blocks[target_block.index + 1]);
+        for (int i = -1; i <= 1; i++) {
+            if (target_block.index - board.row + i >= 0 && target_block.index - board.row + i < board.row * board.col) {
+                reveal(board, board.blocks[target_block.index - board.row + i]);
+            }
+        }
+
+        if (target_block.index - 1 >= 0) {
+            reveal(board, board.blocks[target_block.index - 1]);
+        }
+
+        if (target_block.index + 1 < board.row * board.col) {
+            reveal(board, board.blocks[target_block.index + 1]);
+        }
 
         for (int i = -1; i <= 1; i++) {
-            reveal(board, board.blocks[(target_block.index + i) * board.row]);
+            if (target_block.index + board.row + i >= 0 && target_block.index + board.row + i < board.row * board.col) {
+                reveal(board, board.blocks[target_block.index + board.row + i]);
+            }
         }
     }
 
