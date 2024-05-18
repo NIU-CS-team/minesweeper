@@ -120,7 +120,7 @@ int join_game(uint32_t host_address, uint16_t host_port) {
     bool game_status = true;
 
     game_data data;
-    std::thread(game_interaction, socket_fd, &data).detach();
+    std::thread(game_interaction, socket_fd, &data, &board).detach();
 
     if (close(socket_fd) < 0) {
         return SOCKET_CLOSE_ERROR;
