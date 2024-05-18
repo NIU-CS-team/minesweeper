@@ -13,11 +13,16 @@
 
 #endif
 
+enum game_action{
+    REVEAL,
+    FLAG,
+    REMOVE_FLAG
+};
+
 struct game_data {
     int game_statu;
-    int action;
-    int x;
-    int y;
+    game_action action;
+    int block_index;
 };
 
 enum connect_status {
