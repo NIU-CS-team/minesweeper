@@ -15,7 +15,22 @@ int main(int argc, char* argv[]) {
 
     GL gl;
     gl.init();
-    // gl.main_menu();
+    /*
+    switch (gl.main_menu()) {
+        case 1:
+            host_game(config[0], config[1]);
+            break;
+        case 2:
+            join_game(config[2], config[3]);
+            break;
+        case 3:
+            gl.init_board(game);
+            gl.play_single(game);
+        default:
+            assert(false);
+    }
+    */
+
     gl.init_board(game);
     gl.play_single(game);
     return 0;
