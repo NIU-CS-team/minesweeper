@@ -117,7 +117,14 @@ int join_game(uint32_t host_address, uint16_t host_port) {
         return CONNECT_FAILED;
     }
 
-    bool game_status = true;
+    Board board(8, 8, 10);
+    char board_buffer[sizeof(Board)];
+    ssize_t bytes_received = recv(socket_fd, board_buffer, sizeof(board_buffer), 0);
+    if (bytes_received != sizeof(board_buffer)) {
+        close(socket_fd);
+        return MESSENGE_RECV_ERROR;
+    }
+    std::memcpy(&board, board_buffer, sizeof(Board));
 
     game_data data;
     std::thread(game_interaction, socket_fd, &data, &board).detach();
