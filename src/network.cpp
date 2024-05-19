@@ -11,7 +11,7 @@ int game_interaction(int socket_fd, game_data* data, Board* board) {
     // 傳送: send(int sockfd, const void *buf, size_t len, int flags)
     // -> send(socket_fd, MESSENGE, sizeof(MESSENGE), 0);
     // flags填入0即可
-    while (data -> game_statu) {
+    while (data -> game_status) {
         char buffer[sizeof(game_data)];
         
         if (recv(socket_fd, buffer, sizeof(buffer), 0) <= 0) {

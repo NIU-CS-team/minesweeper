@@ -20,7 +20,7 @@ enum game_action{
 };
 
 struct game_data {
-    int game_statu;
+    int game_status;
     game_action action;
     int block_index;
 };
