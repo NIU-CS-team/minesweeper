@@ -7,17 +7,16 @@
 
 #else
 #include <arpa/inet.h>
-#include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/socket.h>
+
 #include <thread>
 
 #endif
 
-enum game_action{
-    REVEAL,
-    FLAG,
-    REMOVE_FLAG
-};
+#include "board.h"
+
+enum game_action { REVEAL, FLAG, REMOVE_FLAG };
 
 struct game_data {
     int game_status;
@@ -45,10 +44,12 @@ enum connect_status {
     CONNECT_FAILED
 };
 
-int host_game(u_int16_t port, int max_member); // 開放起遊戲房間
+int game_interaction(int socket_fd, game_data *data, Board *board);
 
-int join_game(uint32_t host_address, uint16_t host_port); // 加入遊戲
+int host_game(u_int16_t port, int max_member);  // 開放起遊戲房間
 
-int close_host(); // 關閉房間
+int join_game(uint32_t host_address, uint16_t host_port);  // 加入遊戲
+
+int close_host();  // 關閉房間
 
 #endif

@@ -79,8 +79,7 @@ int Board::get_input() {
         std::cout << "Please enter the x and y coordinates of the block you "
                      "want to reveal: ";
         std::cin >> x >> y;
-        if (x < 0 || x >= row || y < 0 ||
-            y >= col) {
+        if (x < 0 || x >= row || y < 0 || y >= col) {
             std::cout << "Invalid input, please try again.\n";
             continue;
         }
@@ -158,7 +157,6 @@ int Board::reveal(block input) {
 
     return 0;
 }
-
 
 int Board::flagged(block target_block) {
     blocks[target_block.index].state = 2;

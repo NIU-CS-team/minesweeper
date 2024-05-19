@@ -9,13 +9,13 @@
 #endif
 
 #ifdef __linux__
-#include <GL/glew.h>
 #include <GL/gl.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 // #include <glad/glad.h>
 #endif
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 #include <map>
 
@@ -36,14 +36,10 @@ public:
     };
 
     std::map<int, std::vector<float>> bomb_count_color_map = {
-        {BLACK, {0.0f, 0.0f, 0.0f}},
-        {BLUE, {0.0f, 0.0f, 1.0f}},
-        {GREEN, {0.0f, 1.0f, 0.0f}},
-        {RED, {1.0f, 0.0f, 0.0f}},
-        {PURPLE, {1.0f, 0.0f, 1.0f}},
-        {MAROON, {0.5f, 0.0f, 0.0f}},
-        {TURQUOISE, {0.0f, 1.0f, 1.0f}},
-        {GRAY, {0.5f, 0.5f, 0.5f}},
+        {BLACK, {0.0f, 0.0f, 0.0f}},     {BLUE, {0.0f, 0.0f, 1.0f}},
+        {GREEN, {0.0f, 1.0f, 0.0f}},     {RED, {1.0f, 0.0f, 0.0f}},
+        {PURPLE, {1.0f, 0.0f, 1.0f}},    {MAROON, {0.5f, 0.0f, 0.0f}},
+        {TURQUOISE, {0.0f, 1.0f, 1.0f}}, {GRAY, {0.5f, 0.5f, 0.5f}},
         {WHITE, {1.0f, 1.0f, 1.0f}},
     };
 
@@ -59,7 +55,8 @@ public:
     int show_all_mine(Board board);
     int main_menu();
     int play_single(Board board);
-    static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+    static void mouse_button_callback(GLFWwindow* window, int button,
+                                      int action, int mods);
 
     GLFWwindow* window;
 };

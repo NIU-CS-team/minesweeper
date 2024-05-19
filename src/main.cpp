@@ -1,3 +1,4 @@
+#include <cassert>
 #include <filesystem>
 #include <iostream>
 #include <vector>
@@ -6,7 +7,6 @@
 #include "gl.h"
 #include "json.h"
 #include "network.h"
-#include <cassert>
 
 int main(int argc, char* argv[]) {
     std::vector<int> config = read_json(std::filesystem::path("config.json"));

@@ -1,10 +1,11 @@
 #include "gl.h"
-#include "board.h"
-#include "block.h"
+
+#include <GL/glew.h>
 
 #include <iostream>
 
-#include <GL/glew.h>
+#include "block.h"
+#include "board.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -27,7 +28,8 @@ int GL::init() {
 
     GLenum err = glewInit();
     if (err != GLEW_OK) {
-        std::cerr << "Failed to initialize GLEW: " << glewGetErrorString(err) << std::endl;
+        std::cerr << "Failed to initialize GLEW: " << glewGetErrorString(err)
+                  << std::endl;
         return -1;
     }
 
@@ -35,10 +37,13 @@ int GL::init() {
 }
 
 int GL::init_board(Board board) {
-    for (int i=0; i<board.row*board.col; i++) {
-        double currnent_gl_x = ((i % board.row) + 0.1f) * 2.0f / board.row - 1.0f;
+    for (int i = 0; i < board.row * board.col; i++) {
+        double currnent_gl_x =
+            ((i % board.row) + 0.1f) * 2.0f / board.row - 1.0f;
         board.blocks[i].gl_x = currnent_gl_x;
-        board.blocks[i].gl_y = ((static_cast<float>(i) / board.row) + 0.1f) * 2.0f / board.col - 1.0f;
+        board.blocks[i].gl_y =
+            ((static_cast<float>(i) / board.row) + 0.1f) * 2.0f / board.col -
+            1.0f;
     }
 
     return 0;
@@ -71,7 +76,8 @@ int GL::draw_board(Board board) {
 
 int GL::draw_block(block b) {
     if (bomb_count_color_map.find(b.value) == bomb_count_color_map.end()) {
-        std::cerr << "錯誤: b.value: " << b.value << " 不在 bomb_count_color_map 的範圍內" << std::endl;
+        std::cerr << "錯誤: b.value: " << b.value
+                  << " 不在 bomb_count_color_map 的範圍內" << std::endl;
         return -1;
     }
 
@@ -89,7 +95,9 @@ block GL::get_block(Board board, double x, double y) {
     y = (x / window_width) * 2.0 - 1.0;
     y = ((window_height - y) / window_height) * 2.0 - 1.0;
 
-    target_block.index = static_cast<int>((y + 1.0) / 2.0 * board.col) * board.row + static_cast<int>((x + 1.0) / 2.0 * board.row);
+    target_block.index =
+        static_cast<int>((y + 1.0) / 2.0 * board.col) * board.row +
+        static_cast<int>((x + 1.0) / 2.0 * board.row);
     return target_block;
 }
 
@@ -108,12 +116,14 @@ int GL::reveal(Board board, block target_block) {
     }
 
     if (target_block.value == 0) {
-        if (!(target_block.index < board.row * board.col && target_block.index >= 0)) {
+        if (!(target_block.index < board.row * board.col &&
+              target_block.index >= 0)) {
             return 0;
         }
 
         for (int i = -1; i <= 1; i++) {
-            if (target_block.index - board.row + i >= 0 && target_block.index - board.row + i < board.row * board.col) {
+            if (target_block.index - board.row + i >= 0 &&
+                target_block.index - board.row + i < board.row * board.col) {
                 reveal(board, board.blocks[target_block.index - board.row + i]);
             }
         }
@@ -127,7 +137,8 @@ int GL::reveal(Board board, block target_block) {
         }
 
         for (int i = -1; i <= 1; i++) {
-            if (target_block.index + board.row + i >= 0 && target_block.index + board.row + i < board.row * board.col) {
+            if (target_block.index + board.row + i >= 0 &&
+                target_block.index + board.row + i < board.row * board.col) {
                 reveal(board, board.blocks[target_block.index + board.row + i]);
             }
         }
@@ -147,22 +158,20 @@ int GL::show_all_mine(Board board) {
     return 0;
 }
 
-void GL::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+void GL::mouse_button_callback(GLFWwindow* window, int button, int action,
+                               int mods) {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
 
         // Check if the mouse is inside the button
-        if (xpos >= -0.5f && xpos <= 0.5f &&
-            ypos >= 0.2f && ypos <= 0.5f) {
+        if (xpos >= -0.5f && xpos <= 0.5f && ypos >= 0.2f && ypos <= 0.5f) {
             // The first button was clicked
         }
-        if (xpos >= -0.5f && xpos <= 0.5f &&
-            ypos >= -0.1f && ypos <= 0.1f) {
+        if (xpos >= -0.5f && xpos <= 0.5f && ypos >= -0.1f && ypos <= 0.1f) {
             // The second button was clicked
         }
-        if (xpos >= -0.5f && xpos <= 0.5f &&
-            ypos >= -0.5f && ypos <= -0.2f) {
+        if (xpos >= -0.5f && xpos <= 0.5f && ypos >= -0.5f && ypos <= -0.2f) {
             // The third button was clicked
         }
     }
