@@ -14,6 +14,8 @@
 
 #endif
 
+#include <unistd.h>
+
 #include "board.h"
 
 enum game_action { REVEAL, FLAG, REMOVE_FLAG };
