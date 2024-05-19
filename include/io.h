@@ -3,6 +3,6 @@
 
 #include "gl.h"
 
-int mouse_button_callback(GLFWwindow* window, int button, int action, int mods, int result);
+int mouse_button_callback(GLFWwindow* window,  int button, int action, int mods);
 
 #endif

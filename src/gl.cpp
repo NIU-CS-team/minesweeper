@@ -6,6 +6,7 @@
 
 #include "block.h"
 #include "board.h"
+#include "io.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -159,8 +160,6 @@ int GL::show_all_mine(Board board) {
 }
 
 int GL::main_menu() {
-    // wait for user choose host or join
-    while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -170,23 +169,35 @@ int GL::main_menu() {
         glVertex2f(-0.5f, 0.2f);
         glVertex2f(-0.5f, 0.5f);
         glVertex2f(0.5f, 0.1f);
-        glVertex2f(0.5f, -0.1f);
-        glVertex2f(-0.5f, -0.1f);
-        glVertex2f(-0.5f, 0.1f);
         glVertex2f(0.5f, -0.2f);
-        glVertex2f(0.5f, -0.5f);
-        glVertex2f(-0.5f, -0.5f);
         glVertex2f(-0.5f, -0.2f);
+        glVertex2f(-0.5f, 0.1f);
+        glVertex2f(0.5f, -0.3f);
+        glVertex2f(0.5f, -0.6f);
+        glVertex2f(-0.5f, -0.6f);
+        glVertex2f(-0.5f, -0.3f);
         glColor3f(0.0f, 1.0f, 2.0f);
         glEnd();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+    // wait for user choose host or join
+    while (!glfwWindowShouldClose(window)) {
+        int button, action, mods;
+        if (mouse_button_callback(window, button, action, mods) != 1) continue;
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        if (xpos > 0.5 && xpos < -0.5 && ypos > 0.2 && ypos < 0.5) {
+            return 1;
+        } else if (xpos > 0.5 && xpos < -0.5 && ypos > -0.2 && ypos < 0.1) {
+            return 2;
+        } else if (xpos > 0.5 && xpos < -0.5 && ypos > -0.6 && ypos < -0.3) {
+            return 3;
+        }
     }
 
     // if user choose host, wait for another player to join
     // if user choose join, show ip address input box
-        
 }
 
 int GL::play_single(Board board) {
