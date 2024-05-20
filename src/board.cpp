@@ -16,7 +16,7 @@ Board::Board(int row, int col, int n_mines)
     std::uniform_int_distribution<int> dis(0, this->row * this->col - 1);
     for (int i = 0; i < this->n_mines; i++) {
         int rand = dis(gen);
-        if (this->blocks[rand].value >= 9) {
+        if (this->blocks[rand].value >= MINE) {
             i--;
             continue;
         }
@@ -29,7 +29,7 @@ Board::Board(int row, int col, int n_mines)
             for (int k = -1; k <= 1; k++) {
                 if (rand % row == 0 && k == -1) continue;
                 if (rand % row == row - 1 && k == 1) continue;
-                if (this->blocks[rand + j * row + k].value < 9) {
+                if (this->blocks[rand + j * row + k].value < MINE) {
                     this->blocks[rand + j * row + k].value++;
                 }
             }
@@ -49,7 +49,7 @@ int Board::show_all_mine() {
             std::cout << std::endl;
         }
 
-        if (blocks[i].value >= 9) {
+        if (blocks[i].value >= MINE) {
             std::cout << "M ";
         } else {
             std::cout << blocks[i].value << " ";
@@ -109,9 +109,9 @@ int Board::start_game() {
 
 int Board::print_board() {
     for (int i = 0; i < row * col; i++) {
-        if (blocks[i].state == 0) {
+        if (blocks[i].state == HIDDEN) {
             std::cout << "X ";
-        } else if (blocks[i].state == 1) {
+        } else if (blocks[i].state == REVEALED) {
             std::cout << blocks[i].value << " ";
         } else {
             std::cout << "F ";
@@ -126,20 +126,20 @@ int Board::print_board() {
 }
 
 int Board::reveal(block input) {
-    if (input.value >= 9) {
+    if (input.value >= MINE) {
         show_all_mine();
         this->status = LOST;
         return 0;
     }
 
-    input.state = 1;
+    input.state = REVEALED;
     this->n_revealed++;
     if (this->n_revealed == row * col - n_mines) {
         this->status = WON;
     }
 
     // fast reveal if the block is empty
-    if (input.value == 0) {
+    if (input.value == EMPTY) {
         for (int i = -1; i <= 1; i++) {
             if (input.index < row && i == -1) continue;
             if (input.index >= row * (col - 1) && i == 1) continue;
@@ -159,21 +159,21 @@ int Board::reveal(block input) {
 }
 
 int Board::flagged(block target_block) {
-    blocks[target_block.index].state = 2;
+    blocks[target_block.index].state = FLAGGED;
     return 0;
 }
 
 int Board::remove_flagged(block target_block) {
-    blocks[target_block.index].state = 0;
+    blocks[target_block.index].state = HIDDEN;
     return 0;
 }
 
 int Board::flag_counter(int n_mines) {
     int flag = n_mines;
     for (std::size_t i = 0; i < blocks.size(); ++i) {
-        if (blocks[i].state == 2) {
+        if (blocks[i].state == FLAGGED) {
             flag--;
-        } else if (blocks[i].state == 0) {
+        } else if (blocks[i].state == HIDDEN) {
             flag++;
         }
     }
