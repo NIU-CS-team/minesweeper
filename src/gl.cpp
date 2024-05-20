@@ -37,19 +37,6 @@ int GL::init() {
     return 0;
 }
 
-int GL::init_board(Board board) {
-    for (int i = 0; i < board.row * board.col; i++) {
-        double currnent_gl_x =
-            ((i % board.row) + 0.1f) * 2.0f / board.row - 1.0f;
-        board.blocks[i].gl_x = currnent_gl_x;
-        board.blocks[i].gl_y =
-            ((static_cast<float>(i) / board.row) + 0.1f) * 2.0f / board.col -
-            1.0f;
-    }
-
-    return 0;
-}
-
 int GL::setup_block(block b) {
     b.gl_x = ((b.index % 8) + 0.1f) * 2.0f / 8 - 1.0f;
     b.gl_y = ((static_cast<float>(b.index) / 8) + 0.1f) * 2.0f / 8 - 1.0f;
@@ -104,19 +91,18 @@ block GL::get_block(Board board, double x, double y) {
 
 int GL::reveal(Board board, block target_block) {
     // if the block is already revealed or flagged, do nothing
-    if (target_block.state != 0) {
+    if (target_block.state != HIDDEN) {
         return 0;
     }
 
-    // reveal the block
-    target_block.state = 1;
+    target_block.state = REVEALED;
 
     // if the block is a mine, stop revealing
-    if (target_block.value >= 9) {
+    if (target_block.value >= MINE) {
         return 0;
     }
 
-    if (target_block.value == 0) {
+    if (target_block.value == EMPTY) {
         if (!(target_block.index < board.row * board.col &&
               target_block.index >= 0)) {
             return 0;
@@ -151,7 +137,7 @@ int GL::reveal(Board board, block target_block) {
 int GL::show_all_mine(Board board) {
     for (auto i : board.blocks) {
         if (i.value >= 9) {
-            i.state = 1;
+            i.state = REVEALED;
         }
     }
 
@@ -204,6 +190,8 @@ int GL::play_single(Board board) {
     while (!glfwWindowShouldClose(window) && board.status == board.PLAYING) {
         draw_board(board);
         double xpos, ypos;  // 修改這裡
+        int button, action, mods;
+        mouse_button_callback(window, button, action, mods);
         // get cursorpos when mouse button is pressed
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
             glfwGetCursorPos(window, &xpos, &ypos);  // 修改這裡

@@ -43,7 +43,6 @@ public:
     };
 
     int init();
-    int init_board(Board board);
     int draw_board(Board board);
     int setup_block(block b);
     int draw_block(block b);

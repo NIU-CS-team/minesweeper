@@ -29,7 +29,6 @@ int main(int argc, char* argv[]) {
             assert(false);
     }*/
 
-    gl.init_board(game);
     gl.play_single(game);
     return 0;
 }

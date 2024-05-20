@@ -51,7 +51,6 @@ int host_game(u_int16_t port, int max_member) {
 
     // init board
     Board game(8, 8, 10);
-    gl.init_board(game);
     // send board information to client
     send(socket_fd, &game, sizeof(game), 0);
     // need consider client accept later disconnect
