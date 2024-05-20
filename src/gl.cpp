@@ -146,27 +146,27 @@ int GL::show_all_mine(Board board) {
 }
 
 int GL::main_menu() {
-        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-        glBegin(GL_QUADS);
-        glVertex2f(0.5f, 0.5f);
-        glVertex2f(0.5f, 0.2f);
-        glVertex2f(-0.5f, 0.2f);
-        glVertex2f(-0.5f, 0.5f);
-        glVertex2f(0.5f, 0.1f);
-        glVertex2f(0.5f, -0.2f);
-        glVertex2f(-0.5f, -0.2f);
-        glVertex2f(-0.5f, 0.1f);
-        glVertex2f(0.5f, -0.3f);
-        glVertex2f(0.5f, -0.6f);
-        glVertex2f(-0.5f, -0.6f);
-        glVertex2f(-0.5f, -0.3f);
-        glColor3f(0.0f, 1.0f, 2.0f);
-        glEnd();
+    glBegin(GL_QUADS);
+    glVertex2f(0.5f, 0.5f);
+    glVertex2f(0.5f, 0.2f);
+    glVertex2f(-0.5f, 0.2f);
+    glVertex2f(-0.5f, 0.5f);
+    glVertex2f(0.5f, 0.1f);
+    glVertex2f(0.5f, -0.2f);
+    glVertex2f(-0.5f, -0.2f);
+    glVertex2f(-0.5f, 0.1f);
+    glVertex2f(0.5f, -0.3f);
+    glVertex2f(0.5f, -0.6f);
+    glVertex2f(-0.5f, -0.6f);
+    glVertex2f(-0.5f, -0.3f);
+    glColor3f(0.0f, 1.0f, 2.0f);
+    glEnd();
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+    glfwSwapBuffers(window);
+    glfwPollEvents();
     // wait for user choose host or join
     while (!glfwWindowShouldClose(window)) {
         int button, action, mods;
