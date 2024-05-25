@@ -53,8 +53,8 @@ int GL::draw_board(Board board) {
     for (int i = 0; i < board.row * board.col; i++) {
         glBegin(GL_QUADS);
         this->setup_block(board.blocks[i]);
-        glEnd();
         this->draw_block(board.blocks[i]);
+        glEnd();
     }
 
     glfwSwapBuffers(window);
