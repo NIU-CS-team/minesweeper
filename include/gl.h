@@ -23,23 +23,24 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 class GL {
 public:
     enum bomb_count_color {
-        BLACK,
+        GRAY,
         BLUE,
         GREEN,
         RED,
-        PURPLE,
+        INDIGO,
         MAROON,
         TURQUOISE,
-        GRAY,
+        PURPLE,
+        BLACK,
         WHITE,
     };
 
     std::map<int, std::vector<float>> bomb_count_color_map = {
         {BLACK, {0.0f, 0.0f, 0.0f}},     {BLUE, {0.0f, 0.0f, 1.0f}},
         {GREEN, {0.0f, 1.0f, 0.0f}},     {RED, {1.0f, 0.0f, 0.0f}},
-        {PURPLE, {1.0f, 0.0f, 1.0f}},    {MAROON, {0.5f, 0.0f, 0.0f}},
+        {INDIGO, {0.29f, 0.0f, 0.51f}},  {MAROON, {0.5f, 0.0f, 0.0f}},
         {TURQUOISE, {0.0f, 1.0f, 1.0f}}, {GRAY, {0.5f, 0.5f, 0.5f}},
-        {WHITE, {1.0f, 1.0f, 1.0f}},
+        {PURPLE, {1.0f, 0.0f, 1.0f}},    {WHITE, {1.0f, 1.0f, 1.0f}},
     };
 
     int init();
