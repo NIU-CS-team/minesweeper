@@ -35,7 +35,7 @@ int join_game(uint32_t host_address, uint16_t host_port) {
     std::memcpy(&board, board_buffer, sizeof(Board));
 
     game_data data;
-    std::thread(game_interaction, socket_fd, &data, &board).detach();
+    game_interaction(socket_fd, &data, &board);
 
     if (close(socket_fd) < 0) {
         return SOCKET_CLOSE_ERROR;

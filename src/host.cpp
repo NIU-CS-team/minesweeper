@@ -57,7 +57,7 @@ int host_game(u_int16_t port, int max_member) {
 
     // 遊戲互動環節
     game_data data;
-    std::thread(game_interaction, socket_fd, &data, &game).detach();
+    game_interaction(socket_fd, &data, &game);
 
     if (close(socket_fd) < 0) {
         return SOCKET_CLOSE_ERROR;
