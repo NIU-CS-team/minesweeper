@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 
 #include <iostream>
+#include <utility>
 
 #include "block.h"
 #include "board.h"
@@ -184,6 +185,7 @@ int GL::main_menu() {
 
     // if user choose host, wait for another player to join
     // if user choose join, show ip address input box
+    std::unreachable();
 }
 
 int GL::play_single(Board board) {
