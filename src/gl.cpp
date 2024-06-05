@@ -185,7 +185,8 @@ int GL::main_menu() {
 
     // if user choose host, wait for another player to join
     // if user choose join, show ip address input box
-    std::unreachable();
+    // std::unreachable();
+    return 0;
 }
 
 int GL::play_single(Board board) {
