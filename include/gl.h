@@ -45,8 +45,6 @@ public:
 
     int init();
     int draw_board(Board board);
-    int setup_block(Board &board, block &b);
-    int draw_block(block &b);
     block get_block(Board board, double x, double y);
     int reveal(Board board, block target_block);
     int flagged(block target_block);

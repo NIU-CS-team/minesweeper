@@ -38,63 +38,51 @@ int GL::init() {
     return 0;
 }
 
-int GL::setup_block(Board &board, block &b) {
-    b.gl_x = ((b.index % board.col) + 0.1f) * 2.0f / board.col - 1.0f;
-    b.gl_y = ((static_cast<float>(b.index) / board.row) + 0.1f) * 2.0f / board.row - 1.0f;
-
-    glVertex2f(b.gl_x - b.size, b.gl_y - b.size);
-    glVertex2f(b.gl_x + b.size, b.gl_y - b.size);
-    glVertex2f(b.gl_x + b.size, b.gl_y + b.size);
-    glVertex2f(b.gl_x - b.size, b.gl_y + b.size);
-
-    return 0;
-}
-
 int GL::draw_board(Board board) {
-    for (int i = 0; i < board.row * board.col; i++) {
-        glBegin(GL_QUADS);
-        this->setup_block(board, board.blocks[i]);
-        this->draw_block(board.blocks[i]);
-        glEnd();
+    for (auto block : board.blocks) {
+        block.gl_x = (block.index % board.col) * block.size * 2.0 / board.col -
+                     1.0 + block.size / board.col;
+        block.gl_y = (block.index / board.col) * block.size * 2.0 / board.row -
+                     1.0 + block.size / board.row;
     }
+    glBegin(GL_QUADS);
+    for (auto block : board.blocks) {
+        glVertex2f(block.gl_x, block.gl_y);
+        glVertex2f(block.gl_x + block.size, block.gl_y);
+        glVertex2f(block.gl_x + block.size, block.gl_y + block.size);
+        glVertex2f(block.gl_x, block.gl_y + block.size);
+
+        std::vector<float> rgb = bomb_count_color_map[block.value];
+        glColor3f(rgb[0], rgb[1], rgb[2]);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    }
+
+    glEnd();
 
     glfwSwapBuffers(window);
     glfwPollEvents();
     return 0;
 }
 
-int GL::draw_block(block &b) {
-    if (bomb_count_color_map.find(b.value) == bomb_count_color_map.end()) {
-        std::cerr << "錯誤: b.value: " << b.value
-                  << " 不在 bomb_count_color_map 的範圍內" << std::endl;
-        return -1;
-    }
-
-    std::vector<float> rgb = bomb_count_color_map[b.value];
-
-    glColor3f(rgb[0], rgb[1], rgb[2]);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    return 0;
-}
-
 block GL::get_block(Board board, double x, double y) {
     int window_width, window_height;
     glfwGetWindowSize(window, &window_width, &window_height);
-    block target_block;
     std::cout << "x: " << x << ", y: " << y << std::endl;
-    double gl_x = (x / window_width) * 2.0 - 1.0;
-    double gl_y = ((window_height - y) / window_height) * 2.0 - 1.0;
-    std::cout << "gl_x: " << gl_x << ", gl_y: " << gl_y << std::endl;
+    block temp;
+    temp.gl_x = (x / window_width) * 2.0 - 1.0;
+    temp.gl_y = ((window_height - y) / window_height) * 2.0 - 1.0;
+    std::cout << "gl_x: " << temp.gl_x << ", gl_y: " << temp.gl_y << std::endl;
 
-    target_block.index =
-        static_cast<int>((gl_y + 1.0) / 2.0 * board.row) * board.col +
-        static_cast<int>((gl_x + 1.0) / 2.0 * board.col);
+    temp.index =
+        static_cast<int>((temp.gl_y + 1.0) / 2.0 * board.row) * board.col +
+        static_cast<int>((temp.gl_x + 1.0) / 2.0 * board.col);
 
-    std::cout << "target_block.index: " << target_block.index << std::endl;
-    if (target_block.index < 0 || target_block.index >= board.row * board.col) {
-        target_block.index = -1;
+    std::cout << "target_block.index: " << temp.index << std::endl;
+    if (temp.index < 0 || temp.index >= board.row * board.col) {
+        temp.index = -1;
     }
-    return board.blocks[target_block.index];
+
+    return temp;
 }
 
 int GL::reveal(Board board, block target_block) {
@@ -207,8 +195,12 @@ int GL::play_single(Board board) {
             glfwGetCursorPos(window, &xpos, &ypos);  // 修改這裡
         }
 
-        if (get_block(board, xpos, ypos).index == -1) {
+        int target_block_index = get_block(board, xpos, ypos).index;
+
+        if (target_block_index == -1) {
             continue;
+        } else {
+            reveal(board, board.blocks[target_block_index]);
         }
         reveal(board, get_block(board, xpos, ypos));
         glfwSwapBuffers(window);
