@@ -39,18 +39,19 @@ int GL::init() {
 }
 
 int GL::draw_board(Board board) {
-    for (auto block : board.blocks) {
-        block.gl_x = (block.index % board.col) * block.size * 2.0 / board.col -
-                     1.0 + block.size / board.col;
-        block.gl_y = (block.index / board.col) * block.size * 2.0 / board.row -
-                     1.0 + block.size / board.row;
+    float blockSizeInGL = 2.0 / std::max(board.col, board.row);
+
+    for (auto& block : board.blocks) {
+        block.gl_x = ((block.index % board.col) / (float)board.col) * 2.0 - 1.0;
+        block.gl_y = ((block.index / board.col) / (float)board.row) * 2.0 - 1.0;
     }
+
     glBegin(GL_QUADS);
     for (auto block : board.blocks) {
         glVertex2f(block.gl_x, block.gl_y);
-        glVertex2f(block.gl_x + block.size, block.gl_y);
-        glVertex2f(block.gl_x + block.size, block.gl_y + block.size);
-        glVertex2f(block.gl_x, block.gl_y + block.size);
+        glVertex2f(block.gl_x + blockSizeInGL, block.gl_y);
+        glVertex2f(block.gl_x + blockSizeInGL, block.gl_y + blockSizeInGL);
+        glVertex2f(block.gl_x, block.gl_y + blockSizeInGL);
 
         std::vector<float> rgb = bomb_count_color_map[block.value];
         glColor3f(rgb[0], rgb[1], rgb[2]);
