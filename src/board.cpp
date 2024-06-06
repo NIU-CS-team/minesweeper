@@ -36,7 +36,7 @@ Board::Board(int row, int col, int n_mines)
         }
     }
 
-    for (auto i : blocks) {
+    for (auto& i : blocks) {
         i.index = &i - &blocks[0];
     }
 }
