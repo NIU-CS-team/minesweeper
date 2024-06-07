@@ -132,11 +132,18 @@ int GL::reveal(Board board, block target_block) {
 }
 
 int GL::show_all_mine(Board board) {
+    using namespace std::chrono;
+    board.end_time = system_clock::now();
+    
     for (auto i : board.blocks) {
         if (i.value >= 9) {
             i.state = REVEALED;
         }
     }
+    
+    duration<double> elapsed = 
+        duration_cast<microseconds>(board.end_time - board.start_time);
+    // std::cout << "End time: (" << elapsed.count() << "s)\n";
 
     this->draw_board(board);
     return 0;

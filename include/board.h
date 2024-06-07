@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include <vector>
+#include <chrono>
 
 #include "block.h"
 
@@ -13,7 +14,6 @@ public:
     ~Board();
 
     int show_all_mine();
-    int timer();
     int get_input();
     int start_game();
     int print_board();
@@ -32,6 +32,8 @@ public:
     int n_revealed = 0;
 
     std::vector<block> blocks;
+    std::chrono::time_point<std::chrono::system_clock> start_time;
+    std::chrono::time_point<std::chrono::system_clock> end_time;
 };
 
 #endif

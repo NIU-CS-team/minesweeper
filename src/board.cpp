@@ -1,6 +1,5 @@
 #include "board.h"
 
-#include <chrono>
 #include <iostream>
 #include <random>
 
@@ -10,6 +9,8 @@ Board::Board(int row, int col, int n_mines)
     this->col = col;
     this->row = row;
     // Generate Mines Locations
+
+    start_time = std::chrono::system_clock::now();
 
     std::random_device rd;   // 取得隨機數種子
     std::mt19937 gen(rd());  // 使用 Mersenne Twister 引擎
@@ -44,6 +45,7 @@ Board::Board(int row, int col, int n_mines)
 Board::~Board() {}
 
 int Board::show_all_mine() {
+    end_time = std::chrono::system_clock::now();
     for (std::size_t i = 0; i < blocks.size(); ++i) {
         if (i % row == 0) {
             std::cout << std::endl;
@@ -55,23 +57,12 @@ int Board::show_all_mine() {
             std::cout << blocks[i].value << " ";
         }
     }
-
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+    std::cout << "End time: (" << duration.count() << "s)\n";
     status = LOST;
     return 0;
 }
 
-int Board::timer() {
-    auto startpoint = std::chrono::steady_clock::now();
-    if (status == LOST || status == WON) {
-        auto endpoint = std::chrono::steady_clock::now();
-        std::chrono::steady_clock::duration elapsed = endpoint - startpoint;
-        double elapsed_seconds =
-            std::chrono::duration_cast<std::chrono::milliseconds>(elapsed)
-                .count();
-        std::cout << "End time: (" << elapsed_seconds << "s)\n";
-    }
-    return 0;
-}
 
 int Board::get_input() {
     int x, y;
@@ -94,11 +85,13 @@ int Board::start_game() {
     while (status == PLAYING) {
         system("clear");
         print_board();
-        this->timer();
         block target_block = blocks[get_input()];
         reveal(target_block);
 
         if (this->n_revealed == row * col - n_mines) {
+            end_time = std::chrono::system_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+            std::cout << "End time: (" << duration.count() << "s)\n";
             status = WON;
             break;
         }
