@@ -46,6 +46,8 @@ enum connect_status {
     CONNECT_FAILED
 };
 
+int recv_data(int &socket_fd, char *buffer, game_data *data, Board *board);
+
 int game_interaction(int &socket_fd, game_data *data, Board *board);
 
 int host_game(u_int16_t port, int max_member);  // 開放起遊戲房間

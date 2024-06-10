@@ -10,7 +10,7 @@
 
 std::mutex g_mutex;
 
-int recv_data(int &socket_fd, char *buffer, game_data *data) {
+int recv_data(int &socket_fd, char *buffer, game_data *data, Board *board) {
     std::lock_guard<std::mutex> lock(g_mutex);
     if (recv(socket_fd, buffer, sizeof(game_data), 0) <= 0) {
             close(socket_fd);
@@ -18,24 +18,6 @@ int recv_data(int &socket_fd, char *buffer, game_data *data) {
     }
 
         std::memcpy(data, buffer, sizeof(game_data));
-        memset(buffer, 0, sizeof(game_data));
-        return SUCESS;
-}
-
-int game_interaction(int &socket_fd, game_data *data, Board *board) {
-    // 接收: recv(int sockfd, void *buf, size_t len, int flags)
-    // -> recv(socket_fd, RECV_MESSENGE, sizeof(RECV_MESSENGE), 0);
-    // 傳送: send(int sockfd, const void *buf, size_t len, int flags)
-    // -> send(socket_fd, MESSENGE, sizeof(MESSENGE), 0);
-    // flags填入0即可
-    while (data->game_status) {
-        char buffer[sizeof(game_data)];
-
-        std::thread(recv_data, std::ref(socket_fd), buffer, data).detach();
-        // 預留Local interaction
-        
-
-        // 遊戲互動環節
         if (data->action == REVEAL) {
             board->reveal(board->blocks[data->block_index]);
         } else if (data->action == FLAG) {
@@ -43,6 +25,17 @@ int game_interaction(int &socket_fd, game_data *data, Board *board) {
         } else if (data->action == REMOVE_FLAG) {
             board->remove_flagged(board->blocks[data->block_index]);
         }
+        memset(buffer, 0, sizeof(game_data));
+        return SUCESS;
+}
+
+int game_interaction(int &socket_fd, game_data *data, Board *board) {
+    while (data->game_status) {
+        char buffer[sizeof(game_data)];
+
+        std::thread(recv_data, std::ref(socket_fd), buffer, data, board).detach();
+        // 預留Local interaction
+        send(socket_fd, buffer, sizeof(game_data), 0);
     }
 
     return SUCESS;
