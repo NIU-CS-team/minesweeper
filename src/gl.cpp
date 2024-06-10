@@ -205,14 +205,11 @@ int GL::play_single(Board board) {
 
         int target_block_index = get_block(board, xpos, ypos).index;
 
-        if (target_block_index == -1) {
-            continue;
-        } else {
+        if (target_block_index != -1) {
             reveal(board, board.blocks[target_block_index]);
+            glfwSwapBuffers(window);
+            glfwPollEvents();
         }
-        reveal(board, get_block(board, xpos, ypos));
-        glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
     return 0;
