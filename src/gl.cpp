@@ -72,7 +72,7 @@ int GL::draw_board(Board& board) {
 }
 
 int GL::draw_block(Board board, block target_block) {
-    float blockSizeInGL = 2.0 / std::max(board.col, board.row);
+    float blockSizeInGL = 2.0 / std::max(board.col, board.row)-0.01f;
 
     glBegin(GL_QUADS);
     glVertex2f(target_block.gl_x, target_block.gl_y);
