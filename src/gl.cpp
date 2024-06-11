@@ -53,7 +53,14 @@ int GL::draw_board(Board& board) {
         glVertex2f(block.gl_x + blockSizeInGL, block.gl_y + blockSizeInGL);
         glVertex2f(block.gl_x, block.gl_y + blockSizeInGL);
 
-        glColor3f(0.3f, 0.3f, 0.3f);
+        if(block.state == REVEALED) {
+            std::vector<float> rgb = bomb_count_color_map[block.value];
+            glColor3f(rgb[0], rgb[1], rgb[2]);
+        } else if(block.state == FLAGGED) {
+            glColor3f(1.0f, 1.0f, 0.0f);
+        }else {
+            glColor3f(0.3f, 0.3f, 0.3f);
+        }
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 
@@ -73,8 +80,15 @@ int GL::draw_block(Board board, block target_block) {
     glVertex2f(target_block.gl_x + blockSizeInGL, target_block.gl_y + blockSizeInGL);
     glVertex2f(target_block.gl_x, target_block.gl_y + blockSizeInGL);
 
-    std::vector<float> rgb = bomb_count_color_map[target_block.value];
-    glColor3f(rgb[0], rgb[1], rgb[2]);
+    if(target_block.state == REVEALED) {
+        std::vector<float> rgb = bomb_count_color_map[target_block.value];
+        glColor3f(rgb[0], rgb[1], rgb[2]);
+    } else if(target_block.state == FLAGGED) {
+        glColor3f(1.0f, 1.0f, 0.0f);
+    }else {
+        glColor3f(0.3f, 0.3f, 0.3f);
+    }
+
     glEnd();
 
     glfwSwapBuffers(window);
