@@ -47,9 +47,9 @@ public:
     int draw_board(Board board);
     int draw_board(Board board);
     block get_block(Board board, double x, double y);
-    int reveal(Board board, block target_block);
-    int flagged(block target_block);
-    int remove_flagged(block target_block);
+    int reveal(Board& board, block& target_block);
+    int flagged(Board board, block& target_block);
+    int remove_flagged(Board board,block& target_block);
     int show_all_mine(Board board);
     int main_menu();
     int play_single(Board board);
