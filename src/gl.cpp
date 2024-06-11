@@ -125,6 +125,8 @@ int GL::reveal(Board& board, block& target_block) {
     }
 
     target_block.state = REVEALED;
+    board.n_revealed++;
+    draw_block(board, target_block);
 
     // if the block is a mine, stop revealing
     if (target_block.value >= MINE) {
