@@ -101,13 +101,14 @@ block GL::get_block(Board board, double x, double y) {
     glfwGetWindowSize(window, &window_width, &window_height);
     std::cout << "x: " << x << ", y: " << y << std::endl;
     block temp;
+    float width = board.col > board.row ? board.col : board.row;
     temp.gl_x = (x / window_width) * 2.0 - 1.0;
     temp.gl_y = ((window_height - y) / window_height) * 2.0 - 1.0;
     std::cout << "gl_x: " << temp.gl_x << ", gl_y: " << temp.gl_y << std::endl;
 
     temp.index =
-        static_cast<int>((temp.gl_y + 1.0) / 2.0 * board.row) * board.col +
-        static_cast<int>((temp.gl_x + 1.0) / 2.0 * board.col);
+        static_cast<int>((temp.gl_y + 1.0) / 2.0 * width) * board.col +
+        static_cast<int>((temp.gl_x + 1.0) / 2.0 * width);
 
     std::cout << "target_block.index: " << temp.index << std::endl;
     if (temp.index < 0 || temp.index >= board.row * board.col) {
