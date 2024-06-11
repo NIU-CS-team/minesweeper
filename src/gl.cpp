@@ -135,30 +135,15 @@ int GL::reveal(Board& board, block& target_block) {
     }
 
     if (target_block.value == EMPTY) {
-        if (!(target_block.index < board.row * board.col &&
-              target_block.index >= 0)) {
-            return 0;
-        }
-
         for (int i = -1; i <= 1; i++) {
-            if (target_block.index - board.row + i >= 0 &&
-                target_block.index - board.row + i < board.row * board.col) {
-                reveal(board, board.blocks[target_block.index - board.row + i]);
-            }
-        }
+            if (target_block.index < board.row && i == -1) continue;
+            if (target_block.index >= board.row * (board.col - 1) && i == 1) continue;
 
-        if (target_block.index - 1 >= 0) {
-            reveal(board, board.blocks[target_block.index - 1]);
-        }
-
-        if (target_block.index + 1 < board.row * board.col) {
-            reveal(board, board.blocks[target_block.index + 1]);
-        }
-
-        for (int i = -1; i <= 1; i++) {
-            if (target_block.index + board.row + i >= 0 &&
-                target_block.index + board.row + i < board.row * board.col) {
-                reveal(board, board.blocks[target_block.index + board.row + i]);
+            for (int j = -1; j <= 1; j++) {
+                if (target_block.index % board.row == 0 && j == -1) continue;
+                if (target_block.index % board.row == board.row - 1 && j == 1) continue;
+                if (i==0 && j==0) continue;
+                reveal(board, board.blocks[target_block.index + i * board.row + j]);
             }
         }
     }
