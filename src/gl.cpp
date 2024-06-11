@@ -242,6 +242,17 @@ int GL::play_single(Board board) {
             glfwPollEvents();
         }
     }
+    return 0;
+}
 
+int GL::flagged(Board board,block& target_block) {
+    target_block.index = FLAGGED;
+    this->draw_block(board, target_block);
+    return 0;
+}
+
+int GL::remove_flagged(Board board,block& target_block) {
+    target_block.index = HIDDEN;
+    this->draw_block(board, target_block);
     return 0;
 }
