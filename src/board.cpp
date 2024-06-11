@@ -58,12 +58,12 @@ int Board::show_all_mine() {
             std::cout << blocks[i].value << " ";
         }
     }
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+        end_time - start_time);
     std::cout << "End time: (" << duration.count() << "s)\n";
     status = LOST;
     return 0;
 }
-
 
 int Board::get_input() {
     int x, y;
@@ -91,7 +91,9 @@ int Board::start_game() {
 
         if (this->n_revealed == row * col - n_mines) {
             end_time = std::chrono::system_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+            auto duration =
+                std::chrono::duration_cast<std::chrono::microseconds>(
+                    end_time - start_time);
             std::cout << "End time: (" << duration.count() << "s)\n";
             status = WON;
             break;

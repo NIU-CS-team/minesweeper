@@ -55,12 +55,12 @@ int GL::draw_board(Board& board) {
         glVertex2f(block.gl_x + blockSizeInGL, block.gl_y + blockSizeInGL);
         glVertex2f(block.gl_x, block.gl_y + blockSizeInGL);
 
-        if(block.state == REVEALED) {
+        if (block.state == REVEALED) {
             std::vector<float> rgb = bomb_count_color_map[block.value];
             glColor3f(rgb[0], rgb[1], rgb[2]);
-        } else if(block.state == FLAGGED) {
+        } else if (block.state == FLAGGED) {
             glColor3f(1.0f, 1.0f, 0.0f);
-        }else {
+        } else {
             glColor3f(0.3f, 0.3f, 0.3f);
         }
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -74,20 +74,21 @@ int GL::draw_board(Board& board) {
 }
 
 int GL::draw_block(Board board, block target_block) {
-    float blockSizeInGL = 2.0 / std::max(board.col, board.row)-0.01f;
+    float blockSizeInGL = 2.0 / std::max(board.col, board.row) - 0.01f;
 
     glBegin(GL_QUADS);
     glVertex2f(target_block.gl_x, target_block.gl_y);
     glVertex2f(target_block.gl_x + blockSizeInGL, target_block.gl_y);
-    glVertex2f(target_block.gl_x + blockSizeInGL, target_block.gl_y + blockSizeInGL);
+    glVertex2f(target_block.gl_x + blockSizeInGL,
+               target_block.gl_y + blockSizeInGL);
     glVertex2f(target_block.gl_x, target_block.gl_y + blockSizeInGL);
 
-    if(target_block.state == REVEALED) {
+    if (target_block.state == REVEALED) {
         std::vector<float> rgb = bomb_count_color_map[target_block.value];
         glColor3f(rgb[0], rgb[1], rgb[2]);
-    } else if(target_block.state == FLAGGED) {
+    } else if (target_block.state == FLAGGED) {
         glColor3f(1.0f, 1.0f, 0.0f);
-    }else {
+    } else {
         glColor3f(0.3f, 0.3f, 0.3f);
     }
 
@@ -108,9 +109,8 @@ block GL::get_block(Board board, double x, double y) {
     temp.gl_y = ((window_height - y) / window_height) * 2.0 - 1.0;
     std::cout << "gl_x: " << temp.gl_x << ", gl_y: " << temp.gl_y << std::endl;
 
-    temp.index =
-        static_cast<int>((temp.gl_y + 1.0) / 2.0 * width) * board.col +
-        static_cast<int>((temp.gl_x + 1.0) / 2.0 * width);
+    temp.index = static_cast<int>((temp.gl_y + 1.0) / 2.0 * width) * board.col +
+                 static_cast<int>((temp.gl_x + 1.0) / 2.0 * width);
 
     std::cout << "target_block.index: " << temp.index << std::endl;
     if (temp.index < 0 || temp.index >= board.row * board.col) {
@@ -141,13 +141,16 @@ int GL::reveal(Board& board, block& target_block) {
     if (target_block.value == EMPTY) {
         for (int i = -1; i <= 1; i++) {
             if (target_block.index < board.row && i == -1) continue;
-            if (target_block.index >= board.row * (board.col - 1) && i == 1) continue;
+            if (target_block.index >= board.row * (board.col - 1) && i == 1)
+                continue;
 
             for (int j = -1; j <= 1; j++) {
                 if (target_block.index % board.row == 0 && j == -1) continue;
-                if (target_block.index % board.row == board.row - 1 && j == 1) continue;
-                if (i==0 && j==0) continue;
-                reveal(board, board.blocks[target_block.index + i * board.row + j]);
+                if (target_block.index % board.row == board.row - 1 && j == 1)
+                    continue;
+                if (i == 0 && j == 0) continue;
+                reveal(board,
+                       board.blocks[target_block.index + i * board.row + j]);
             }
         }
     }
@@ -158,14 +161,14 @@ int GL::reveal(Board& board, block& target_block) {
 int GL::show_all_mine(Board board) {
     using namespace std::chrono;
     board.end_time = system_clock::now();
-    
+
     for (auto i : board.blocks) {
         if (i.value >= 9) {
             i.state = REVEALED;
         }
     }
-    
-    duration<double> elapsed = 
+
+    duration<double> elapsed =
         duration_cast<microseconds>(board.end_time - board.start_time);
     // std::cout << "End time: (" << elapsed.count() << "s)\n";
 
@@ -226,9 +229,11 @@ int GL::play_single(Board board) {
             left_button_pressed = true;
         }
 
-        if (left_button_pressed && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+        if (left_button_pressed &&
+            glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) ==
+                GLFW_RELEASE) {
             glfwGetCursorPos(window, &xpos, &ypos);
-            left_button_pressed = false; // 重置按鍵狀態
+            left_button_pressed = false;  // 重置按鍵狀態
             int target_block_index = get_block(board, xpos, ypos).index;
             if (target_block_index != -1) {
                 reveal(board, board.blocks[target_block_index]);
@@ -240,14 +245,16 @@ int GL::play_single(Board board) {
             right_button_pressed = true;
         }
 
-        if (right_button_pressed && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE) {
+        if (right_button_pressed &&
+            glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) ==
+                GLFW_RELEASE) {
             glfwGetCursorPos(window, &xpos, &ypos);
-            right_button_pressed = false; // 重置按鍵狀態
+            right_button_pressed = false;  // 重置按鍵狀態
             int target_block_index = get_block(board, xpos, ypos).index;
             if (target_block_index != -1) {
-                if(board.blocks[target_block_index].state == HIDDEN){
+                if (board.blocks[target_block_index].state == HIDDEN) {
                     board.blocks[target_block_index].state = FLAGGED;
-                }else if(board.blocks[target_block_index].state == FLAGGED){
+                } else if (board.blocks[target_block_index].state == FLAGGED) {
                     board.blocks[target_block_index].state = HIDDEN;
                 }
                 draw_block(board, board.blocks[target_block_index]);
@@ -258,13 +265,14 @@ int GL::play_single(Board board) {
 
     return 0;
 }
-int GL::flagged(Board board,block& target_block) {
+
+int GL::flagged(Board board, block& target_block) {
     target_block.index = FLAGGED;
     this->draw_block(board, target_block);
     return 0;
 }
 
-int GL::remove_flagged(Board board,block& target_block) {
+int GL::remove_flagged(Board board, block& target_block) {
     target_block.index = HIDDEN;
     this->draw_block(board, target_block);
     return 0;
