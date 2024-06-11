@@ -217,20 +217,30 @@ int GL::main_menu() {
 int GL::play_single(Board board) {
     while (!glfwWindowShouldClose(window) && board.status == board.PLAYING) {
         draw_board(board);
-        double xpos, ypos;  // 修改這裡
-        int button, action, mods;
-        mouse_button_callback(window, button, action, mods);
-        // get cursorpos when mouse button is pressed
+        double xpos, ypos;
+        glfwPollEvents();
+
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-            glfwGetCursorPos(window, &xpos, &ypos);  // 修改這裡
+            left_button_pressed = true;
+        }
+
+        if (left_button_pressed && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+            glfwGetCursorPos(window, &xpos, &ypos);
+            left_button_pressed = false; // 重置按鍵狀態
             int target_block_index = get_block(board, xpos, ypos).index;
             if (target_block_index != -1) {
                 reveal(board, board.blocks[target_block_index]);
                 glfwSwapBuffers(window);
-                glfwPollEvents();
             }
-        }if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS){
+        }
+
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+            right_button_pressed = true;
+        }
+
+        if (right_button_pressed && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE) {
             glfwGetCursorPos(window, &xpos, &ypos);
+            right_button_pressed = false; // 重置按鍵狀態
             int target_block_index = get_block(board, xpos, ypos).index;
             if (target_block_index != -1) {
                 if(board.blocks[target_block_index].state == HIDDEN){
@@ -240,14 +250,12 @@ int GL::play_single(Board board) {
                 }
                 draw_block(board, board.blocks[target_block_index]);
                 glfwSwapBuffers(window);
-                glfwPollEvents();
             }
         }
-
     }
+
     return 0;
 }
-
 int GL::flagged(Board board,block& target_block) {
     target_block.index = FLAGGED;
     this->draw_block(board, target_block);

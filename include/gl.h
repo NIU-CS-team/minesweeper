@@ -43,6 +43,9 @@ public:
         {PURPLE, {1.0f, 0.0f, 1.0f}},    {WHITE, {1.0f, 1.0f, 1.0f}},
     };
 
+    bool left_button_pressed = false;
+    bool right_button_pressed = false;
+
     int init();
     int draw_board(Board& board);
     int draw_block(Board board, block target_block);
