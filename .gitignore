@@ -3,8 +3,3 @@
 /.vscode
 /.idea
 /.cache
-
-/include/head.h
-/src/sub.c
-/src/topic.c
-/.vscode/c_cpp_properties.json
