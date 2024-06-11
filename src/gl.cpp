@@ -118,7 +118,7 @@ block GL::get_block(Board board, double x, double y) {
     return temp;
 }
 
-int GL::reveal(Board board, block target_block) {
+int GL::reveal(Board& board, block& target_block) {
     // if the block is already revealed or flagged, do nothing
     if (target_block.state != HIDDEN) {
         return 0;
@@ -128,6 +128,9 @@ int GL::reveal(Board board, block target_block) {
 
     // if the block is a mine, stop revealing
     if (target_block.value >= MINE) {
+        board.status = Board::LOST;
+        show_all_mine(board);
+
         return 0;
     }
 
