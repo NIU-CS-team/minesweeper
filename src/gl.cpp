@@ -234,9 +234,9 @@ int GL::play_single(Board board) {
             int target_block_index = get_block(board, xpos, ypos).index;
             if (target_block_index != -1) {
                 if(board.blocks[target_block_index].state == HIDDEN){
-                    flagged(board, board.blocks[target_block_index]);
+                    board.blocks[target_block_index].state = FLAGGED;
                 }else if(board.blocks[target_block_index].state == FLAGGED){
-                    remove_flagged(board, board.blocks[target_block_index]);
+                    board.blocks[target_block_index].state = HIDDEN;
                 }
                 draw_block(board, board.blocks[target_block_index]);
                 glfwSwapBuffers(window);
