@@ -42,8 +42,10 @@ int GL::draw_board(Board& board) {
     float blockSizeInGL = 2.0 / std::max(board.col, board.row) - 0.01f;
     float width = board.col > board.row ? board.col : board.row;
     for (auto& block : board.blocks) {
-        block.gl_x = ((block.index % board.col) / width) * 2.0 - 1.0;
-        block.gl_y = ((block.index / board.col) / width) * 2.0 - 1.0;
+        int index = block.index - 1;
+        if (index == -1) index = board.col * board.row - 1;
+        block.gl_x = ((index % board.col) / width) * 2.0 - 1.0;
+        block.gl_y = ((index / board.col) / width) * 2.0 - 1.0;
     }
 
     glBegin(GL_QUADS);
