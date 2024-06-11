@@ -221,15 +221,27 @@ int GL::play_single(Board board) {
         // get cursorpos when mouse button is pressed
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
             glfwGetCursorPos(window, &xpos, &ypos);  // 修改這裡
+            int target_block_index = get_block(board, xpos, ypos).index;
+            if (target_block_index != -1) {
+                reveal(board, board.blocks[target_block_index]);
+                glfwSwapBuffers(window);
+                glfwPollEvents();
+            }
+        }if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS){
+            glfwGetCursorPos(window, &xpos, &ypos);
+            int target_block_index = get_block(board, xpos, ypos).index;
+            if (target_block_index != -1) {
+                if(board.blocks[target_block_index].state == HIDDEN){
+                    flagged(board, board.blocks[target_block_index]);
+                }else if(board.blocks[target_block_index].state == FLAGGED){
+                    remove_flagged(board, board.blocks[target_block_index]);
+                }
+                draw_block(board, board.blocks[target_block_index]);
+                glfwSwapBuffers(window);
+                glfwPollEvents();
+            }
         }
 
-        int target_block_index = get_block(board, xpos, ypos).index;
-
-        if (target_block_index != -1) {
-            reveal(board, board.blocks[target_block_index]);
-            glfwSwapBuffers(window);
-            glfwPollEvents();
-        }
     }
     return 0;
 }
