@@ -38,12 +38,12 @@ int GL::init() {
     return 0;
 }
 
-int GL::draw_board(Board board) {
-    float blockSizeInGL = 2.0 / std::max(board.col, board.row);
-
+int GL::draw_board(Board& board) {
+    float blockSizeInGL = 2.0 / std::max(board.col, board.row) - 0.01f;
+    float width = board.col > board.row ? board.col : board.row;
     for (auto& block : board.blocks) {
-        block.gl_x = ((block.index % board.col) / (float)board.col) * 2.0 - 1.0;
-        block.gl_y = ((block.index / board.col) / (float)board.row) * 2.0 - 1.0;
+        block.gl_x = ((block.index % board.col) / width) * 2.0 - 1.0;
+        block.gl_y = ((block.index / board.col) / width) * 2.0 - 1.0;
     }
 
     glBegin(GL_QUADS);
@@ -53,11 +53,28 @@ int GL::draw_board(Board board) {
         glVertex2f(block.gl_x + blockSizeInGL, block.gl_y + blockSizeInGL);
         glVertex2f(block.gl_x, block.gl_y + blockSizeInGL);
 
-        std::vector<float> rgb = bomb_count_color_map[block.value];
-        glColor3f(rgb[0], rgb[1], rgb[2]);
+        glColor3f(0.3f, 0.3f, 0.3f);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 
+    glEnd();
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+    return 0;
+}
+
+int GL::draw_block(Board board, block target_block) {
+    float blockSizeInGL = 2.0 / std::max(board.col, board.row);
+
+    glBegin(GL_QUADS);
+    glVertex2f(target_block.gl_x, target_block.gl_y);
+    glVertex2f(target_block.gl_x + blockSizeInGL, target_block.gl_y);
+    glVertex2f(target_block.gl_x + blockSizeInGL, target_block.gl_y + blockSizeInGL);
+    glVertex2f(target_block.gl_x, target_block.gl_y + blockSizeInGL);
+
+    std::vector<float> rgb = bomb_count_color_map[target_block.value];
+    glColor3f(rgb[0], rgb[1], rgb[2]);
     glEnd();
 
     glfwSwapBuffers(window);
