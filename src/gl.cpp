@@ -174,7 +174,7 @@ int GL::show_all_mine(Board board) {
 }
 
 int GL::main_menu() {
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     glBegin(GL_QUADS);
@@ -183,14 +183,12 @@ int GL::main_menu() {
     glVertex2f(-0.5f, 0.2f);
     glVertex2f(-0.5f, 0.5f);
     glColor3f(1.0f, 0.0f, 0.0f);
-    glEnd();
     glBegin(GL_QUADS);
     glVertex2f(0.5f, 0.1f);
     glVertex2f(0.5f, -0.2f);
     glVertex2f(-0.5f, -0.2f);
     glVertex2f(-0.5f, 0.1f);
     glColor3f(0.0f, 1.0f, 0.0f);
-    glEnd();
     glBegin(GL_QUADS);
     glVertex2f(0.5f, -0.3f);
     glVertex2f(0.5f, -0.6f);
@@ -203,18 +201,24 @@ int GL::main_menu() {
     glfwPollEvents();
     // wait for user choose host or join
     while (!glfwWindowShouldClose(window)) {
-        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS) continue;
         double xpos, ypos;
-        glfwGetCursorPos(window, &xpos, &ypos);
-        if (xpos > -0.5 && xpos < 0.5 && ypos > 0.2 && ypos < 0.5) {
-            return 1;
-        } else if (xpos > -0.5 && xpos < 0.5 && ypos > -0.2 && ypos < 0.1) {
-            return 2;
-        } else if (xpos > -0.5 && xpos < 0.5 && ypos > -0.6 && ypos < -0.3) {
-            return 3;
+        glfwPollEvents();
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS){
+            left_button_pressed = true;
+        }
+        if (left_button_pressed &&
+            glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+            glfwGetCursorPos(window, &xpos, &ypos);
+            left_button_pressed = false;
+            if (xpos > 150 && xpos < 450 && ypos > 480 && ypos < 600) {
+                return 1;
+            } else if (xpos > 150 && xpos < 450 && ypos > 320 && ypos < 440) {
+                return 2;
+            } else if (xpos > 150 && xpos < 450 && ypos > 160 && ypos < 280) {
+                return 3;
+            }
         }
     }
-
     // if user choose host, wait for another player to join
     // if user choose join, show ip address input box
     // std::unreachable();
