@@ -15,20 +15,21 @@ int main(int argc, char* argv[]) {
 
     GL gl;
     gl.init();
-    /*switch (gl.main_menu()) {
+    int menuSelection = gl.main_menu();
+    switch (menuSelection) {
         case 1:
+            std::cout << "Host game" << std::endl;
             host_game(config[0], config[1]);
             break;
         case 2:
             join_game(config[2], config[3]);
             break;
         case 3:
-            gl.init_board(game);
             gl.play_single(game);
         default:
             assert(false);
-    }*/
+    }
 
-    gl.play_single(game);
+    //gl.play_single(game);
     return 0;
 }
