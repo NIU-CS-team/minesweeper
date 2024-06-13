@@ -175,6 +175,7 @@ int GL::show_all_mine(Board board) {
 int GL::main_menu() {
     glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
     glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(1.0f, 1.0f, 1.0f);
 
     glBegin(GL_QUADS);
     glVertex2f(0.5f, 0.5f);
@@ -209,11 +210,11 @@ int GL::main_menu() {
             glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
             glfwGetCursorPos(window, &xpos, &ypos);
             left_button_pressed = false;
-            if (xpos > 150 && xpos < 450 && ypos > 480 && ypos < 600) {
+            if (xpos >= 150 && xpos <= 450 && ypos >= 480 && ypos <= 600) {
                 return 1;
-            } else if (xpos > 150 && xpos < 450 && ypos > 320 && ypos < 440) {
+            } else if (xpos >= 150 && xpos <=450 && ypos >= 320 && ypos <= 440) {
                 return 2;
-            } else if (xpos > 150 && xpos < 450 && ypos > 160 && ypos < 280) {
+            } else if (xpos >= 150 && xpos <= 450 && ypos >= 160 && ypos <= 280) {
                 return 3;
             }
         }
@@ -266,6 +267,10 @@ int GL::play_single(Board board) {
                 glfwSwapBuffers(window);
             }
         }
+    }
+
+    if (board.status != board.PLAYING) {
+        main_menu();
     }
 
     return 0;
