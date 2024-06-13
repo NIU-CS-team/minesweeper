@@ -8,12 +8,18 @@ Board::Board(int row, int col, int n_mines)
     blocks.resize(row * col);
     this->col = col;
     this->row = row;
-    // Generate Mines Locations
-
     start_time = std::chrono::system_clock::now();
 
-    std::random_device rd;   // 取得隨機數種子
-    std::mt19937 gen(rd());  // 使用 Mersenne Twister 引擎
+    for (auto& i : blocks) {
+        i.index = &i - &blocks[0];
+    }
+}
+
+Board::~Board() {}
+
+int Board::generate_mines() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dis(0, this->row * this->col - 1);
     for (int i = 0; i < this->n_mines; i++) {
         int rand = dis(gen);
@@ -36,13 +42,8 @@ Board::Board(int row, int col, int n_mines)
             }
         }
     }
-
-    for (auto& i : blocks) {
-        i.index = &i - &blocks[0];
-    }
+    return 0;
 }
-
-Board::~Board() {}
 
 int Board::show_all_mine() {
     end_time = std::chrono::system_clock::now();

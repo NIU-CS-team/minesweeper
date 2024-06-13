@@ -32,14 +32,13 @@ int main(int argc, char* argv[]) {
                 glVertex2f(-1.0f, 1.0f);
                 glColor3f(0.0f, 0.0f, 0.0f);
                 glEnd();
+                game.generate_mines();
                 gl.play_single(game);
                 break;
             default:
                 assert(false);
         }
     }
-    
-
 
     while (!glfwWindowShouldClose(gl.window)) {
         glfwPollEvents();

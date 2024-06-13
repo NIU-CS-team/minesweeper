@@ -13,6 +13,7 @@ public:
     Board(int row, int col, int mines);
     ~Board();
 
+    int generate_mines();
     int show_all_mine();
     int get_input();
     int start_game();
