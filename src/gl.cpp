@@ -7,7 +7,6 @@
 
 #include "block.h"
 #include "board.h"
-#include "io.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
