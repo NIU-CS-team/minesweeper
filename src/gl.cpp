@@ -183,13 +183,11 @@ int GL::main_menu() {
     glVertex2f(-0.5f, 0.2f);
     glVertex2f(-0.5f, 0.5f);
     glColor3f(1.0f, 0.0f, 0.0f);
-    glBegin(GL_QUADS);
     glVertex2f(0.5f, 0.1f);
     glVertex2f(0.5f, -0.2f);
     glVertex2f(-0.5f, -0.2f);
     glVertex2f(-0.5f, 0.1f);
     glColor3f(0.0f, 1.0f, 0.0f);
-    glBegin(GL_QUADS);
     glVertex2f(0.5f, -0.3f);
     glVertex2f(0.5f, -0.6f);
     glVertex2f(-0.5f, -0.6f);
