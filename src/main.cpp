@@ -26,11 +26,8 @@ int main(int argc, char* argv[]) {
                 break;
             case 3:
                 glBegin(GL_QUADS);
-                glVertex2f(1.0f, 1.0f);
-                glVertex2f(1.0f, -1.0f);
-                glVertex2f(-1.0f, -1.0f);
-                glVertex2f(-1.0f, 1.0f);
-                glColor3f(0.0f, 0.0f, 0.0f);
+                glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                 glEnd();
                 game.generate_mines();
                 gl.play_single(game);
