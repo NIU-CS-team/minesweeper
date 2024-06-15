@@ -46,6 +46,7 @@ int GL::clear() {
 }
 
 int GL::draw_board(Board& board) {
+    clear();
     float blockSizeInGL = 2.0 / std::max(board.col, board.row) - 0.01f;
     float width = board.col > board.row ? board.col : board.row;
     for (auto& block : board.blocks) {
