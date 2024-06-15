@@ -17,6 +17,8 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 #include <map>
+#include <vector>
+#include <sys/types.h>
 
 #include "board.h"
 
@@ -56,6 +58,8 @@ public:
     int show_all_mine(Board board);
     int main_menu();
     int play_single(Board board);
+    int host_game(u_int16_t port, int max_member);
+    int join_game(uint32_t host_address, uint16_t host_port);
 
     GLFWwindow* window;
 };

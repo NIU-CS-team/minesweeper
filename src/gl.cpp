@@ -4,9 +4,11 @@
 
 #include <iostream>
 #include <utility>
+#include <cstring>
 
 #include "block.h"
 #include "board.h"
+#include "network.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -272,6 +274,112 @@ int GL::play_single(Board board) {
     }
 
     return 0;
+}
+
+int GL::host_game(u_int16_t port, int max_member) {
+    max_member -= 1;  // exclude host
+
+    // AF_INET: use IPv4
+    // SOCK_DGRAM: UDP, SOCK_STREAM: TCP
+    int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    sockaddr_in server_address;
+
+    if (socket_fd < 0) {
+        return SOCKET_CREATE_FAILED;
+    }
+
+    // server connection information
+    server_address.sin_family = AF_INET;
+    server_address.sin_addr.s_addr = INADDR_ANY;  // vaild address accept
+    server_address.sin_port = htons(port);        // use specify (include) port
+
+    // bind port on host
+    if (bind(socket_fd, (const struct sockaddr *)&server_address,
+             sizeof(server_address)) < 0) {
+        close(socket_fd);
+        return BIND_FAILED;
+    }
+
+    // listen init
+    if (listen(socket_fd, max_member) == SOCKET_CREATE_FAILED) {
+        close(socket_fd);
+        return LISTEN_ERROR;
+    }
+
+    if (close(socket_fd) < 0) {
+        return SOCKET_CLOSE_ERROR;
+    }
+
+    // client connection information
+    int reply_sockfd;
+    sockaddr_in client_address;
+    int client_index = 0;
+    unsigned int client_len = sizeof(client_address);
+
+    GL gl;
+    bool game_started = false;
+
+    while (!game_started) {
+        reply_sockfd =
+            accept(socket_fd, (struct sockaddr *)&client_address, &client_len);
+    }
+
+    // init board
+    Board game(8, 8, 10);
+    // send board information to client
+    send(socket_fd, &game, sizeof(game), 0);
+    // need consider client accept later disconnect
+
+    // 遊戲互動環節
+    game_data data;
+    game_interaction(socket_fd, &data, &game);
+
+    if (close(socket_fd) < 0) {
+        return SOCKET_CLOSE_ERROR;
+    }
+
+    return SUCESS;
+}
+
+int GL::join_game(uint32_t host_address, uint16_t host_port) {
+    int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (socket_fd < 0) {
+        return SOCKET_CREATE_FAILED;
+    }
+
+    // server information
+    sockaddr_in server_address;
+    server_address.sin_family = AF_INET;
+    server_address.sin_addr.s_addr = host_address;
+    server_address.sin_port = htons(host_port);
+    int server_len = sizeof(server_address);
+
+    // try connect to server
+    if (connect(socket_fd, (struct sockaddr *)&server_address, server_len) ==
+        SOCKET_CREATE_FAILED) {
+        close(socket_fd);
+        return CONNECT_FAILED;
+    }
+
+    Board board(8, 8, 10);
+    char board_buffer[sizeof(Board)];
+    ssize_t bytes_received =
+        recv(socket_fd, board_buffer, sizeof(board_buffer), 0);
+    if (bytes_received != sizeof(board_buffer)) {
+        close(socket_fd);
+        return MESSENGE_RECV_ERROR;
+    }
+
+    std::memcpy(&board, board_buffer, sizeof(Board));
+
+    game_data data;
+    game_interaction(socket_fd, &data, &board);
+
+    if (close(socket_fd) < 0) {
+        return SOCKET_CLOSE_ERROR;
+    }
+
+    return SUCESS;
 }
 
 int GL::flagged(Board board, block& target_block) {

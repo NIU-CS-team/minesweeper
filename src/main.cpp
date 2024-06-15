@@ -19,10 +19,10 @@ int main(int argc, char* argv[]) {
         int menuSelection = gl.main_menu();
         switch (menuSelection) {
             case 1:
-                host_game(config[0], config[1]);
+                gl.host_game(config[0], config[1]);
                 break;
             case 2:
-                join_game(config[2], config[3]);
+                gl.join_game(config[2], config[3]);
                 break;
             case 3:
                 glBegin(GL_QUADS);
