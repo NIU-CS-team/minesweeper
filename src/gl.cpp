@@ -5,6 +5,8 @@
 #include <iostream>
 #include <utility>
 #include <cstring>
+#include <chrono>
+#include <thread>
 
 #include "block.h"
 #include "board.h"
@@ -212,6 +214,7 @@ int GL::main_menu() {
         glfwPollEvents();
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS){
             left_button_pressed = true;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
         if (left_button_pressed &&
             glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
@@ -225,6 +228,8 @@ int GL::main_menu() {
                 return 3;
             }
         }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     // if user choose host, wait for another player to join
     // if user choose join, show ip address input box
@@ -240,6 +245,7 @@ int GL::play_single(Board board) {
 
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
             left_button_pressed = true;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
 
         if (left_button_pressed &&
@@ -274,6 +280,8 @@ int GL::play_single(Board board) {
                 glfwSwapBuffers(window);
             }
         }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     if (board.status != board.PLAYING) {
