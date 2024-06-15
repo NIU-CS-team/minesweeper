@@ -129,7 +129,12 @@ block GL::get_block(Board board, double x, double y) {
 
 int GL::reveal(Board& board, block& target_block) {
     // if the block is already revealed or flagged, do nothing
-    if (target_block.state != HIDDEN) {
+    if (target_block.state == FLAGGED) {
+        return 0;
+    }
+
+    if (target_block.state == REVEALED) {
+        fast_reveal(board, target_block);
         return 0;
     }
 
@@ -158,6 +163,54 @@ int GL::reveal(Board& board, block& target_block) {
                 if (i == 0 && j == 0) continue;
                 reveal(board,
                        board.blocks[target_block.index + i * board.row + j]);
+            }
+        }
+    }
+
+    return 0;
+}
+
+int GL::fast_reveal(Board& board, block& target_block) {
+    if (target_block.state != REVEALED) {
+        return 0;
+    }
+
+    int n_flagged = 0;
+    for (int i = -1; i <= 1; i++) {
+        if (target_block.index < board.row && i == -1) continue;
+        if (target_block.index >= board.row * (board.col - 1) && i == 1)
+            continue;
+
+        for (int j = -1; j <= 1; j++) {
+            if (target_block.index % board.row == 0 && j == -1) continue;
+            if (target_block.index % board.row == board.row - 1 && j == 1)
+                continue;
+            if (i == 0 && j == 0) continue;
+
+            if (board.blocks[target_block.index + i * board.row + j].state ==
+                FLAGGED) {
+                n_flagged++;
+            }
+        }
+    }
+
+    if (n_flagged == target_block.value) {
+        for (int i = -1; i <= 1; i++) {
+            if (target_block.index < board.row && i == -1) continue;
+            if (target_block.index >= board.row * (board.col - 1) && i == 1)
+                continue;
+
+            for (int j = -1; j <= 1; j++) {
+                if (target_block.index % board.row == 0 && j == -1) continue;
+                if (target_block.index % board.row == board.row - 1 && j == 1)
+                    continue;
+                if (i == 0 && j == 0) continue;
+
+                if (board.blocks[target_block.index + i * board.row + j].state ==
+                    HIDDEN) {
+                    reveal(board,
+                           board.blocks[target_block.index + i * board.row + j]);
+                }
             }
         }
     }

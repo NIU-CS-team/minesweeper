@@ -54,6 +54,7 @@ public:
     int draw_block(Board board, block target_block);
     block get_block(Board board, double x, double y);
     int reveal(Board& board, block& target_block);
+    int fast_reveal(Board& board, block& target_block);
     int flagged(Board board, block& target_block);
     int remove_flagged(Board board,block& target_block);
     int show_all_mine(Board board);
