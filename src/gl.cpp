@@ -311,6 +311,8 @@ int GL::play_single(Board board) {
                 reveal(board, board.blocks[target_block_index]);
                 glfwSwapBuffers(window);
             }
+
+            board.check_win();
         }
 
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
