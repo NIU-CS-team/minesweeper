@@ -59,21 +59,12 @@ and 2 type:
 
 ## Game Setting
 
-You can change the game setting in `config.json`.
+You can change the game setting in `config.h`.
 
-```json
-{
-    "width": 10,
-    "height": 10,
-    "mine": 10,
-    "protect": 1,
-}
-```
-
-- `width`: the width of the game board
-- `height`: the height of the game board
-- `mine`: the number of mines
-- `protect`: protect you from the first click
+- `WIDTH`: the width of the game board
+- `HEIGHT`: the height of the game board
+- `MINES`: the number of mines
+- `PROTECT`: protect you from the first click
 
 ## Host or Join
 
