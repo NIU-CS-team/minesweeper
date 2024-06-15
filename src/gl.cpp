@@ -296,6 +296,7 @@ int GL::host_game(Board game, u_int16_t port, int max_member) {
     sockaddr_in server_address;
 
     if (socket_fd < 0) {
+        std::cerr << "Failed to create socket" << std::endl;
         return SOCKET_CREATE_FAILED;
     }
 
@@ -308,16 +309,19 @@ int GL::host_game(Board game, u_int16_t port, int max_member) {
     if (bind(socket_fd, (const struct sockaddr *)&server_address,
              sizeof(server_address)) < 0) {
         close(socket_fd);
+        std::cerr << "Failed to bind port" << std::endl;
         return BIND_FAILED;
     }
 
     // listen init
     if (listen(socket_fd, max_member) == SOCKET_CREATE_FAILED) {
         close(socket_fd);
+        std::cerr << "Failed to listen" << std::endl;
         return LISTEN_ERROR;
     }
 
     if (close(socket_fd) < 0) {
+        std::cerr << "Failed to close socket" << std::endl;
         return SOCKET_CLOSE_ERROR;
     }
 
