@@ -20,6 +20,9 @@ int main(int argc, char* argv[]) {
         int menuSelection = gl.main_menu();
         switch (menuSelection) {
             case 1:
+                gl.clear();
+                game.clear();
+                game.generate_mines();
                 gl.host_game(game, 6969, 2);
                 break;
             case 2:
@@ -31,6 +34,7 @@ int main(int argc, char* argv[]) {
                 break;
             case 3:
                 gl.clear();
+                game.clear();
                 game.generate_mines();
                 gl.play_single(game);
                 break;

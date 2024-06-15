@@ -45,6 +45,15 @@ int Board::generate_mines() {
     return 0;
 }
 
+int Board::clear() {
+    for (auto& i : blocks) {
+        i.value = 0;
+        i.state = HIDDEN;
+    }
+
+    return 0;
+}
+
 int Board::show_all_mine() {
     end_time = std::chrono::system_clock::now();
     for (std::size_t i = 0; i < blocks.size(); ++i) {

@@ -14,6 +14,7 @@ public:
     ~Board();
 
     int generate_mines();
+    int clear();
     int show_all_mine();
     int get_input();
     int start_game();
