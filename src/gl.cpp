@@ -287,7 +287,7 @@ int GL::play_single(Board board) {
     return 0;
 }
 
-int GL::host_game(u_int16_t port, int max_member) {
+int GL::host_game(Board game, u_int16_t port, int max_member) {
     max_member -= 1;  // exclude host
 
     // AF_INET: use IPv4
@@ -335,8 +335,6 @@ int GL::host_game(u_int16_t port, int max_member) {
             accept(socket_fd, (struct sockaddr *)&client_address, &client_len);
     }
 
-    // init board
-    Board game(8, 8, 10);
     // send board information to client
     send(socket_fd, &game, sizeof(game), 0);
     // need consider client accept later disconnect
