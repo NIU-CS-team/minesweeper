@@ -23,6 +23,7 @@ public:
     int flagged(block target_block);
     int remove_flagged(block target_block);
     int flag_counter(int n_mines);
+    int check_win();
 
     const int border = 10;
 

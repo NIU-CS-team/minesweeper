@@ -185,3 +185,15 @@ int Board::flag_counter(int n_mines) {
 
     return 0;
 }
+
+int Board::check_win() {
+    if (this->n_revealed == row * col - n_mines) {
+        end_time = std::chrono::system_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+            end_time - start_time);
+        std::cout << "End time: (" << duration.count() << "s)\n";
+        status = WON;
+    }
+
+    return 0;
+}
