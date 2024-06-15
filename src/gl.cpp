@@ -40,13 +40,8 @@ int GL::init() {
 }
 
 int GL::clear() {
-    glBegin(GL_QUADS);
-    glVertex2f(1.0f, 1.0f);
-    glVertex2f(1.0f, -1.0f);
-    glVertex2f(-1.0f, -1.0f);
-    glVertex2f(-1.0f, 1.0f);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glEnd();
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
     return 0;
 }
 
