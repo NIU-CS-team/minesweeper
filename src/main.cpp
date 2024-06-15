@@ -15,14 +15,19 @@ int main(int argc, char* argv[]) {
 
     GL gl;
     gl.init();
+    std::string ip;
     while (true) {
         int menuSelection = gl.main_menu();
         switch (menuSelection) {
             case 1:
-                gl.host_game(game, config[0], config[1]);
+                gl.host_game(game, 6969, 2);
                 break;
             case 2:
-                gl.join_game(config[2], config[3]);
+                std::cout << "Joining game, input ip: " << std::endl;
+                std::cin >> ip;
+                uint32_t host_address;
+                inet_pton(AF_INET, ip.c_str(), &host_address);
+                gl.join_game(host_address, 6969);
                 break;
             case 3:
                 gl.clear();
