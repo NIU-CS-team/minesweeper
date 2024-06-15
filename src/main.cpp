@@ -25,13 +25,7 @@ int main(int argc, char* argv[]) {
                 gl.join_game(config[2], config[3]);
                 break;
             case 3:
-                glBegin(GL_QUADS);
-                glVertex2f(1.0f, 1.0f);
-                glVertex2f(1.0f, -1.0f);
-                glVertex2f(-1.0f, -1.0f);
-                glVertex2f(-1.0f, 1.0f);
-                glColor3f(0.0f, 0.0f, 0.0f);
-                glEnd();
+                gl.clear();
                 game.generate_mines();
                 gl.play_single(game);
                 break;

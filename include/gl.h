@@ -49,6 +49,7 @@ public:
     bool right_button_pressed = false;
 
     int init();
+    int clear();
     int draw_board(Board& board);
     int draw_block(Board board, block target_block);
     block get_block(Board board, double x, double y);

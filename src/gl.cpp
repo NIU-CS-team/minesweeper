@@ -39,6 +39,17 @@ int GL::init() {
     return 0;
 }
 
+int GL::clear() {
+    glBegin(GL_QUADS);
+    glVertex2f(1.0f, 1.0f);
+    glVertex2f(1.0f, -1.0f);
+    glVertex2f(-1.0f, -1.0f);
+    glVertex2f(-1.0f, 1.0f);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glEnd();
+    return 0;
+}
+
 int GL::draw_board(Board& board) {
     float blockSizeInGL = 2.0 / std::max(board.col, board.row) - 0.01f;
     float width = board.col > board.row ? board.col : board.row;
