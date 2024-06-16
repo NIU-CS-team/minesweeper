@@ -369,6 +369,8 @@ int GL::host_game(Board game, u_int16_t port, int max_member) {
         close(socket_fd);
         std::cerr << "Failed to bind port" << std::endl;
         return BIND_FAILED;
+    } else {
+        std::cout << "Bind port successfully" << std::endl;
     }
 
     // listen init
@@ -376,11 +378,15 @@ int GL::host_game(Board game, u_int16_t port, int max_member) {
         close(socket_fd);
         std::cerr << "Failed to listen" << std::endl;
         return LISTEN_ERROR;
+    } else {
+        std::cout << "Listening..." << std::endl;
     }
 
     if (close(socket_fd) < 0) {
         std::cerr << "Failed to close socket" << std::endl;
         return SOCKET_CLOSE_ERROR;
+    } else {
+        std::cout << "Socket closed" << std::endl;
     }
 
     // client connection information
@@ -415,6 +421,13 @@ int GL::join_game(uint32_t host_address, uint16_t host_port) {
     int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_fd < 0) {
         return SOCKET_CREATE_FAILED;
+    }
+
+    // check if the host address is valid
+    if (host_address == 0) {
+        close(socket_fd);
+        std::cerr << "Invalid host address" << std::endl;
+        return CONNECT_FAILED;
     }
 
     // server information
