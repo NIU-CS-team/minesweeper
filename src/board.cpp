@@ -67,9 +67,10 @@ int Board::show_all_mine() {
             std::cout << blocks[i].value << " ";
         }
     }
+
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
         end_time - start_time);
-    std::cout << "End time: (" << duration.count() << "s)\n";
+    std::cout << "End time: (" << duration.count() / 1000000 << "s)\n";
     status = LOST;
     return 0;
 }
@@ -97,16 +98,7 @@ int Board::start_game() {
         print_board();
         block target_block = blocks[get_input()];
         reveal(target_block);
-
-        if (this->n_revealed == row * col - n_mines) {
-            end_time = std::chrono::system_clock::now();
-            auto duration =
-                std::chrono::duration_cast<std::chrono::microseconds>(
-                    end_time - start_time);
-            std::cout << "End time: (" << duration.count() << "s)\n";
-            status = WON;
-            break;
-        }
+        check_win();
     }
 
     return 0;
@@ -187,11 +179,11 @@ int Board::flag_counter(int n_mines) {
 }
 
 int Board::check_win() {
-    if (this->n_revealed == row * col - n_mines) {
+    if (this->n_revealed == row * col - n_mines) { // win condition
         end_time = std::chrono::system_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
             end_time - start_time);
-        std::cout << "End time: (" << duration.count() << "s)\n";
+        std::cout << "End time: (" << duration.count() / 1000000 << "." << duration.count() % 1000000 << "s)\n";
         status = WON;
     }
 

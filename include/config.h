@@ -1,8 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define WIDTH 10
-#define HEIGHT 10
+#define WIDTH 8
+#define HEIGHT 8
 #define MINES 10
 #define PROTECT 1
 
