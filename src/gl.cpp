@@ -284,6 +284,7 @@ int GL::main_menu() {
 }
 
 int GL::play_single(Board board) {
+    board.start_time = std::chrono::system_clock::now();
     while (!glfwWindowShouldClose(window) && board.status == board.PLAYING) {
         draw_board(board);
         double xpos, ypos;

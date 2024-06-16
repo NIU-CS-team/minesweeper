@@ -8,7 +8,6 @@ Board::Board(int row, int col, int n_mines)
     blocks.resize(row * col);
     this->col = col;
     this->row = row;
-    start_time = std::chrono::system_clock::now();
 
     for (auto& i : blocks) {
         i.index = &i - &blocks[0];
