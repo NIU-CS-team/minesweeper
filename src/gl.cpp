@@ -11,6 +11,7 @@
 #include "block.h"
 #include "board.h"
 #include "network.h"
+#include "config.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -389,7 +390,6 @@ int GL::host_game(Board game, u_int16_t port, int max_member) {
     int client_index = 0;
     unsigned int client_len = sizeof(client_address);
 
-    GL gl;
     bool game_started = false;
 
     while (!game_started) {
@@ -432,7 +432,7 @@ int GL::join_game(uint32_t host_address, uint16_t host_port) {
         return CONNECT_FAILED;
     }
 
-    Board board(8, 8, 10);
+    Board board(HEIGHT, WIDTH, MINES);
     char board_buffer[sizeof(Board)];
     ssize_t bytes_received =
         recv(socket_fd, board_buffer, sizeof(board_buffer), 0);
