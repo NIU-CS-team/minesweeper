@@ -5,8 +5,9 @@
 #include <cstring>
 #include <vector>
 #include <mutex>
+#include <thread>
 
-#include "gl.h"
+#include "board.h"
 
 std::mutex g_mutex;
 

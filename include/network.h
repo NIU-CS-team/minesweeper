@@ -10,8 +10,6 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-#include <thread>
-
 #endif
 
 #include <unistd.h>

@@ -1,7 +1,5 @@
 #include <cassert>
-#include <filesystem>
 #include <iostream>
-#include <vector>
 
 #include "board.h"
 #include "gl.h"

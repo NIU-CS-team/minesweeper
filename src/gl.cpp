@@ -3,7 +3,6 @@
 #include <GL/glew.h>
 
 #include <iostream>
-#include <utility>
 #include <cstring>
 #include <chrono>
 #include <thread>
