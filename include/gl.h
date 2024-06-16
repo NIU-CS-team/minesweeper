@@ -21,6 +21,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 #include <sys/types.h>
 
 #include "board.h"
+#include "font.h"
 
 class GL {
 public:
@@ -47,6 +48,10 @@ public:
 
     bool left_button_pressed = false;
     bool right_button_pressed = false;
+
+    std::map<GLchar, Character> Characters;
+    FT_Library ft;
+    FT_Face face;
 
     int init();
     int clear();

@@ -11,6 +11,7 @@
 #include "board.h"
 #include "network.h"
 #include "config.h"
+#include "font.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -38,6 +39,17 @@ int GL::init() {
         return -1;
     }
 
+    if (FT_Init_FreeType(&ft)) {
+        std::cerr << "Failed to initialize FreeType" << std::endl;
+        return -1;
+    }
+
+    if (FT_New_Face(ft, "font/JetBrainsMono.ttf", 0, &face)) {
+        std::cerr << "Failed to load font" << std::endl;
+        return -1;
+    }
+
+    FT_Set_Pixel_Sizes(face, 0, 24);
     return 0;
 }
 
@@ -100,6 +112,11 @@ int GL::draw_block(Board board, block target_block) {
         glColor3f(1.0f, 1.0f, 0.0f);
     } else {
         glColor3f(0.3f, 0.3f, 0.3f);
+    }
+
+    if (target_block.state == REVEALED && target_block.value > 0) {
+        render_text(face, std::to_string(target_block.value), target_block.gl_x,
+                    target_block.gl_y, 0.02f, 1.0f, 1.0f, 1.0f, Characters);
     }
 
     glEnd();
