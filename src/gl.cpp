@@ -321,7 +321,7 @@ int GL::play_single(Board board) {
             glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) ==
                 GLFW_RELEASE) {
             glfwGetCursorPos(window, &xpos, &ypos);
-            left_button_pressed = false;  // 重置按鍵狀態
+            left_button_pressed = false;
             int target_block_index = get_block(board, xpos, ypos).index;
             if (target_block_index != -1) {
                 reveal(board, board.blocks[target_block_index]);
@@ -339,7 +339,7 @@ int GL::play_single(Board board) {
             glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) ==
                 GLFW_RELEASE) {
             glfwGetCursorPos(window, &xpos, &ypos);
-            right_button_pressed = false;  // 重置按鍵狀態
+            right_button_pressed = false;
             int target_block_index = get_block(board, xpos, ypos).index;
             if (target_block_index != -1) {
                 if (board.blocks[target_block_index].state == HIDDEN) {
