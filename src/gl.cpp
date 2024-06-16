@@ -44,7 +44,7 @@ int GL::init() {
         return -1;
     }
 
-    if (FT_New_Face(ft, "font/JetBrainsMono.ttf", 0, &face)) {
+    if (FT_New_Face(ft, "../font/JetBrainsMono.ttf", 0, &face)) {
         std::cerr << "Failed to load font" << std::endl;
         return -1;
     }
