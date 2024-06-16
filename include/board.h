@@ -32,6 +32,8 @@ public:
     int status = PLAYING;
     int n_revealed = 0;
 
+    bool first_move = true;
+
     std::vector<block> blocks;
     std::chrono::time_point<std::chrono::system_clock> start_time;
     std::chrono::time_point<std::chrono::system_clock> end_time;

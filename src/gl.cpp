@@ -138,6 +138,12 @@ int GL::reveal(Board& board, block& target_block) {
         return 0;
     }
 
+    if (board.first_move) {
+        board.first_move = false;
+        board.start_time = std::chrono::system_clock::now();
+        // board.generate_mines(target_block.index);
+    }
+
     target_block.state = REVEALED;
     board.n_revealed++;
     draw_block(board, target_block);
@@ -284,7 +290,6 @@ int GL::main_menu() {
 }
 
 int GL::play_single(Board board) {
-    board.start_time = std::chrono::system_clock::now();
     while (!glfwWindowShouldClose(window) && board.status == board.PLAYING) {
         draw_board(board);
         double xpos, ypos;
