@@ -25,8 +25,6 @@ public:
     int flag_counter(int n_mines);
     int check_win();
 
-    const int border = 10;
-
     int row = 0;
     int col = 0;
     int n_mines;
