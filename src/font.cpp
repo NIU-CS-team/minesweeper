@@ -25,9 +25,9 @@ void render_text(FT_Face face, std::string text, float x, float y, float scale, 
         glTexCoord2d(0, 1); glVertex2f(xpos, ypos + h);
         glEnd();
 
-        // 更新x到下一個字符的位置
+        // 更新 x 到下一個字元的位置
         x += (ch.Advance >> 6) * scale;
-        // 位移是以 1/64 像素為單位，因此需要除以 64
+        // 位移是以 1/64 pixel 為單位，因此需要除以 64
     }
 
     glBindTexture(GL_TEXTURE_2D, 0);
