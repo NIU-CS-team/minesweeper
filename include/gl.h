@@ -67,6 +67,7 @@ public:
     int play_single(Board board);
     int host_game(Board game, u_int16_t port, int max_member);
     int join_game(uint32_t host_address, uint16_t host_port);
+    int end_game(Board board);
 
     GLFWwindow* window;
 };

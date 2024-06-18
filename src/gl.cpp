@@ -253,7 +253,7 @@ int GL::show_all_mine(Board board) {
 }
 
 int GL::main_menu() {
-    glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1.0f, 1.0f, 1.0f);
 
@@ -356,7 +356,7 @@ int GL::play_single(Board board) {
     }
 
     if (board.status != board.PLAYING) {
-        main_menu();
+        end_game(board);
     }
 
     return 0;
@@ -480,6 +480,32 @@ int GL::join_game(uint32_t host_address, uint16_t host_port) {
     }
 
     return SUCESS;
+}
+
+int GL::end_game(Board board) {
+    if (board.status == board.WON) {
+        glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glfwSwapBuffers(window);
+        while (!glfwWindowShouldClose(window)) {
+            glfwPollEvents();
+            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+                break;
+            }
+        }
+    } else if (board.status == board.LOST){
+        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glfwSwapBuffers(window);
+        while (!glfwWindowShouldClose(window)) {
+            glfwPollEvents();
+            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+                break;
+            }
+        }
+    }
+    main_menu();
+    return 0;
 }
 
 int GL::flagged(Board board, block& target_block) {
