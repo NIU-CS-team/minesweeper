@@ -22,3 +22,5 @@ file(GLOB_RECURSE SRC_FILES ./src/*.cpp)
 add_executable(${PROJECT_NAME} ${SRC_FILES})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${LIB_LINKS})
+
+install(TARGETS ${PROJECT_NAME})
