@@ -178,11 +178,12 @@ int Board::flag_counter(int n_mines) {
 }
 
 int Board::check_win() {
-    if (this->n_revealed == row * col - n_mines) { // win condition
+    if (this->n_revealed == row * col - n_mines) {  // win condition
         end_time = std::chrono::system_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
             end_time - start_time);
-        std::cout << "End time: (" << duration.count() / 1000000 << "." << duration.count() % 1000000 << "s)\n";
+        std::cout << "End time: (" << duration.count() / 1000000 << "."
+                  << duration.count() % 1000000 << "s)\n";
         status = WON;
     }
 

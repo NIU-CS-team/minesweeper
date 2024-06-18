@@ -229,10 +229,11 @@ int GL::fast_reveal(Board& board, block& target_block) {
                     continue;
                 if (i == 0 && j == 0) continue;
 
-                if (board.blocks[target_block.index + i * board.row + j].state ==
-                    HIDDEN) {
-                    reveal(board,
-                           board.blocks[target_block.index + i * board.row + j]);
+                if (board.blocks[target_block.index + i * board.row + j]
+                        .state == HIDDEN) {
+                    reveal(
+                        board,
+                        board.blocks[target_block.index + i * board.row + j]);
                 }
             }
         }
@@ -281,19 +282,22 @@ int GL::main_menu() {
     while (!glfwWindowShouldClose(window)) {
         double xpos, ypos;
         glfwPollEvents();
-        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS){
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
             left_button_pressed = true;
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
         if (left_button_pressed &&
-            glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+            glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) ==
+                GLFW_RELEASE) {
             glfwGetCursorPos(window, &xpos, &ypos);
             left_button_pressed = false;
             if (xpos >= 150 && xpos <= 450 && ypos >= 480 && ypos <= 600) {
                 return 1;
-            } else if (xpos >= 150 && xpos <=450 && ypos >= 320 && ypos <= 440) {
+            } else if (xpos >= 150 && xpos <= 450 && ypos >= 320 &&
+                       ypos <= 440) {
                 return 2;
-            } else if (xpos >= 150 && xpos <= 450 && ypos >= 160 && ypos <= 280) {
+            } else if (xpos >= 150 && xpos <= 450 && ypos >= 160 &&
+                       ypos <= 280) {
                 return 3;
             }
         }
@@ -381,7 +385,7 @@ int GL::host_game(Board game, u_int16_t port, int max_member) {
     server_address.sin_port = htons(port);        // use specify (include) port
 
     // bind port on host
-    if (bind(socket_fd, (const struct sockaddr *)&server_address,
+    if (bind(socket_fd, (const struct sockaddr*)&server_address,
              sizeof(server_address)) < 0) {
         close(socket_fd);
         std::cerr << "Failed to bind port" << std::endl;
@@ -416,7 +420,7 @@ int GL::host_game(Board game, u_int16_t port, int max_member) {
 
     while (!game_started) {
         reply_sockfd =
-            accept(socket_fd, (struct sockaddr *)&client_address, &client_len);
+            accept(socket_fd, (struct sockaddr*)&client_address, &client_len);
     }
 
     // send board information to client
@@ -455,7 +459,7 @@ int GL::join_game(uint32_t host_address, uint16_t host_port) {
     int server_len = sizeof(server_address);
 
     // try connect to server
-    if (connect(socket_fd, (struct sockaddr *)&server_address, server_len) ==
+    if (connect(socket_fd, (struct sockaddr*)&server_address, server_len) ==
         SOCKET_CREATE_FAILED) {
         close(socket_fd);
         return CONNECT_FAILED;
@@ -489,17 +493,19 @@ int GL::end_game(Board board) {
         glfwSwapBuffers(window);
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();
-            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) ==
+                GLFW_PRESS) {
                 break;
             }
         }
-    } else if (board.status == board.LOST){
+    } else if (board.status == board.LOST) {
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glfwSwapBuffers(window);
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();
-            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) ==
+                GLFW_PRESS) {
                 break;
             }
         }

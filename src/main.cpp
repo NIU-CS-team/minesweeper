@@ -43,6 +43,6 @@ int main(int argc, char* argv[]) {
         glfwPollEvents();
     }
 
-    //gl.play_single(game);
+    // gl.play_single(game);
     return 0;
 }
