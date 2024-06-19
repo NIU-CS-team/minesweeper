@@ -86,37 +86,10 @@ int GL::draw_board(Board& board) {
             glColor3f(0.3f, 0.3f, 0.3f);
         }
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    }
-
-    glEnd();
-
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-    return 0;
-}
-
-int GL::draw_block(Board board, block target_block) {
-    float blockSizeInGL = 2.0 / std::max(board.col, board.row) - 0.01f;
-
-    glBegin(GL_QUADS);
-    glVertex2f(target_block.gl_x, target_block.gl_y);
-    glVertex2f(target_block.gl_x + blockSizeInGL, target_block.gl_y);
-    glVertex2f(target_block.gl_x + blockSizeInGL,
-               target_block.gl_y + blockSizeInGL);
-    glVertex2f(target_block.gl_x, target_block.gl_y + blockSizeInGL);
-
-    if (target_block.state == REVEALED) {
-        std::vector<float> rgb = bomb_count_color_map[target_block.value];
-        glColor3f(rgb[0], rgb[1], rgb[2]);
-    } else if (target_block.state == FLAGGED) {
-        glColor3f(1.0f, 1.0f, 0.0f);
-    } else {
-        glColor3f(0.3f, 0.3f, 0.3f);
-    }
-
-    if (target_block.state == REVEALED && target_block.value > 0) {
-        render_text(face, std::to_string(target_block.value), target_block.gl_x,
-                    target_block.gl_y, 0.02f, 1.0f, 1.0f, 1.0f, Characters);
+        // if (block.state == REVEALED && block.value > 0) {
+        //     render_text(face, std::to_string(block.value), block.gl_x,
+        //                 block.gl_y, 0.02f, 1.0f, 1.0f, 1.0f, Characters);
+        // }
     }
 
     glEnd();
@@ -163,7 +136,6 @@ int GL::reveal(Board& board, block& target_block) {
 
     target_block.state = REVEALED;
     board.n_revealed++;
-    draw_block(board, target_block);
 
     // if the block is a mine, stop revealing
     if (target_block.value >= MINE) {
@@ -351,7 +323,6 @@ int GL::play_single(Board board) {
                 } else if (board.blocks[target_block_index].state == FLAGGED) {
                     board.blocks[target_block_index].state = HIDDEN;
                 }
-                draw_block(board, board.blocks[target_block_index]);
                 glfwSwapBuffers(window);
             }
         }
@@ -516,12 +487,12 @@ int GL::end_game(Board board) {
 
 int GL::flagged(Board board, block& target_block) {
     target_block.index = FLAGGED;
-    this->draw_block(board, target_block);
+    this->draw_board(board);
     return 0;
 }
 
 int GL::remove_flagged(Board board, block& target_block) {
     target_block.index = HIDDEN;
-    this->draw_block(board, target_block);
+    this->draw_board(board);
     return 0;
 }

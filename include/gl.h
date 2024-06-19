@@ -56,7 +56,6 @@ public:
     int init();
     int clear();
     int draw_board(Board& board);
-    int draw_block(Board board, block target_block);
     block get_block(Board board, double x, double y);
     int reveal(Board& board, block& target_block);
     int fast_reveal(Board& board, block& target_block);
