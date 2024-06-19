@@ -463,6 +463,7 @@ int GL::end_game(Board board) {
         glClear(GL_COLOR_BUFFER_BIT);
         glfwSwapBuffers(window);
         while (!glfwWindowShouldClose(window)) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
             glfwPollEvents();
             if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) ==
                 GLFW_PRESS) {
@@ -474,6 +475,7 @@ int GL::end_game(Board board) {
         glClear(GL_COLOR_BUFFER_BIT);
         glfwSwapBuffers(window);
         while (!glfwWindowShouldClose(window)) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
             glfwPollEvents();
             if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) ==
                 GLFW_PRESS) {
