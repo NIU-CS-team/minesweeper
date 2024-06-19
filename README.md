@@ -10,23 +10,24 @@ This is a multiplayer minesweeper game made by C++ and OpenGL.
 - OpenGL
 - GLFW
 - GLEW
+- Freetype
 
 #### Ubuntu
 
 ```bash
-sudo apt install cmake libglfw3-dev libglew-dev
+sudo apt install cmake libglfw3-dev libglew-dev freetype2-dev
 ```
 
 #### Fedora
 
 ```bash
-sudo dnf install cmake glfw-devel glew-devel
+sudo dnf install cmake glfw-devel glew-devel freetype-devel
 ```
 
 #### macOS
 
 ```bash
-brew install cmake glfw glew
+brew install cmake glfw glew freetype
 ```
 
 ### Build
