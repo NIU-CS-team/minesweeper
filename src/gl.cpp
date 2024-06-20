@@ -462,7 +462,7 @@ int GL::game_interaction(int &socket_fd, game_data *data, Board &board) {
     char send_buffer[sizeof(game_data)];
 
     while (!glfwWindowShouldClose(window) && board.status == board.PLAYING) {
-        std::thread(recv_data, std::ref(socket_fd), recv_buffer, data, std::ref(board)).detach();
+        std::thread(recv_data, std::ref(socket_fd), recv_buffer, data, &board).detach();
 
         draw_board(board);
         double xpos, ypos;
