@@ -400,7 +400,7 @@ int GL::host_game(Board game, u_int16_t port, int max_member) {
 
     // 遊戲互動環節
     game_data data;
-    game_interaction(socket_fd, &data, &game);
+    game_interaction(socket_fd, &data, game);
 
     if (close(socket_fd) < 0) {
         return SOCKET_CLOSE_ERROR;
@@ -448,7 +448,7 @@ int GL::join_game(uint32_t host_address, uint16_t host_port) {
     std::memcpy(&board, board_buffer, sizeof(Board));
 
     game_data data;
-    game_interaction(socket_fd, &data, &board);
+    game_interaction(socket_fd, &data, board);
 
     if (close(socket_fd) < 0) {
         return SOCKET_CLOSE_ERROR;
