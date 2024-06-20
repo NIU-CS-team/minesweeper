@@ -374,12 +374,12 @@ int GL::host_game(Board game, u_int16_t port, int max_member) {
         std::cout << "Listening..." << std::endl;
     }
 
-    if (close(socket_fd) < 0) {
-        std::cerr << "Failed to close socket" << std::endl;
-        return SOCKET_CLOSE_ERROR;
-    } else {
-        std::cout << "Socket closed" << std::endl;
-    }
+    // if (close(socket_fd) < 0) {
+    //     std::cerr << "Failed to close socket" << std::endl;
+    //     return SOCKET_CLOSE_ERROR;
+    // } else {
+    //     std::cout << "Socket closed" << std::endl;
+    // }
 
     // client connection information
     int reply_sockfd;
