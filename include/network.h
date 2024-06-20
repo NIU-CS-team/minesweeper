@@ -19,7 +19,6 @@
 enum game_action { REVEAL, FLAG, REMOVE_FLAG };
 
 struct game_data {
-    int game_status;
     game_action action;
     int block_index;
 };
