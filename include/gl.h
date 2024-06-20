@@ -20,6 +20,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 #include <vector>
 #include <sys/types.h>
 
+#include "network.h"
 #include "board.h"
 #include "font.h"
 
