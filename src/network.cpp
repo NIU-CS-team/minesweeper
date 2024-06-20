@@ -29,16 +29,3 @@ int recv_data(int &socket_fd, char *buffer, game_data *data, Board *board) {
     memset(buffer, 0, sizeof(game_data));
     return SUCESS;
 }
-
-int game_interaction(int &socket_fd, game_data *data, Board *board) {
-    while (data->game_status) {
-        char buffer[sizeof(game_data)];
-
-        std::thread(recv_data, std::ref(socket_fd), buffer, data, board)
-            .detach();
-        // 預留Local interaction
-        send(socket_fd, buffer, sizeof(game_data), 0);
-    }
-
-    return SUCESS;
-}

@@ -457,6 +457,74 @@ int GL::join_game(uint32_t host_address, uint16_t host_port) {
     return SUCESS;
 }
 
+int GL::game_interaction(int &socket_fd, game_data *data, Board &board) {
+    char recv_buffer[sizeof(game_data)];
+    char send_buffer[sizeof(game_data)];
+
+    while (!glfwWindowShouldClose(window) && board.status == board.PLAYING) {
+        std::thread(recv_data, std::ref(socket_fd), recv_buffer, data, std::ref(board)).detach();
+
+        draw_board(board);
+        double xpos, ypos;
+        glfwPollEvents();
+
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            left_button_pressed = true;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+
+        if (left_button_pressed &&
+            glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) ==
+                GLFW_RELEASE) {
+            glfwGetCursorPos(window, &xpos, &ypos);
+            left_button_pressed = false;
+            int target_block_index = get_block(board, xpos, ypos).index;
+            if (target_block_index != -1) {
+                reveal(board, board.blocks[target_block_index]);
+                glfwSwapBuffers(window);
+                data->action = REVEAL;
+                data->block_index = target_block_index;
+            }
+
+            board.check_win();
+        }
+
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+            right_button_pressed = true;
+        }
+
+        if (right_button_pressed &&
+            glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) ==
+                GLFW_RELEASE) {
+            glfwGetCursorPos(window, &xpos, &ypos);
+            right_button_pressed = false;
+            int target_block_index = get_block(board, xpos, ypos).index;
+            if (target_block_index != -1) {
+                if (board.blocks[target_block_index].state == HIDDEN) {
+                    board.blocks[target_block_index].state = FLAGGED;
+                    data->action = FLAG;
+                } else if (board.blocks[target_block_index].state == FLAGGED) {
+                    board.blocks[target_block_index].state = HIDDEN;
+                    data->action = REMOVE_FLAG;
+                }
+                data->block_index = target_block_index;
+                glfwSwapBuffers(window);
+            }
+        }
+
+        memcpy(send_buffer, data, sizeof(game_data));
+        send(socket_fd, send_buffer, sizeof(game_data), 0);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+        if (board.status != board.PLAYING) {
+            end_game(board);
+        }
+    }
+
+    return SUCESS;
+}
+
+
 int GL::end_game(Board board) {
     if (board.status == board.WON) {
         glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
