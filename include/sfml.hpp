@@ -8,6 +8,7 @@ class SFML {
 public:
     sf::RenderWindow window;
     sf::Font font;
+    sf::Texture texture;
 
     int init();
 };

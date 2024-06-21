@@ -12,6 +12,10 @@ int SFML::init() {
         std::cerr << "Failed to load font" << std::endl;
         return -1;
     }
+    if(!texture.loadFromFile("../image/spritesheet.png")) {
+        std::cerr << "Failed to load texture" << std::endl;
+        return -1;
+    }
 
     return 0;
 }
