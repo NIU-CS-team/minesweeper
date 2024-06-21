@@ -4,9 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "board.h"
+
 enum game_action { REVEAL, FLAG, REMOVE_FLAG };
 
-class SFML {
+class SFML : public Board {
 public:
     sf::RenderWindow window;
     sf::Font font;
