@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+enum game_action { REVEAL, FLAG, REMOVE_FLAG };
+
 class SFML {
 public:
     sf::RenderWindow window;
