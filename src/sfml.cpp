@@ -20,3 +20,22 @@ int SFML::init() {
 
     return 0;
 }
+
+int SFML::mouse_input() {
+    sf::Event event;
+    sf::Vector2i mouse_pos = sf::Mouse::getPosition(window);
+
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+        if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.mouseButton.button == sf::Mouse::Left) {
+            }
+            if (event.mouseButton.button == sf::Mouse::Right) {
+            }
+        }
+    }
+
+    return 0;
+}

@@ -16,5 +16,6 @@ public:
     sf::Sprite sprite;
 
     int init();
+    int mouse_input();
 };
 #endif
