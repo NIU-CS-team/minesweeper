@@ -16,6 +16,7 @@ int SFML::init() {
         std::cerr << "Failed to load texture" << std::endl;
         return -1;
     }
+    sprite.setTexture(texture);
 
     return 0;
 }

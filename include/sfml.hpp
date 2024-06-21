@@ -9,6 +9,7 @@ public:
     sf::RenderWindow window;
     sf::Font font;
     sf::Texture texture;
+    sf::Sprite sprite;
 
     int init();
 };
