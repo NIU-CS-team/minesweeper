@@ -121,31 +121,45 @@ int Board::print_board() {
     return 0;
 }
 
-int Board::reveal(block input) {
-    if (input.value >= MINE) {
-        show_all_mine();
-        this->status = LOST;
+int Board::reveal(block target_block) {
+    if (target_block.state != REVEALED) {
         return 0;
     }
 
-    input.state = REVEALED;
-    this->n_revealed++;
-    if (this->n_revealed == row * col - n_mines) {
-        this->status = WON;
+    int n_flagged = 0;
+    for (int i = -1; i <= 1; i++) {
+        if (target_block.index < this->row && i == -1) continue;
+        if (target_block.index >= this->row * (this->col - 1) && i == 1)
+            continue;
+
+        for (int j = -1; j <= 1; j++) {
+            if (target_block.index % this->row == 0 && j == -1) continue;
+            if (target_block.index % this->row == this->row - 1 && j == 1)
+                continue;
+            if (i == 0 && j == 0) continue;
+
+            if (this->blocks[target_block.index + i * this->row + j].state ==
+                FLAGGED) {
+                n_flagged++;
+            }
+        }
     }
 
-    // fast reveal if the block is empty
-    if (input.value == EMPTY) {
+    if (n_flagged == target_block.value) {
         for (int i = -1; i <= 1; i++) {
-            if (input.index < row && i == -1) continue;
-            if (input.index >= row * (col - 1) && i == 1) continue;
+            if (target_block.index < this->row && i == -1) continue;
+            if (target_block.index >= this->row * (this->col - 1) && i == 1)
+                continue;
 
             for (int j = -1; j <= 1; j++) {
-                if (input.index % row == 0 && j == -1) continue;
-                if (input.index % row == row - 1 && j == 1) continue;
+                if (target_block.index % this->row == 0 && j == -1) continue;
+                if (target_block.index % this->row == this->row - 1 && j == 1)
+                    continue;
+                if (i == 0 && j == 0) continue;
 
-                if (blocks[input.index + i * row + j].state == 0) {
-                    reveal(blocks[input.index + i * row + j]);
+                if (this->blocks[target_block.index + i * this->row + j]
+                        .state == HIDDEN) {
+                    reveal(this->blocks[target_block.index + i * this->row + j]);
                 }
             }
         }
