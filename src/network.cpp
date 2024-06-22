@@ -10,22 +10,21 @@
 #include "board.h"
 
 std::mutex g_mutex;
-
-int recv_data(int &socket_fd, char *buffer, game_data *data, Board *board) {
+int Network::recv_data(int &socket_fd, char *buffer, std::pair<game_action, int> *data) {
     std::lock_guard<std::mutex> lock(g_mutex);
-    if (recv(socket_fd, buffer, sizeof(game_data), 0) <= 0) {
+    if (recv(socket_fd, buffer, sizeof(data), 0) <= 0) {
         close(socket_fd);
         return MESSENGE_RECV_ERROR;
     }
 
-    std::memcpy(data, buffer, sizeof(game_data));
-    if (data->action == REVEAL) {
-        board->reveal(board->blocks[data->block_index]);
-    } else if (data->action == FLAG) {
-        board->flagged(board->blocks[data->block_index]);
-    } else if (data->action == REMOVE_FLAG) {
-        board->remove_flagged(board->blocks[data->block_index]);
+    std::memcpy(data, buffer, sizeof(data));
+    if (data->first == REVEAL) {
+        reveal(blocks[data->second]);
+    } else if (data->first == FLAG) {
+        flagged(blocks[data->second]);
+    } else if (data->first == REMOVE_FLAG) {
+        remove_flagged(blocks[data->second]);
     }
-    memset(buffer, 0, sizeof(game_data));
+    memset(buffer, 0, sizeof(data));
     return SUCESS;
 }
