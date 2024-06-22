@@ -125,7 +125,7 @@ int Board::reveal(block target_block) {
     if (target_block.state != REVEALED) {
         return 0;
     }
-    if(target_block.value >= MINE){
+    if (target_block.value >= MINE) {
         this->status = LOST;
         show_all_mine();
 
@@ -165,7 +165,8 @@ int Board::reveal(block target_block) {
 
                 if (this->blocks[target_block.index + i * this->row + j]
                         .state == HIDDEN) {
-                    reveal(this->blocks[target_block.index + i * this->row + j]);
+                    reveal(
+                        this->blocks[target_block.index + i * this->row + j]);
                 }
             }
         }
