@@ -36,12 +36,15 @@ enum connect_status {
     CONNECT_FAILED
 };
 
-int recv_data(int &socket_fd, char *buffer, game_data *data, Board *board);
-
-int host_game(u_int16_t port, int max_member);  // 開放起遊戲房間
-
-int join_game(uint32_t host_address, uint16_t host_port);  // 加入遊戲
-
-int close_host();  // 關閉房間
+class Network : public SFML {
+public:
+    Network(int row, int col, int mines) : SFML(row, col, mines) {};
+    int host();
+    int client(const char *ip);
+    int send_data(int &socket_fd, std::pair<game_action, int> data);
+    int close_socket(int &socket_fd);
+private:
+    int recv_data(int &socket_fd, char *buffer, std::pair<game_action, int> *data);
+};
 
 #endif
