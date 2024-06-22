@@ -186,19 +186,6 @@ int Board::remove_flagged(block& target_block) {
     return 0;
 }
 
-int Board::flag_counter(int n_mines) {
-    int flag = n_mines;
-    for (std::size_t i = 0; i < blocks.size(); ++i) {
-        if (blocks[i].state == FLAGGED) {
-            flag--;
-        } else if (blocks[i].state == HIDDEN) {
-            flag++;
-        }
-    }
-
-    return 0;
-}
-
 int Board::check_win() {
     if (this->n_revealed == row * col - n_mines) {  // win condition
         end_time = std::chrono::system_clock::now();
