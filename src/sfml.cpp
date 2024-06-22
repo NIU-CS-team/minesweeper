@@ -61,6 +61,7 @@ int SFML::play_single() {
 
         mouse_input();
         window.display();
+        check_win();
     }
 
     return 0;
