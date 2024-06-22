@@ -14,14 +14,7 @@
 
 #include <unistd.h>
 
-#include "board.h"
-
-enum game_action { REVEAL, FLAG, REMOVE_FLAG };
-
-struct game_data {
-    game_action action;
-    int block_index;
-};
+#include "sfml.hpp"
 
 enum connect_status {
     // Universal error
