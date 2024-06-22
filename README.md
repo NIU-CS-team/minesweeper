@@ -7,10 +7,7 @@ This is a multiplayer minesweeper game made by C++ and OpenGL.
 ### Dependencies
 
 - CMake
-- OpenGL
-- GLFW
-- GLEW
-- Freetype
+- SFML
 
 #### Ubuntu
 
