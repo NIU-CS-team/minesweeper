@@ -21,6 +21,17 @@ int SFML::init() {
     return 0;
 }
 
+int SFML::init_block() { 
+    int pos = std::max(window.getSize().x / row, window.getSize().y / col);
+    for(block& block : blocks){
+        block.gl_x = block.index % col * pos;
+        block.gl_y = block.index / col * pos;
+    }
+
+    return 0; 
+}
+
+
 std::pair<game_action, int> SFML::mouse_input() {
     sf::Event event;
     sf::Vector2i mouse_pos = sf::Mouse::getPosition(window);

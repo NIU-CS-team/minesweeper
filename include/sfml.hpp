@@ -22,6 +22,7 @@ private:
 public:
     SFML(int row, int col, int mines) : Board(row, col, mines) {};
     int init();
+    int init_block();
     int play_single();
 };
 #endif
