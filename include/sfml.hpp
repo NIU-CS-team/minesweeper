@@ -17,6 +17,7 @@ private:
 
     std::pair<game_action, int> mouse_input();
     block get_block(double x, double y);
+    int draw_board();
 
 public:
     int init();
