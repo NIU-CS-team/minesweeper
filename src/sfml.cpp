@@ -53,3 +53,15 @@ std::pair<game_action, int> SFML::mouse_input() {
 block SFML::get_block(double x, double y) {
     return blocks[0];
 }
+
+int SFML::play_single() {
+    while (window.isOpen() && status == PLAYING) {
+        window.clear(sf::Color::White);
+        draw_board();
+
+        mouse_input();
+        window.display();
+    }
+
+    return 0;
+}

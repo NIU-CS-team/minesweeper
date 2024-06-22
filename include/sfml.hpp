@@ -21,5 +21,6 @@ private:
 
 public:
     int init();
+    int play_single();
 };
 #endif
