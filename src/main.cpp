@@ -9,5 +9,6 @@
 int main(int argc, char* argv[]) {
     SFML game(HEIGHT, WIDTH, MINES);
     game.init();
+    game.play_single();
     return 0;
 }
