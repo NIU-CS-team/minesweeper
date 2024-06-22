@@ -23,6 +23,7 @@ int SFML::init() {
 
 int SFML::init_block() {
     int pos = std::min(window.getSize().x / row, window.getSize().y / col);
+    sprite.setScale(pos / 16.0, pos / 16.0);
     for (block& block : blocks) {
         block.gl_x = block.index % col * pos;
         block.gl_y = block.index / col * pos;
