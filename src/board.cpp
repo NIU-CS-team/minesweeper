@@ -168,12 +168,12 @@ int Board::reveal(block target_block) {
     return 0;
 }
 
-int Board::flagged(block target_block) {
+int Board::flagged(block& target_block) {
     blocks[target_block.index].state = FLAGGED;
     return 0;
 }
 
-int Board::remove_flagged(block target_block) {
+int Board::remove_flagged(block& target_block) {
     blocks[target_block.index].state = HIDDEN;
     return 0;
 }

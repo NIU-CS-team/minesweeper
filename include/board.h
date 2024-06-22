@@ -20,8 +20,8 @@ public:
     int start_game();
     int print_board();
     int reveal(block target_block);
-    int flagged(block target_block);
-    int remove_flagged(block target_block);
+    int flagged(block& target_block);
+    int remove_flagged(block& target_block);
     int flag_counter(int n_mines);
     int check_win();
 
