@@ -20,6 +20,7 @@ private:
     int draw_board();
 
 public:
+    SFML(int row, int col, int mines) : Board(row, col, mines) {};
     int init();
     int play_single();
 };
