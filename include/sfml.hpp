@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <thread>
 
 #include "board.h"
 
@@ -18,6 +19,7 @@ private:
     std::pair<game_action, int> mouse_input();
     block get_block();
     int draw_board();
+    int end_game();
 
 public:
     SFML(int row, int col, int mines) : Board(row, col, mines) {};

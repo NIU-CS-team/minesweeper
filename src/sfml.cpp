@@ -35,11 +35,11 @@ int SFML::init_block() {
 int SFML::draw_board() {
     for (int i = 0; i < row * col; i++) {
         if (blocks[i].state == REVEALED) {
-            if (blocks[i].value != MINE || blocks[i].value != EMPTY) {
+            if (blocks[i].value >= MINE) {
+                sprite.setTextureRect(sf::IntRect(85, 51, 16, 16));
+            } else if (blocks[i].value != MINE || blocks[i].value != EMPTY) {
                 int sprite_pos = (blocks[i].value - 1) * 17;
                 sprite.setTextureRect(sf::IntRect(sprite_pos, 68, 16, 16));
-            } else if (blocks[i].value == MINE) {
-                sprite.setTextureRect(sf::IntRect(85, 51, 16, 16));
             } else {
                 sprite.setTextureRect(sf::IntRect(17, 51, 16, 16));
             }
@@ -102,6 +102,36 @@ int SFML::play_single() {
         window.display();
         check_win();
     }
+    end_game();
 
+    return 0;
+}
+
+int SFML::end_game() {
+    end_time = std::chrono::system_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+        end_time - start_time);
+    std::cout << "End time: (" << duration.count() / 1000000 << "."
+              << duration.count() % 1000000 << "s)\n";
+
+    for (int i = 0; i < row * col; i++) {
+        if (blocks[i].value >= MINE) {
+            blocks[i].state = REVEALED;
+        }
+    }
+
+    draw_board();
+    window.display();
+    
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    sf::Event event;
+    while(window.waitEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+        if (event.type == sf::Event::MouseButtonPressed) {
+            window.close();
+        }
+    }
     return 0;
 }
