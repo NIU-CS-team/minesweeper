@@ -30,9 +30,19 @@ std::pair<game_action, int> SFML::mouse_input() {
             window.close();
         }
         if (event.type == sf::Event::MouseButtonPressed) {
+            block target_block = get_block(mouse_pos.x, mouse_pos.y);
             if (event.mouseButton.button == sf::Mouse::Left) {
+                reveal(blocks[target_block.index]);
+                return {REVEAL, target_block.index};
             }
             if (event.mouseButton.button == sf::Mouse::Right) {
+                if(blocks[target_block.index].state == HIDDEN) {
+                    flagged(blocks[target_block.index]);
+                    return {FLAG, target_block.index};
+                } else if(blocks[target_block.index].state == FLAGGED) {
+                    remove_flagged(blocks[target_block.index]);
+                    return {REMOVE_FLAG, target_block.index};
+                }
             }
         }
     }
