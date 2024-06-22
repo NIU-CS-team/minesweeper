@@ -125,6 +125,12 @@ int Board::reveal(block target_block) {
     if (target_block.state != REVEALED) {
         return 0;
     }
+    if(target_block.value >= MINE){
+        this->status = LOST;
+        show_all_mine();
+
+        return 0;
+    }
 
     int n_flagged = 0;
     for (int i = -1; i <= 1; i++) {
