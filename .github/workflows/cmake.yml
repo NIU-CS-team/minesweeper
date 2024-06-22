@@ -2,9 +2,9 @@ name: CMake
 
 on:
   push:
-    branches: [ "master" , "lcd" ]
+    branches: [ "master" , "sfml" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master" , "sfml" ]
 
 env:
   BUILD_TYPE: Release
@@ -45,4 +45,3 @@ jobs:
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
