@@ -76,16 +76,38 @@ int Board::show_all_mine() {
 
 int Board::get_input() {
     int x, y;
-    while (1) {
-        std::cout << "Please enter the x and y coordinates of the block you "
-                     "want to reveal: ";
-        std::cin >> x >> y;
-        if (x < 0 || x >= row || y < 0 || y >= col) {
-            std::cout << "Invalid input, please try again.\n";
-            continue;
-        }
+    char action;
 
-        break;
+    while (1) {
+        std::cout << "Please enter r or f you want to reveal or flag call: ";
+        std::cin >> action;
+        if (action == 'r') {
+            std::cout << "Please enter the x and y coordinates of the block you "
+                   "want to reveal: ";
+            std::cin >> x >> y;
+            if (x < 0 || x >= row || y < 0 || y >= col) {
+                std::cout << "Invalid input, please try again.\n";
+                continue;
+            }
+            reveal(blocks[y * row + x]);
+            break;
+        }
+        if (action == 'f') {
+            std::cout << "Please enter the x and y coordinates of the block you "
+                   "want to flag call: ";
+            std::cin >> x >> y;
+            if (x < 0 || x >= row || y < 0 || y >= col) {
+                std::cout << "Invalid input, please try again.\n";
+                continue;
+            }
+            if (blocks[y * row + x].state == FLAGGED) {
+                remove_flagged(blocks[y * row + x]);
+            } else {
+                flagged(blocks[y * row + x]);
+            }
+            break;
+        }
+        std::cout << "Invalid input, please try again.\n";
     }
 
     return y * row + x;
