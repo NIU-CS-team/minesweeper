@@ -73,7 +73,6 @@ int Board::show_all_mine() {
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
         end_time - start_time);
     std::cout << "\nEnd time: (" << duration.count() / 1000000 << "s)\n";
-    status = LOST;
     return 0;
 }
 
