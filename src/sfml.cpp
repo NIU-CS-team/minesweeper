@@ -92,6 +92,8 @@ block SFML::get_block() {
 }
 
 int SFML::play_single() {
+    init_block();
+    generate_mines();
     while (window.isOpen() && status == PLAYING) {
         window.clear(sf::Color::White);
         draw_board();
