@@ -31,6 +31,28 @@ int SFML::init_block() {
     return 0; 
 }
 
+int SFML::draw_board() {
+    for (int i = 0; i < row * col; i++) {
+        if (blocks[i].state == REVEALED) {
+            if (blocks[i].value != MINE || blocks[i].value != EMPTY) {
+                int sprite_pos = (blocks[i].value - 1) * 17;
+                sprite.setTextureRect(sf::IntRect(sprite_pos, 68, 16, 16));
+            } else if(blocks[i].value == MINE) {
+                sprite.setTextureRect(sf::IntRect(85, 51, 16, 16));
+            } else {
+                sprite.setTextureRect(sf::IntRect(17, 51, 16, 16));
+            }
+        } else if (blocks[i].state == FLAGGED) {
+            sprite.setTextureRect(sf::IntRect(34, 51, 16, 16));
+        } else {
+            sprite.setTextureRect(sf::IntRect(0, 51, 16, 16));
+        }
+        sprite.setPosition(blocks[i].gl_x, blocks[i].gl_y);
+        window.draw(sprite);
+    }
+
+    return 0;
+}
 
 std::pair<game_action, int> SFML::mouse_input() {
     sf::Event event;
