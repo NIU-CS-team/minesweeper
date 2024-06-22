@@ -15,7 +15,8 @@ private:
     sf::Texture texture;
     sf::Sprite sprite;
 
-    int mouse_input();
+    std::pair<game_action, int> mouse_input();
+
 public:
     int init();
 };

@@ -21,7 +21,7 @@ int SFML::init() {
     return 0;
 }
 
-int SFML::mouse_input() {
+std::pair<game_action, int> SFML::mouse_input() {
     sf::Event event;
     sf::Vector2i mouse_pos = sf::Mouse::getPosition(window);
 
@@ -37,5 +37,5 @@ int SFML::mouse_input() {
         }
     }
 
-    return 0;
+    return {NONE, -1};
 }
