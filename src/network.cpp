@@ -17,7 +17,7 @@ int Network::recv_data(int &socket_fd, char *buffer, std::pair<game_action, int>
         return MESSENGE_RECV_ERROR;
     }
 
-    std::memcpy(data, buffer, sizeof(data));
+    std::memcpy(data, buffer, sizeof(*data));
     if (data->first == REVEAL) {
         reveal(blocks[data->second]);
     } else if (data->first == FLAG) {
