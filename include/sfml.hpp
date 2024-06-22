@@ -16,6 +16,7 @@ private:
     sf::Sprite sprite;
 
     std::pair<game_action, int> mouse_input();
+    block get_block(double x, double y);
 
 public:
     int init();

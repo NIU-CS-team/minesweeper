@@ -39,3 +39,7 @@ std::pair<game_action, int> SFML::mouse_input() {
 
     return {NONE, -1};
 }
+
+block SFML::get_block(double x, double y) {
+    return blocks[0];
+}
