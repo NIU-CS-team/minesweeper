@@ -143,8 +143,8 @@ int Board::print_board() {
     return 0;
 }
 
-int Board::reveal(block target_block) {
-    if (target_block.state != REVEALED) {
+int Board::reveal(block& target_block) {
+    if (target_block.state != HIDDEN) {
         return 0;
     }
     if (target_block.value >= MINE) {
@@ -153,6 +153,9 @@ int Board::reveal(block target_block) {
 
         return 0;
     }
+
+    target_block.state = REVEALED;
+    this->n_revealed++;
 
     int n_flagged = 0;
     for (int i = -1; i <= 1; i++) {
