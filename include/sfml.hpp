@@ -6,7 +6,7 @@
 
 #include "board.h"
 
-enum game_action { REVEAL, FLAG, REMOVE_FLAG };
+enum game_action { REVEAL, FLAG, REMOVE_FLAG, NONE };
 
 class SFML : public Board {
 private:
