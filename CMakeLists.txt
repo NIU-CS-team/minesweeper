@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 23)
 
 include_directories(./include)
 
-find_package(SFML 2.6 COMPONENTS graphics audio REQUIRED)
+find_package(SFML COMPONENTS graphics audio REQUIRED)
 
 set(LIB_LINKS
     sfml-graphics
