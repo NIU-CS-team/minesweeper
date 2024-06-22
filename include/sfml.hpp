@@ -9,13 +9,14 @@
 enum game_action { REVEAL, FLAG, REMOVE_FLAG };
 
 class SFML : public Board {
-public:
+private:
     sf::RenderWindow window;
     sf::Font font;
     sf::Texture texture;
     sf::Sprite sprite;
 
-    int init();
     int mouse_input();
+public:
+    int init();
 };
 #endif
