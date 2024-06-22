@@ -21,14 +21,14 @@ int SFML::init() {
     return 0;
 }
 
-int SFML::init_block() { 
+int SFML::init_block() {
     int pos = std::max(window.getSize().x / row, window.getSize().y / col);
-    for(block& block : blocks){
+    for (block& block : blocks) {
         block.gl_x = block.index % col * pos;
         block.gl_y = block.index / col * pos;
     }
 
-    return 0; 
+    return 0;
 }
 
 int SFML::draw_board() {
@@ -37,7 +37,7 @@ int SFML::draw_board() {
             if (blocks[i].value != MINE || blocks[i].value != EMPTY) {
                 int sprite_pos = (blocks[i].value - 1) * 17;
                 sprite.setTextureRect(sf::IntRect(sprite_pos, 68, 16, 16));
-            } else if(blocks[i].value == MINE) {
+            } else if (blocks[i].value == MINE) {
                 sprite.setTextureRect(sf::IntRect(85, 51, 16, 16));
             } else {
                 sprite.setTextureRect(sf::IntRect(17, 51, 16, 16));
@@ -56,7 +56,6 @@ int SFML::draw_board() {
 
 std::pair<game_action, int> SFML::mouse_input() {
     sf::Event event;
-    sf::Vector2i mouse_pos = sf::Mouse::getPosition(window);
 
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
@@ -69,10 +68,10 @@ std::pair<game_action, int> SFML::mouse_input() {
                 return {REVEAL, target_block.index};
             }
             if (event.mouseButton.button == sf::Mouse::Right) {
-                if(blocks[target_block.index].state == HIDDEN) {
+                if (blocks[target_block.index].state == HIDDEN) {
                     flagged(blocks[target_block.index]);
                     return {FLAG, target_block.index};
-                } else if(blocks[target_block.index].state == FLAGGED) {
+                } else if (blocks[target_block.index].state == FLAGGED) {
                     remove_flagged(blocks[target_block.index]);
                     return {REMOVE_FLAG, target_block.index};
                 }
