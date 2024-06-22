@@ -12,6 +12,8 @@ Board::Board(int row, int col, int n_mines)
     for (auto& i : blocks) {
         i.index = &i - &blocks[0];
     }
+
+    start_time = std::chrono::system_clock::now();
 }
 
 Board::~Board() {}
@@ -54,6 +56,7 @@ int Board::clear() {
 }
 
 int Board::show_all_mine() {
+    system("clear");
     end_time = std::chrono::system_clock::now();
     for (std::size_t i = 0; i < blocks.size(); ++i) {
         if (i % row == 0) {
@@ -69,7 +72,7 @@ int Board::show_all_mine() {
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
         end_time - start_time);
-    std::cout << "End time: (" << duration.count() / 1000000 << "s)\n";
+    std::cout << "\nEnd time: (" << duration.count() / 1000000 << "s)\n";
     status = LOST;
     return 0;
 }
@@ -110,15 +113,15 @@ int Board::get_input() {
         std::cout << "Invalid input, please try again.\n";
     }
 
-    return y * row + x;
+    return 0;
 }
 
 int Board::start_game() {
-    while (status == PLAYING) {
+    generate_mines();
+    while (this->status == PLAYING) {
         system("clear");
         print_board();
-        block target_block = blocks[get_input()];
-        reveal(target_block);
+        get_input();
         check_win();
     }
 
