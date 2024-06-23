@@ -1,8 +1,8 @@
 #include "sfml.hpp"
 
 int SFML::init() {
-    int window_size = 16 * SIZE;
-    window.create(sf::VideoMode(row * window_size, col * window_size), "Minesweeper");
+    int window_scale = 16 * blockScale;
+    window.create(sf::VideoMode(row * window_scale, col * window_scale), "Minesweeper");
     window.setFramerateLimit(60);
 
     if (!window.isOpen()) {
@@ -24,7 +24,7 @@ int SFML::init() {
 
 int SFML::init_block() {
     int pos = std::min(window.getSize().x / row, window.getSize().y / col);
-    sprite.setScale(SIZE, SIZE);
+    sprite.setScale(blockScale, blockScale);
     for (block& block : blocks) {
         block.gl_x = block.index % row * pos;
         block.gl_y = block.index / row * pos;
