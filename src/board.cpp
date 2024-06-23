@@ -12,8 +12,6 @@ Board::Board(int row, int col, int n_mines)
     for (auto& i : blocks) {
         i.index = &i - &blocks[0];
     }
-
-    start_time = std::chrono::system_clock::now();
 }
 
 Board::~Board() {}
@@ -154,9 +152,9 @@ int Board::reveal(block& target_block) {
     }
 
     if (first_move){
+        start_time = std::chrono::system_clock::now();
         if (target_block.value >= block::MINE) {
             generate_mines();
-            start_time = std::chrono::system_clock::now();
             reveal(target_block);
             return 0;
         } else {
