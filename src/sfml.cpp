@@ -117,12 +117,18 @@ int SFML::end_game() {
         end_time - start_time);
     std::cout << "End time: (" << duration.count() / 1000000 << "."
               << duration.count() % 1000000 << "s)\n";
-
-    for (int i = 0; i < row * col; i++) {
-        if (blocks[i].value >= MINE) {
-            blocks[i].state = REVEALED;
+    
+    if(status == WON) {
+        std::cout << "You won!" << std::endl;
+    } else {
+        std::cout << "You lost!" << std::endl;
+        for (int i = 0; i < row * col; i++) {
+            if (blocks[i].value >= MINE) {
+                blocks[i].state = REVEALED;
+            }
         }
     }
+    
 
     draw_board();
     window.display();
