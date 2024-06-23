@@ -34,17 +34,17 @@ int SFML::init_block() {
 
 int SFML::draw_board() {
     for (int i = 0; i < row * col; i++) {
-        if (blocks[i].state == REVEALED) {
-            if (blocks[i].value >= MINE) {
+        if (blocks[i].state == block::REVEALED) {
+            if (blocks[i].value >= block::MINE) {
                 sprite.setTextureRect(sf::IntRect(85, 51, 16, 16));
-            } else if (blocks[i].value != MINE || blocks[i].value != EMPTY) {
+            } else if (blocks[i].value != block::MINE || blocks[i].value != block::EMPTY) {
                 int sprite_pos = (blocks[i].value - 1) * 17;
                 sprite.setTextureRect(sf::IntRect(sprite_pos, 68, 16, 16));
             } else {
                 sprite.setTextureRect(sf::IntRect(17, 51, 16, 16));
             }
-        } else if (blocks[i].state == FLAGGED) {
-            if(status == LOST && blocks[i].value != MINE) {
+        } else if (blocks[i].state == block::FLAGGED) {
+            if(status == LOST && blocks[i].value != block::MINE) {
                 sprite.setTextureRect(sf::IntRect(119, 51, 16, 16));
             } else {
                 sprite.setTextureRect(sf::IntRect(34, 51, 16, 16));
@@ -73,10 +73,10 @@ std::pair<game_action, int> SFML::mouse_input() {
                 return {REVEAL, target_block.index};
             }
             if (event.mouseButton.button == sf::Mouse::Right) {
-                if (blocks[target_block.index].state == HIDDEN) {
+                if (blocks[target_block.index].state == block::HIDDEN) {
                     flagged(blocks[target_block.index]);
                     return {FLAG, target_block.index};
-                } else if (blocks[target_block.index].state == FLAGGED) {
+                } else if (blocks[target_block.index].state == block::FLAGGED) {
                     remove_flagged(blocks[target_block.index]);
                     return {REMOVE_FLAG, target_block.index};
                 }
@@ -123,8 +123,8 @@ int SFML::end_game() {
     } else {
         std::cout << "You lost!" << std::endl;
         for (int i = 0; i < row * col; i++) {
-            if (blocks[i].value >= MINE) {
-                blocks[i].state = REVEALED;
+            if (blocks[i].value >= block::MINE) {
+                blocks[i].state = block::REVEALED;
             }
         }
     }

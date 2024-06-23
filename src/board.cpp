@@ -25,7 +25,7 @@ int Board::generate_mines() {
     std::uniform_int_distribution<int> dis(0, this->row * this->col - 1);
     for (int i = 0; i < this->n_mines; i++) {
         int rand = dis(gen);
-        if (this->blocks[rand].value >= MINE) {
+        if (this->blocks[rand].value >= block::MINE) {
             i--;
             continue;
         }
@@ -38,7 +38,7 @@ int Board::generate_mines() {
             for (int k = -1; k <= 1; k++) {
                 if (rand % row == 0 && k == -1) continue;
                 if (rand % row == row - 1 && k == 1) continue;
-                if (this->blocks[rand + j * row + k].value < MINE) {
+                if (this->blocks[rand + j * row + k].value < block::MINE) {
                     this->blocks[rand + j * row + k].value++;
                 }
             }
@@ -50,7 +50,7 @@ int Board::generate_mines() {
 int Board::clear() {
     for (auto& i : blocks) {
         i.value = 0;
-        i.state = HIDDEN;
+        i.state = block::HIDDEN;
     }
 
     return 0;
@@ -64,7 +64,7 @@ int Board::show_all_mine() {
             std::cout << std::endl;
         }
 
-        if (blocks[i].value >= MINE) {
+        if (blocks[i].value >= block::MINE) {
             std::cout << "M ";
         } else {
             std::cout << blocks[i].value << " ";
@@ -105,7 +105,7 @@ int Board::get_input() {
                 std::cout << "Invalid input, please try again.\n";
                 continue;
             }
-            if (blocks[y * row + x].state == FLAGGED) {
+            if (blocks[y * row + x].state == block::FLAGGED) {
                 remove_flagged(blocks[y * row + x]);
             } else {
                 flagged(blocks[y * row + x]);
@@ -132,9 +132,9 @@ int Board::start_game() {
 
 int Board::print_board() {
     for (int i = 0; i < row * col; i++) {
-        if (blocks[i].state == HIDDEN) {
+        if (blocks[i].state == block::HIDDEN) {
             std::cout << "X ";
-        } else if (blocks[i].state == REVEALED) {
+        } else if (blocks[i].state == block::REVEALED) {
             std::cout << blocks[i].value << " ";
         } else {
             std::cout << "F ";
@@ -149,12 +149,12 @@ int Board::print_board() {
 }
 
 int Board::reveal(block& target_block) {
-    if (target_block.state == FLAGGED) {
+    if (target_block.state == block::FLAGGED) {
         return 0;
     }
 
     if (first_move){
-        if (target_block.value >= MINE) {
+        if (target_block.value >= block::MINE) {
             generate_mines();
             start_time = std::chrono::system_clock::now();
             reveal(target_block);
@@ -164,18 +164,18 @@ int Board::reveal(block& target_block) {
         }
     }
 
-    if (target_block.value >= MINE) {
+    if (target_block.value >= block::MINE) {
         this->status = LOST;
         show_all_mine();
 
         return 0;
     }
 
-    bool fast = target_block.state == REVEALED;
+    bool fast = target_block.state == block::REVEALED;
     if (!fast) {
-        target_block.state = REVEALED;
+        target_block.state = block::REVEALED;
         this->n_revealed++;
-        if (target_block.value != EMPTY) return 0;
+        if (target_block.value != block::EMPTY) return 0;
     }
 
 
@@ -194,7 +194,7 @@ int Board::reveal(block& target_block) {
             block& block = this->blocks[target_block.index + i * this->row + j];
             if(!fast) {
                 reveal(block);
-            } else if(block.state == FLAGGED) {
+            } else if(block.state == block::FLAGGED) {
                 n_flagged++;
             }
         }
@@ -212,7 +212,7 @@ int Board::reveal(block& target_block) {
                 if (i == 0 && j == 0) continue;
 
                 block& block = this->blocks[target_block.index + i * this->row + j];
-                if (block.state == HIDDEN) {
+                if (block.state == block::HIDDEN) {
                     reveal(block);
                 }
             }
@@ -224,13 +224,13 @@ int Board::reveal(block& target_block) {
 
 int Board::flagged(block& target_block) {
     this->n_flags++;
-    blocks[target_block.index].state = FLAGGED;
+    blocks[target_block.index].state = block::FLAGGED;
     return 0;
 }
 
 int Board::remove_flagged(block& target_block) {
     this->n_flags--;
-    blocks[target_block.index].state = HIDDEN;
+    blocks[target_block.index].state = block::HIDDEN;
     return 0;
 }
 
