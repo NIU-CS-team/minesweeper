@@ -6,6 +6,7 @@
 #include <thread>
 
 #include "board.h"
+#include "config.h"
 
 enum game_action { REVEAL, FLAG, REMOVE_FLAG, NONE };
 
