@@ -97,7 +97,7 @@ block SFML::get_block() {
     int x = pos.x / (window.getSize().x / row);
     int y = pos.y / (window.getSize().y / col);
 
-    return blocks[x + y * col];
+    return blocks[x + y * row];
 }
 
 int SFML::play_single() {
