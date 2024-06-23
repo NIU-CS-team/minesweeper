@@ -10,7 +10,8 @@
 #include "board.h"
 
 std::mutex g_mutex;
-int Network::recv_data(int &socket_fd, char *buffer, std::pair<game_action, int> *data) {
+int Network::recv_data(int &socket_fd, char *buffer,
+                       std::pair<game_action, int> *data) {
     std::lock_guard<std::mutex> lock(g_mutex);
     if (recv(socket_fd, buffer, sizeof(data), 0) <= 0) {
         close(socket_fd);

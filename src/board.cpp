@@ -151,7 +151,7 @@ int Board::reveal(block& target_block) {
         return 0;
     }
 
-    if (first_move){
+    if (first_move) {
         start_time = std::chrono::system_clock::now();
         if (target_block.value >= block::MINE) {
             generate_mines();
@@ -176,7 +176,6 @@ int Board::reveal(block& target_block) {
         if (target_block.value != block::EMPTY) return 0;
     }
 
-
     int n_flagged = 0;
     for (int i = -1; i <= 1; i++) {
         if (target_block.index < this->row && i == -1) continue;
@@ -190,9 +189,9 @@ int Board::reveal(block& target_block) {
             if (i == 0 && j == 0) continue;
 
             block& block = this->blocks[target_block.index + i * this->row + j];
-            if(!fast) {
+            if (!fast) {
                 reveal(block);
-            } else if(block.state == block::FLAGGED) {
+            } else if (block.state == block::FLAGGED) {
                 n_flagged++;
             }
         }
@@ -209,7 +208,8 @@ int Board::reveal(block& target_block) {
                     continue;
                 if (i == 0 && j == 0) continue;
 
-                block& block = this->blocks[target_block.index + i * this->row + j];
+                block& block =
+                    this->blocks[target_block.index + i * this->row + j];
                 if (block.state == block::HIDDEN) {
                     reveal(block);
                 }

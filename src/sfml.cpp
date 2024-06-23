@@ -48,7 +48,7 @@ int SFML::draw_board() {
                 sprite.setTextureRect(sf::IntRect(17, 51, 16, 16));
             }
         } else if (blocks[i].state == block::FLAGGED) {
-            if(status == LOST && blocks[i].value != block::MINE) {
+            if (status == LOST && blocks[i].value != block::MINE) {
                 sprite.setTextureRect(sf::IntRect(119, 51, 16, 16));
             } else {
                 sprite.setTextureRect(sf::IntRect(34, 51, 16, 16));
@@ -121,8 +121,8 @@ int SFML::end_game() {
         end_time - start_time);
     std::cout << "End time: (" << duration.count() / 1000000 << "."
               << duration.count() % 1000000 << "s)\n";
-    
-    if(status == WON) {
+
+    if (status == WON) {
         std::cout << "You won!" << std::endl;
     } else {
         std::cout << "You lost!" << std::endl;
@@ -132,14 +132,13 @@ int SFML::end_game() {
             }
         }
     }
-    
 
     draw_board();
     window.display();
-    
+
     std::this_thread::sleep_for(std::chrono::seconds(1));
     sf::Event event;
-    while(window.waitEvent(event)) {
+    while (window.waitEvent(event)) {
         if (event.type == sf::Event::Closed) {
             window.close();
         }

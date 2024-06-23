@@ -43,8 +43,10 @@ public:
     int client(const char *ip);
     int send_data(int &socket_fd, std::pair<game_action, int> data);
     int close_socket(int &socket_fd);
+
 private:
-    int recv_data(int &socket_fd, char *buffer, std::pair<game_action, int> *data);
+    int recv_data(int &socket_fd, char *buffer,
+                  std::pair<game_action, int> *data);
 };
 
 #endif
