@@ -44,7 +44,11 @@ int SFML::draw_board() {
                 sprite.setTextureRect(sf::IntRect(17, 51, 16, 16));
             }
         } else if (blocks[i].state == FLAGGED) {
-            sprite.setTextureRect(sf::IntRect(34, 51, 16, 16));
+            if(status == LOST && blocks[i].value != MINE) {
+                sprite.setTextureRect(sf::IntRect(119, 51, 16, 16));
+            } else {
+                sprite.setTextureRect(sf::IntRect(34, 51, 16, 16));
+            }
         } else {
             sprite.setTextureRect(sf::IntRect(0, 51, 16, 16));
         }
