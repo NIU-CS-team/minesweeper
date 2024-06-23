@@ -19,6 +19,7 @@ Board::Board(int row, int col, int n_mines)
 Board::~Board() {}
 
 int Board::generate_mines() {
+    this->clear();
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dis(0, this->row * this->col - 1);
