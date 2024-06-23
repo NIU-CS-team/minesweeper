@@ -36,7 +36,11 @@ int SFML::draw_board() {
     for (int i = 0; i < row * col; i++) {
         if (blocks[i].state == block::REVEALED) {
             if (blocks[i].value >= block::MINE) {
-                sprite.setTextureRect(sf::IntRect(85, 51, 16, 16));
+                if (get_block().index == i && status == LOST) {
+                    sprite.setTextureRect(sf::IntRect(102, 51, 16, 16));
+                } else {
+                    sprite.setTextureRect(sf::IntRect(85, 51, 16, 16));
+                }
             } else if (blocks[i].value != block::MINE || blocks[i].value != block::EMPTY) {
                 int sprite_pos = (blocks[i].value - 1) * 17;
                 sprite.setTextureRect(sf::IntRect(sprite_pos, 68, 16, 16));
