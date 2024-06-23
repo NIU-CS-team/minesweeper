@@ -41,7 +41,7 @@ int SFML::draw_board() {
                 } else {
                     sprite.setTextureRect(sf::IntRect(85, 51, 16, 16));
                 }
-            } else if (blocks[i].value != block::MINE || blocks[i].value != block::EMPTY) {
+            } else if (blocks[i].value != block::EMPTY) {
                 int sprite_pos = (blocks[i].value - 1) * 17;
                 sprite.setTextureRect(sf::IntRect(sprite_pos, 68, 16, 16));
             } else {
