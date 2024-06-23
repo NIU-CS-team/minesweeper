@@ -84,7 +84,8 @@ int Board::get_input() {
         std::cout << "Please enter r or f you want to reveal or flag call: ";
         std::cin >> action;
         if (action == 'r') {
-            std::cout << "Please enter the x and y coordinates of the block you "
+            std::cout
+                << "Please enter the x and y coordinates of the block you "
                    "want to reveal: ";
             std::cin >> x >> y;
             if (x < 0 || x >= row || y < 0 || y >= col) {
@@ -95,7 +96,8 @@ int Board::get_input() {
             break;
         }
         if (action == 'f') {
-            std::cout << "Please enter the x and y coordinates of the block you "
+            std::cout
+                << "Please enter the x and y coordinates of the block you "
                    "want to flag call: ";
             std::cin >> x >> y;
             if (x < 0 || x >= row || y < 0 || y >= col) {
@@ -146,9 +148,10 @@ int Board::print_board() {
 }
 
 int Board::reveal(block& target_block) {
-    if (target_block.state != HIDDEN) {
+    if (target_block.state == FLAGGED) {
         return 0;
     }
+
     if (target_block.value >= MINE) {
         this->status = LOST;
         show_all_mine();
@@ -156,8 +159,13 @@ int Board::reveal(block& target_block) {
         return 0;
     }
 
-    target_block.state = REVEALED;
-    this->n_revealed++;
+    bool fast = target_block.state == REVEALED;
+    if (!fast) {
+        target_block.state = REVEALED;
+        this->n_revealed++;
+        if (target_block.value != EMPTY) return 0;
+    }
+
 
     int n_flagged = 0;
     for (int i = -1; i <= 1; i++) {
@@ -171,14 +179,15 @@ int Board::reveal(block& target_block) {
                 continue;
             if (i == 0 && j == 0) continue;
 
-            if (this->blocks[target_block.index + i * this->row + j].state ==
-                FLAGGED) {
+            block& block = this->blocks[target_block.index + i * this->row + j];
+            if(!fast) {
+                reveal(block);
+            } else if(block.state == FLAGGED) {
                 n_flagged++;
             }
         }
     }
-
-    if (n_flagged == target_block.value) {
+    if (fast && n_flagged == target_block.value) {
         for (int i = -1; i <= 1; i++) {
             if (target_block.index < this->row && i == -1) continue;
             if (target_block.index >= this->row * (this->col - 1) && i == 1)
@@ -190,10 +199,9 @@ int Board::reveal(block& target_block) {
                     continue;
                 if (i == 0 && j == 0) continue;
 
-                if (this->blocks[target_block.index + i * this->row + j]
-                        .state == HIDDEN) {
-                    reveal(
-                        this->blocks[target_block.index + i * this->row + j]);
+                block& block = this->blocks[target_block.index + i * this->row + j];
+                if (block.state == HIDDEN) {
+                    reveal(block);
                 }
             }
         }
