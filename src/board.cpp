@@ -152,6 +152,17 @@ int Board::reveal(block& target_block) {
         return 0;
     }
 
+    if (first_move){
+        if (target_block.value >= MINE) {
+            generate_mines();
+            start_time = std::chrono::system_clock::now();
+            reveal(target_block);
+            return 0;
+        } else {
+            first_move = false;
+        }
+    }
+
     if (target_block.value >= MINE) {
         this->status = LOST;
         show_all_mine();
