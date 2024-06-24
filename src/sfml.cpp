@@ -95,7 +95,11 @@ std::pair<SFML::game_action, int> SFML::mouse_input() {
 
 int SFML::get_block() {
     sf::Vector2i pos = sf::Mouse::getPosition(window);
-    if (pos.y < 60){
+    if (pos.y < 60) {
+        if(pos.x > window.getSize().x / 2 - 26 && pos.x < window.getSize().x / 2 + 26) {
+            clear();
+            play_single();
+        }
         return -1;
     }
 
@@ -149,6 +153,7 @@ int SFML::end_game() {
             window.close();
         }
         if (event.type == sf::Event::MouseButtonPressed) {
+            get_block();
             window.close();
         }
     }
