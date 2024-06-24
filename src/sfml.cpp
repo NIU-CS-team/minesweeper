@@ -37,7 +37,7 @@ int SFML::draw_board() {
     for (int i = 0; i < row * col; i++) {
         if (blocks[i].state == block::REVEALED) {
             if (blocks[i].value >= block::MINE) {
-                if (get_block().index == i && status == LOST) {
+                if (get_block() == i && status == LOST) {
                     sprite.setTextureRect(sf::IntRect(102, 51, 16, 16));
                 } else {
                     sprite.setTextureRect(sf::IntRect(85, 51, 16, 16));
@@ -72,7 +72,7 @@ std::pair<game_action, int> SFML::mouse_input() {
             window.close();
         }
         if (event.type == sf::Event::MouseButtonPressed) {
-            block target_block = get_block();
+            block target_block = blocks[get_block()];
             if (event.mouseButton.button == sf::Mouse::Left) {
                 reveal(blocks[target_block.index]);
                 return {REVEAL, target_block.index};
@@ -89,12 +89,12 @@ std::pair<game_action, int> SFML::mouse_input() {
     return {NONE, -1};
 }
 
-block SFML::get_block() {
+int SFML::get_block() {
     sf::Vector2i pos = sf::Mouse::getPosition(window);
     int x = pos.x / (window.getSize().x / row);
     int y = (pos.y - 50) / ((window.getSize().y - 50) / col);
 
-    return blocks[x + y * row];
+    return x + y * row;
 }
 
 int SFML::play_single() {
