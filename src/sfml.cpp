@@ -1,34 +1,30 @@
 #include "sfml.hpp"
 
-int SFML::init() {
+SFML::SFML(int row, int col, int mines) : Board(row, col, mines) {
     int window_scale = 16 * blockScale;
     window.create(sf::VideoMode(row * window_scale, col * window_scale + 60), "Minesweeper");
     window.setFramerateLimit(60);
 
     if (!window.isOpen()) {
         std::cerr << "Failed to create window" << std::endl;
-        return -1;
     }
     if (!font.loadFromFile("../font/Cubic_11_1.100_R.ttf")) {
         std::cerr << "Failed to load font" << std::endl;
-        return -1;
     }
     if (!texture.loadFromFile("../image/spritesheet.png")) {
         std::cerr << "Failed to load texture" << std::endl;
-        return -1;
     }
     sprite.setTexture(texture);
+    sprite.setScale(blockScale, blockScale);
+
     face.setTexture(texture);
     face.setScale(blockScale, blockScale);
     face.setPosition(window.getSize().x / 2 - 26, 4);
     face.setTextureRect(sf::IntRect(0, 24, 26, 26));
-
-    return 0;
 }
 
 int SFML::init_block() {
     int pos = std::min(window.getSize().x / row, window.getSize().y / col);
-    sprite.setScale(blockScale, blockScale);
     for (block& block : blocks) {
         block.gl_x = block.index % row * pos;
         block.gl_y = block.index / row * pos + 60;

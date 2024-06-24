@@ -13,8 +13,7 @@ class SFML : public Board {
 public:
     enum game_action { REVEAL, FLAG, NONE };
 
-    SFML(int row, int col, int mines) : Board(row, col, mines) {};
-    int init();
+    SFML(int row, int col, int mines);
     int play_single();
     
 private:
