@@ -82,18 +82,17 @@ std::pair<SFML::game_action, int> SFML::mouse_input() {
             if (index < 0 || index >= row * col) {
                 break;
             }
-            block target_block = blocks[index];
             if (event.mouseButton.button == sf::Mouse::Left) {
                 face.setTextureRect(sf::IntRect(54, 24, 26, 26));
                 window.draw(face);
-                reveal(blocks[target_block.index]);
-                action = {SFML::REVEAL, target_block.index};
+                reveal(blocks[index]);
+                action = {SFML::REVEAL, index};
             }
             if (event.mouseButton.button == sf::Mouse::Right) {
-                if (blocks[target_block.index].state == block::HIDDEN ||
-                    blocks[target_block.index].state == block::FLAGGED) {
-                    flip_flag(blocks[target_block.index]);
-                    action = {SFML::FLAG, target_block.index};
+                if (blocks[index].state == block::HIDDEN ||
+                    blocks[index].state == block::FLAGGED) {
+                    flip_flag(blocks[index]);
+                    action = {SFML::FLAG, index};
                 }
             }
         }
