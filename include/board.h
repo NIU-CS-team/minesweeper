@@ -8,21 +8,22 @@
 
 class Board {
 public:
-    enum game_status { PLAYING, WON, LOST };
-
     Board(int row, int col, int mines);
     ~Board();
 
+    int start_game();
+
+protected:
     int generate_mines();
     int clear();
     int show_all_mine();
     int get_input();
-    int start_game();
     int print_board();
     int reveal(block& target_block);
     int flip_flag(block& target_block);
     int check_win();
 
+    enum game_status { PLAYING, WON, LOST };
     int row = 0;
     int col = 0;
     int n_mines;
