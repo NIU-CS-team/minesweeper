@@ -80,6 +80,7 @@ std::pair<SFML::game_action, int> SFML::mouse_input() {
         if (event.type == sf::Event::MouseButtonPressed) {
             int index = get_block();
             if (index < 0 || index >= row * col) {
+                action.second = index;
                 break;
             }
             if (event.mouseButton.button == sf::Mouse::Left) {
@@ -113,8 +114,7 @@ int SFML::get_block() {
             face.setTextureRect(sf::IntRect(27, 24, 26, 26));
             window.draw(face);
 
-            clear();
-            play_single();
+            return -2;
         }
         return -1;
     }
@@ -132,7 +132,10 @@ int SFML::play_single() {
         window.clear(sf::Color::White);
         draw_board();
 
-        mouse_input();
+        if (mouse_input().second == -2) {
+            clear();
+            generate_mines();
+        }
         window.display();
         check_win();
     }
@@ -169,7 +172,11 @@ int SFML::end_game() {
             window.close();
         }
         if (event.type == sf::Event::MouseButtonPressed) {
-            get_block();
+            if (get_block() == -2) {
+                clear();
+                play_single();
+                break;
+            }
             window.close();
         }
     }
