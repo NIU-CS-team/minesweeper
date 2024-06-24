@@ -92,7 +92,7 @@ std::pair<SFML::game_action, int> SFML::mouse_input() {
 int SFML::get_block() {
     sf::Vector2i pos = sf::Mouse::getPosition(window);
     int x = pos.x / (window.getSize().x / row);
-    int y = (pos.y - 50) / ((window.getSize().y - 50) / col);
+    int y = (pos.y - 50) / (window.getSize().x / row);
 
     return x + y * row;
 }
