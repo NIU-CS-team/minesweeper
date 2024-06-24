@@ -51,6 +51,9 @@ int Board::clear() {
         i.state = block::HIDDEN;
     }
 
+    this->status = PLAYING;
+    this->n_revealed = 0;
+    this->n_flags = 0;
     return 0;
 }
 
