@@ -64,7 +64,7 @@ int SFML::draw_board() {
     return 0;
 }
 
-std::pair<game_action, int> SFML::mouse_input() {
+std::pair<SFML::game_action, int> SFML::mouse_input() {
     sf::Event event;
 
     while (window.pollEvent(event)) {
@@ -75,18 +75,18 @@ std::pair<game_action, int> SFML::mouse_input() {
             block target_block = blocks[get_block()];
             if (event.mouseButton.button == sf::Mouse::Left) {
                 reveal(blocks[target_block.index]);
-                return {REVEAL, target_block.index};
+                return {SFML::REVEAL, target_block.index};
             }
             if (event.mouseButton.button == sf::Mouse::Right) {
                 if (blocks[target_block.index].state == block::HIDDEN || blocks[target_block.index].state == block::FLAGGED) {
                     flip_flag(blocks[target_block.index]);
-                    return {FLAG, target_block.index};
+                    return {SFML::FLAG, target_block.index};
                 }
             }
         }
     }
 
-    return {NONE, -1};
+    return {SFML::NONE, -1};
 }
 
 int SFML::get_block() {

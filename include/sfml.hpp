@@ -8,9 +8,14 @@
 #include "board.h"
 #include "config.h"
 
-enum game_action { REVEAL, FLAG, NONE };
-
 class SFML : public Board {
+public:
+    enum game_action { REVEAL, FLAG, NONE };
+
+    SFML(int row, int col, int mines) : Board(row, col, mines) {};
+    int init();
+    int play_single();
+    
 private:
     sf::RenderWindow window;
     sf::Font font;
@@ -18,14 +23,9 @@ private:
     sf::Sprite sprite;
 
     int init_block();
-    std::pair<game_action, int> mouse_input();
+    std::pair<SFML::game_action, int> mouse_input();
     int get_block();
     int draw_board();
     int end_game();
-
-public:
-    SFML(int row, int col, int mines) : Board(row, col, mines) {};
-    int init();
-    int play_single();
 };
 #endif
