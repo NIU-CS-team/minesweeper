@@ -2,7 +2,8 @@
 
 SFML::SFML(int row, int col, int mines) : Board(row, col, mines) {
     int window_scale = 16 * blockScale;
-    window.create(sf::VideoMode(row * window_scale, col * window_scale + 60), "Minesweeper");
+    window.create(sf::VideoMode(row * window_scale, col * window_scale + 60),
+                  "Minesweeper");
     window.setFramerateLimit(60);
 
     if (!window.isOpen()) {
@@ -84,8 +85,7 @@ std::pair<SFML::game_action, int> SFML::mouse_input() {
                 window.draw(face);
                 reveal(blocks[index]);
                 action = {SFML::REVEAL, index};
-            }
-            if (event.mouseButton.button == sf::Mouse::Right) {
+            } else if (event.mouseButton.button == sf::Mouse::Right) {
                 if (blocks[index].state == block::HIDDEN ||
                     blocks[index].state == block::FLAGGED) {
                     flip_flag(blocks[index]);
