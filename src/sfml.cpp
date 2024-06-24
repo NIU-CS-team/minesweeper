@@ -2,7 +2,7 @@
 
 int SFML::init() {
     int window_scale = 16 * blockScale;
-    window.create(sf::VideoMode(row * window_scale, col * window_scale), "Minesweeper");
+    window.create(sf::VideoMode(row * window_scale, col * window_scale + 50), "Minesweeper");
     window.setFramerateLimit(60);
 
     if (!window.isOpen()) {
@@ -27,7 +27,7 @@ int SFML::init_block() {
     sprite.setScale(blockScale, blockScale);
     for (block& block : blocks) {
         block.gl_x = block.index % row * pos;
-        block.gl_y = block.index / row * pos;
+        block.gl_y = block.index / row * pos + 50;
     }
 
     return 0;
@@ -95,7 +95,7 @@ std::pair<game_action, int> SFML::mouse_input() {
 block SFML::get_block() {
     sf::Vector2i pos = sf::Mouse::getPosition(window);
     int x = pos.x / (window.getSize().x / row);
-    int y = pos.y / (window.getSize().y / col);
+    int y = (pos.y - 50) / ((window.getSize().y - 50) / col);
 
     return blocks[x + y * row];
 }
