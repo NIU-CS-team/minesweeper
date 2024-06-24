@@ -72,7 +72,11 @@ std::pair<SFML::game_action, int> SFML::mouse_input() {
             window.close();
         }
         if (event.type == sf::Event::MouseButtonPressed) {
-            block target_block = blocks[get_block()];
+            int index = get_block();
+            if  (index < 0 || index >= row * col) {
+                break;
+            }
+            block target_block = blocks[index];
             if (event.mouseButton.button == sf::Mouse::Left) {
                 reveal(blocks[target_block.index]);
                 return {SFML::REVEAL, target_block.index};
@@ -91,6 +95,10 @@ std::pair<SFML::game_action, int> SFML::mouse_input() {
 
 int SFML::get_block() {
     sf::Vector2i pos = sf::Mouse::getPosition(window);
+    if (pos.y < 60){
+        return -1;
+    }
+
     int x = pos.x / (window.getSize().x / row);
     int y = (pos.y - 60) / (window.getSize().x / row);
 
