@@ -7,7 +7,7 @@
 #include "network.h"
 
 int main(int argc, char* argv[]) {
-    SFML game(HEIGHT, WIDTH, MINES);
+    SFML game(WIDTH, HEIGHT, MINES);
     game.init();
     game.play_single();
     return 0;
