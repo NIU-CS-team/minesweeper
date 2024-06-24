@@ -17,6 +17,7 @@ private:
     sf::Texture texture;
     sf::Sprite sprite;
 
+    int init_block();
     std::pair<game_action, int> mouse_input();
     block get_block();
     int draw_board();
@@ -25,7 +26,6 @@ private:
 public:
     SFML(int row, int col, int mines) : Board(row, col, mines) {};
     int init();
-    int init_block();
     int play_single();
 };
 #endif
