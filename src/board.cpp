@@ -54,6 +54,8 @@ int Board::clear() {
     this->status = PLAYING;
     this->n_revealed = 0;
     this->n_flags = 0;
+    this->first_move = true;
+    
     return 0;
 }
 
