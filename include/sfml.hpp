@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <thread>
+#include <mutex>
 
 #include "board.h"
 #include "config.h"
@@ -21,6 +22,7 @@ private:
     sf::Font font;
     sf::Texture texture;
     sf::Sprite sprite;
+    sf::Sprite face;
 
     int init_block();
     std::pair<SFML::game_action, int> mouse_input();
