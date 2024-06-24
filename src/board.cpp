@@ -103,11 +103,11 @@ int Board::get_input() {
                 std::cout << "Invalid input, please try again.\n";
                 continue;
             }
-            if (blocks[y * row + x].state == block::FLAGGED) {
-                remove_flagged(blocks[y * row + x]);
-            } else {
-                flagged(blocks[y * row + x]);
+
+            if (blocks[y * row + x].state == block::FLAGGED || blocks[y * row + x].state == block::HIDDEN) {
+                flip_flag(blocks[y * row + x]);
             }
+
             break;
         }
         std::cout << "Invalid input, please try again.\n";
@@ -220,17 +220,23 @@ int Board::reveal(block& target_block) {
     return 0;
 }
 
-int Board::flagged(block& target_block) {
-    this->n_flags++;
-    blocks[target_block.index].state = block::FLAGGED;
+int Board::flip_flag(block& target_block) {
+    if (target_block.state == block::REVEALED) return 0;
+    if (target_block.state == block::FLAGGED) {
+        blocks[target_block.index].state = block::HIDDEN;
+        this->n_flags--;
+        return 0;
+    }
+
+    if (target_block.state == block::HIDDEN) {
+        if (this->n_flags == this->n_mines) return 0;
+        this->n_flags++;
+        blocks[target_block.index].state = block::FLAGGED;
+    }
+
     return 0;
 }
 
-int Board::remove_flagged(block& target_block) {
-    this->n_flags--;
-    blocks[target_block.index].state = block::HIDDEN;
-    return 0;
-}
 
 int Board::check_win() {
     if (this->n_revealed == row * col - n_mines) {  // win condition

@@ -78,12 +78,9 @@ std::pair<game_action, int> SFML::mouse_input() {
                 return {REVEAL, target_block.index};
             }
             if (event.mouseButton.button == sf::Mouse::Right) {
-                if (blocks[target_block.index].state == block::HIDDEN) {
-                    flagged(blocks[target_block.index]);
+                if (blocks[target_block.index].state == block::HIDDEN || blocks[target_block.index].state == block::FLAGGED) {
+                    flip_flag(blocks[target_block.index]);
                     return {FLAG, target_block.index};
-                } else if (blocks[target_block.index].state == block::FLAGGED) {
-                    remove_flagged(blocks[target_block.index]);
-                    return {REMOVE_FLAG, target_block.index};
                 }
             }
         }

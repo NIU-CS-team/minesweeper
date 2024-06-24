@@ -22,10 +22,9 @@ int Network::recv_data(int &socket_fd, char *buffer,
     if (data->first == REVEAL) {
         reveal(blocks[data->second]);
     } else if (data->first == FLAG) {
-        flagged(blocks[data->second]);
-    } else if (data->first == REMOVE_FLAG) {
-        remove_flagged(blocks[data->second]);
+        flip_flag(blocks[data->second]);
     }
+
     memset(buffer, 0, sizeof(data));
     return SUCESS;
 }

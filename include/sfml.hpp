@@ -8,7 +8,7 @@
 #include "board.h"
 #include "config.h"
 
-enum game_action { REVEAL, FLAG, REMOVE_FLAG, NONE };
+enum game_action { REVEAL, FLAG, NONE };
 
 class SFML : public Board {
 private:
