@@ -164,6 +164,7 @@ int Board::reveal(block& target_block) {
             reveal(target_block);
             return 0;
         } else {
+            system("clear");
             first_move = false;
         }
     }
