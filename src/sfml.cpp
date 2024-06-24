@@ -145,12 +145,6 @@ int SFML::play_single() {
 }
 
 int SFML::end_game() {
-    end_time = std::chrono::system_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
-        end_time - start_time);
-    std::cout << "End time: (" << duration.count() / 1000000 << "."
-              << duration.count() % 1000000 << "s)\n";
-
     if (status == WON) {
         face.setTextureRect(sf::IntRect(81, 24, 26, 26));
     } else {

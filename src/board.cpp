@@ -76,7 +76,8 @@ int Board::show_all_mine() {
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
         end_time - start_time);
-    std::cout << "\nEnd time: (" << duration.count() / 1000000 << "s)\n";
+    std::cout << "\nEnd time: (" << duration.count() / 1000000 << "."
+                  << duration.count() % 100 << "s)\n";
     return 0;
 }
 
@@ -249,7 +250,7 @@ int Board::check_win() {
         auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
             end_time - start_time);
         std::cout << "End time: (" << duration.count() / 1000000 << "."
-                  << duration.count() % 1000000 << "s)\n";
+                  << duration.count() % 100 << "s)\n";
         status = WON;
     }
 
