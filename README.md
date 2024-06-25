@@ -1,6 +1,6 @@
 # Minesweeper
 
-This is a multiplayer minesweeper game made by C++ and OpenGL.
+This is a multiplayer minesweeper game made by C++ and SFML.
 
 ## Installation
 
@@ -12,19 +12,19 @@ This is a multiplayer minesweeper game made by C++ and OpenGL.
 #### Ubuntu
 
 ```bash
-sudo apt install cmake libglfw3-dev libglew-dev freetype2-dev
+sudo apt install cmake libsfml-dev
 ```
 
 #### Fedora
 
 ```bash
-sudo dnf install cmake glfw-devel glew-devel freetype-devel
+sudo dnf install cmake SFML-devel
 ```
 
 #### macOS
 
 ```bash
-brew install cmake glfw glew freetype
+brew install cmake sfml
 ```
 
 ### Build
