@@ -20,6 +20,7 @@ private:
 
     sf::Event event;
     sf::RenderWindow window;
+    sf::Image icon;
     sf::Font font;
     sf::Text title;
     sf::Text difficulty_text;

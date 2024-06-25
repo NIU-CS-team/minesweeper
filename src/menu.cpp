@@ -3,6 +3,8 @@
 
 Menu::Menu() {
     window.create(sf::VideoMode(260, 260), "Minesweeper");
+    icon.loadFromFile("../image/icon/menu.png");
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     if (!font.loadFromFile("../font/Cubic_11_1.100_R.ttf")) {
         std::cerr << "Failed to load font" << std::endl;
     }
