@@ -9,6 +9,13 @@ Menu::Menu() {
     if (!difficulty_texture.loadFromFile("../image/difficulty.png")) {
         std::cerr << "Failed to load difficulty.png" << std::endl;
     }
+
+    title.setFont(font);
+    title.setString("Minesweeper!");
+    title.setCharacterSize(24);
+    title.setPosition(60, 20);
+    title.setFillColor(sf::Color::White);
+
     difficulty_sprite.setTexture(difficulty_texture);
     difficulty_sprite.setScale(2, 2);
 }

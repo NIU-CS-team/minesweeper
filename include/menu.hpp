@@ -16,6 +16,7 @@ private:
     sf::Event event;
     sf::RenderWindow window;
     sf::Font font;
+    sf::Text title;
     sf::Texture difficulty_texture;
     sf::Sprite difficulty_sprite;
 
