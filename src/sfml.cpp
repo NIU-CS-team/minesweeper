@@ -22,6 +22,9 @@ SFML::SFML(int row, int col, int mines) : Board(row, col, mines) {
     face.setScale(blockScale, blockScale);
     face.setPosition(window.getSize().x / 2 - 26, 4);
     face.setTextureRect(sf::IntRect(0, 24, 26, 26));
+
+    number.setTexture(texture);
+    number.setScale(blockScale, blockScale);
 }
 
 int SFML::init_block() {
@@ -61,6 +64,18 @@ int SFML::draw_board() {
         sprite.setPosition(blocks[i].gl_x, blocks[i].gl_y);
         window.draw(sprite);
         window.draw(face);
+    }
+
+    return 0;
+}
+
+int SFML::draw_flag() {
+    int need_flag = n_mines - n_flags;
+    for (int i = 100, digit, j = 0; i; i /= 10, j++) {
+        digit = (need_flag / i + 9) % 10;
+        number.setTextureRect(sf::IntRect(digit * 14, 0, 13, 23));
+        number.setPosition(4 + j * 26, 7);
+        window.draw(number);
     }
 
     return 0;
@@ -127,6 +142,7 @@ int SFML::play_single() {
     while (window.isOpen() && status == PLAYING) {
         window.clear(sf::Color::White);
         draw_board();
+        draw_flag();
 
         if (mouse_input().second == -2) {
             clear();

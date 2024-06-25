@@ -22,11 +22,13 @@ private:
     sf::Texture texture;
     sf::Sprite sprite;
     sf::Sprite face;
+    sf::Sprite number;
 
     int init_block();
     std::pair<SFML::game_action, int> mouse_input();
     int get_block();
     int draw_board();
+    int draw_flag();
     int end_game();
 };
 #endif
