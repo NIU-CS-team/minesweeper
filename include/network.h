@@ -1,18 +1,7 @@
 #ifndef NETWORK_H
 #define NETWORK_H
-#if defined(_WIN32)
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
-#include <Ws2tcpip.h>
-#include <winsock2.h>
 
-#else
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-
-#endif
-
-#include <unistd.h>
+#include <SFML/Network.hpp>
 
 #include "sfml.hpp"
 
@@ -40,13 +29,12 @@ class Network : public SFML {
 public:
     Network(int row, int col, int mines) : SFML(row, col, mines) {};
     int host();
-    int client(const char *ip);
-    int send_data(int &socket_fd, std::pair<game_action, int> data);
-    int close_socket(int &socket_fd);
+    int client();
 
 private:
-    int recv_data(int &socket_fd, char *buffer,
-                  std::pair<game_action, int> *data);
+    int recv_data(int &socket_fd, char *buffer, int size);
+    int send_data(int &socket_fd, const char *buffer, int size);
+    int close_socket(int &socket_fd);
 };
 
 #endif
