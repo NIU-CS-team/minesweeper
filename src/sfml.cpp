@@ -160,7 +160,7 @@ int SFML::play_single() {
     init_block();
     generate_mines();
     while (window.isOpen() && status == PLAYING) {
-        window.clear(sf::Color::White);
+        window.clear(sf::Color::Black);
         draw_board();
         draw_flag();
         draw_time();
