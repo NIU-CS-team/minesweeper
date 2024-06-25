@@ -180,6 +180,11 @@ int SFML::play_single() {
 int SFML::end_game() {
     if (status == WON) {
         face.setTextureRect(sf::IntRect(81, 24, 26, 26));
+        for (int i = 0; i < row * col; i++) {
+            if (blocks[i].value >= block::MINE) {
+                blocks[i].state = block::FLAGGED;
+            }
+        }
     } else {
         face.setTextureRect(sf::IntRect(108, 24, 26, 26));
         for (int i = 0; i < row * col; i++) {
