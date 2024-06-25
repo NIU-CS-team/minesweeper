@@ -81,6 +81,26 @@ int SFML::draw_flag() {
     return 0;
 }
 
+int SFML::draw_time() {
+    std::chrono::duration<double> elapsed_time;
+    if (first_move) {
+        elapsed_time = std::chrono::duration<double>::zero();
+    } else if (status == PLAYING) {
+        elapsed_time = std::chrono::system_clock::now() - start_time;
+    } else {
+        elapsed_time = end_time - start_time;
+    }
+
+    for (int i = 100, digit, j = 3; i; i /= 10, j--) {
+        digit = ((int)elapsed_time.count() / i + 9) % 10;
+        number.setTextureRect(sf::IntRect(digit * 14, 0, 13, 23));
+        number.setPosition(window.getSize().x - 4 - j * 26, 7);
+        window.draw(number);
+    }
+
+    return 0;
+}
+
 std::pair<SFML::game_action, int> SFML::mouse_input() {
     sf::Event event;
     auto action = std::make_pair(SFML::NONE, -1);
@@ -143,12 +163,13 @@ int SFML::play_single() {
         window.clear(sf::Color::White);
         draw_board();
         draw_flag();
+        draw_time();
+        window.display();
 
         if (mouse_input().second == -2) {
             clear();
             generate_mines();
         }
-        window.display();
         check_win();
     }
     end_game();

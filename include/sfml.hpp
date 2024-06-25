@@ -29,6 +29,7 @@ private:
     int get_block();
     int draw_board();
     int draw_flag();
+    int draw_time();
     int end_game();
 };
 #endif
