@@ -12,11 +12,17 @@ private:
         {16, 16, 40},
         {30, 16, 99}
     };
+    std::vector<std::string> difficulty_name = {
+        "Easy",
+        "Medium",
+        "Hard"
+    };
 
     sf::Event event;
     sf::RenderWindow window;
     sf::Font font;
     sf::Text title;
+    sf::Text difficulty_text;
     sf::Texture difficulty_texture;
     sf::Sprite difficulty_sprite;
 

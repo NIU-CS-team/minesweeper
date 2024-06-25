@@ -18,6 +18,10 @@ Menu::Menu() {
 
     difficulty_sprite.setTexture(difficulty_texture);
     difficulty_sprite.setScale(2, 2);
+
+    difficulty_text.setFont(font);
+    difficulty_text.setCharacterSize(16);
+    difficulty_text.setFillColor(sf::Color::White);
 }
 
 int Menu::draw_difficulty() {
@@ -25,6 +29,12 @@ int Menu::draw_difficulty() {
         difficulty_sprite.setTextureRect(sf::IntRect(0, i * 54, 130, 26));
         difficulty_sprite.setPosition(0, 80 + i * 60);
         window.draw(difficulty_sprite);
+        difficulty_text.setString(difficulty_name[i] + "\n" +
+                                  std::to_string(difficulty[i][0]) + "x" +
+                                  std::to_string(difficulty[i][1]) + " " +
+                                  std::to_string(difficulty[i][2]) + " mines");
+        difficulty_text.setPosition(65, 82 + i * 60);
+        window.draw(difficulty_text);
     }
 
     int input = get_input();
@@ -33,6 +43,13 @@ int Menu::draw_difficulty() {
             sf::IntRect(0, 27 + input * 54, 130, 26));
         difficulty_sprite.setPosition(0, 80 + input * 60);
         window.draw(difficulty_sprite);
+        difficulty_text.setString(difficulty_name[input] + "\n" +
+                                  std::to_string(difficulty[input][0]) + "x" +
+                                  std::to_string(difficulty[input][1]) + " " +
+                                  std::to_string(difficulty[input][2]) +
+                                  " mines");
+        difficulty_text.setPosition(68, 85 + input * 60);
+        window.draw(difficulty_text);
         window.display();
 
         while (window.waitEvent(event)) {
@@ -41,6 +58,13 @@ int Menu::draw_difficulty() {
                     sf::IntRect(0, input * 54, 130, 26));
                 difficulty_sprite.setPosition(0, 80 + input * 60);
                 window.draw(difficulty_sprite);
+                difficulty_text.setString(
+                    difficulty_name[input] + "\n" +
+                    std::to_string(difficulty[input][0]) + "x" +
+                    std::to_string(difficulty[input][1]) + " " +
+                    std::to_string(difficulty[input][2]) + " mines");
+                difficulty_text.setPosition(65, 82 + input * 60);
+                window.draw(difficulty_text);
                 window.display();
                 SFML game(difficulty[input][0], difficulty[input][1],
                           difficulty[input][2]);
@@ -76,6 +100,7 @@ int Menu::run() {
             }
         }
         window.clear(sf::Color::Black);
+        window.draw(title);
         draw_difficulty();
 
         window.display();
