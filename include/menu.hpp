@@ -13,7 +13,7 @@ private:
 
     int draw_difficulty();
     int draw_menu();
-    int get_menu_input();
+    int get_input();
 
 public:
     Menu();

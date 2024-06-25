@@ -21,6 +21,20 @@ int Menu::draw_difficulty() {
     return 0;
 }
 
+int Menu::get_input() {
+    sf::Vector2i mouse = sf::Mouse::getPosition(window);
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        if (mouse.y >= 80 && mouse.y <= 132) {
+            return 0;
+        } else if (mouse.y >= 140 && mouse.y <= 192) {
+            return 1;
+        } else if (mouse.y >= 200 && mouse.y <= 252) {
+            return 2;
+        }
+    }
+    return -1;
+}
+
 int Menu::run() {
     sf::Event event;
     while (window.isOpen()) {
