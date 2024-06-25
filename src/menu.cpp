@@ -1,4 +1,5 @@
 #include "menu.hpp"
+#include "sfml.hpp"
 
 Menu::Menu() {
     window.create(sf::VideoMode(260, 260), "Minesweeper");
@@ -18,6 +19,30 @@ int Menu::draw_difficulty() {
         difficulty_sprite.setPosition(0, 80 + i * 60);
         window.draw(difficulty_sprite);
     }
+
+    int input = get_input();
+    if (input != -1) {
+        difficulty_sprite.setTextureRect(
+            sf::IntRect(0, 27 + input * 54, 130, 26));
+        difficulty_sprite.setPosition(0, 80 + input * 60);
+        window.draw(difficulty_sprite);
+        window.display();
+
+        while (window.waitEvent(event)) {
+            if (event.type == sf::Event::MouseButtonReleased) {
+                difficulty_sprite.setTextureRect(
+                    sf::IntRect(0, input * 54, 130, 26));
+                difficulty_sprite.setPosition(0, 80 + input * 60);
+                window.draw(difficulty_sprite);
+                window.display();
+                SFML game(difficulty[input][0], difficulty[input][1],
+                          difficulty[input][2]);
+                game.play_single();
+                return 0;
+            }
+        }
+    }
+
     return 0;
 }
 

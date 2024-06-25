@@ -3,9 +3,17 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
 
 class Menu {
 private:
+    std::vector<std::vector<int>> difficulty = {
+        {9, 9, 10},
+        {16, 16, 40},
+        {30, 16, 99}
+    };
+
+    sf::Event event;
     sf::RenderWindow window;
     sf::Font font;
     sf::Texture difficulty_texture;
