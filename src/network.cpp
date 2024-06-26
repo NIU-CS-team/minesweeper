@@ -70,3 +70,34 @@ int Network::host() {
 
     return 0;
 }
+
+int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip) {
+    init_block();
+    generate_mines();
+    while (window.isOpen() && status == PLAYING) {
+        window.clear(sf::Color::Black);
+        draw_board();
+        draw_flag();
+        draw_time();
+        window.display();
+
+        mtx.lock();
+        auto input = mouse_input();
+        mtx.unlock();
+
+        if (input.second == -2) {
+            return 0;
+        }
+        if (input.first != NONE) {
+            sf::Packet packet;
+            packet << input.first << input.second;
+            if (send_data(socket, ip, packet) != SUCESS) {
+                return GAME_INTERACTION_ERROR;
+            }
+        }
+        check_win();
+    }
+    end_game();
+
+    return 0;
+}
