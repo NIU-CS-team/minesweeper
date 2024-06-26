@@ -5,9 +5,9 @@ set(CMAKE_CXX_STANDARD 23)
 
 include_directories(./include)
 
-find_package(SFML COMPONENTS graphics window system audio REQUIRED)
+find_package(SFML COMPONENTS graphics window system network audio REQUIRED)
 
-set(LIB_LINKS sfml-graphics sfml-window sfml-system sfml-audio)
+set(LIB_LINKS sfml-graphics sfml-window sfml-system sfml-network sfml-audio)
 
 file(GLOB_RECURSE SRC_FILES ./src/*.cpp)
 

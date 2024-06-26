@@ -16,7 +16,7 @@ int Network::client() {
 
     do {
         std::cout << "Enter server ip: ";
-        std::cin >> *ip;
+        std::cin >> ip.value();
     } while (ip.has_value());
     
     return 0;
