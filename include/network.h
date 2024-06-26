@@ -28,7 +28,6 @@ enum connect_status {
 
 class Network : public SFML {
 public:
-    Network(int row, int col, int mines) : SFML(row, col, mines) {};
     int host();
     int client();
 
