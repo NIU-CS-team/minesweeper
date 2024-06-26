@@ -32,6 +32,8 @@ public:
     int client();
 
 private:
+    int port = 6969;
+
     int recv_data(int &socket_fd, char *buffer, int size);
     int send_data(int &socket_fd, const char *buffer, int size);
     int close_socket(int &socket_fd);
