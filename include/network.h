@@ -34,8 +34,9 @@ public:
 private:
     unsigned short port = 6969;
 
-    int recv_data(int &socket_fd, char *buffer, int size);
-    int send_data(int &socket_fd, const char *buffer, int size);
+    int play_multi(sf::UdpSocket& socket, sf::IpAddress& ip);
+    int recv_data(sf::UdpSocket& socket, sf::Packet& packet);
+    int send_data(sf::UdpSocket& socket, sf::IpAddress& ip, sf::Packet& packet);
     int close_socket(int &socket_fd);
 };
 
