@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <optional>
-#include <unordered_set>
+#include <vector>
+#include <algorithm>
 
 int Network::client() {
     sf::UdpSocket socket;
@@ -32,7 +33,7 @@ int Network::client() {
 int Network::host() {
     sf::UdpSocket socket;
     sf::IpAddress ip = sf::IpAddress::getLocalAddress();
-    std::unordered_set<sf::IpAddress> clients;
+    std::vector<sf::IpAddress> clients;
     sf::SocketSelector selector;
     unsigned int max_clients = 0;
 
@@ -57,7 +58,9 @@ int Network::host() {
                 std::cerr << "Failed to receive packet" << std::endl;
                 return MESSENGE_RECV_ERROR;
             }
-            clients.insert(client);
+            if (std::find(clients.begin(), clients.end(), client) == clients.end()){
+                clients.push_back(client);
+            }
             if (clients.size() == max_clients) {
                 break;
             }
