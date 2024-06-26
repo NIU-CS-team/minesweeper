@@ -76,7 +76,7 @@ int Network::send_data(sf::UdpSocket& socket, sf::IpAddress& ip, sf::Packet& pac
         std::cerr << "Failed to send packet" << std::endl;
         return MESSENGE_SEND_ERROR;
     }
-    return SUCESS;
+    return SUCCESS;
 }
 
 sf::Packet& operator>>(sf::Packet& packet, const SFML::game_action& action) {
@@ -101,7 +101,7 @@ int Network::recv_data(sf::UdpSocket& socket, sf::Packet& packet) {
     }
     mtx.unlock();
 
-    return SUCESS;
+    return SUCCESS;
 }
 
 int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip) {
@@ -124,7 +124,7 @@ int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip) {
         if (input.first != NONE) {
             sf::Packet packet;
             packet << input.first << input.second;
-            if (send_data(socket, ip, packet) != SUCESS) {
+            if (send_data(socket, ip, packet) != SUCCESS) {
                 return GAME_INTERACTION_ERROR;
             }
         }
@@ -137,5 +137,5 @@ int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip) {
 
 int Network::close_socket(sf::UdpSocket& socket) {
     socket.unbind();
-    return SUCESS;
+    return SUCCESS;
 }

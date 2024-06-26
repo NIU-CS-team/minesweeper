@@ -8,7 +8,7 @@
 
 enum connect_status {
     // Universal error
-    SUCESS,
+    SUCCESS,
     SOCKET_CREATE_FAILED,
     SOCKET_CLOSE_ERROR,
     MESSENGE_SEND_ERROR,
