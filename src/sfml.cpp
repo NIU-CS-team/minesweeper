@@ -27,6 +27,41 @@ SFML::SFML(int row, int col, int mines) : Board(row, col, mines) {
     number.setScale(blockScale, blockScale);
 }
 
+SFML::SFML() : Board() {
+    window.create(sf::VideoMode(200, 200),
+                  "Minesweeper");
+    window.setFramerateLimit(60);
+
+    if (!window.isOpen()) {
+        std::cerr << "Failed to create window" << std::endl;
+    }
+    if (!font.loadFromFile("../font/Cubic_11_1.100_R.ttf")) {
+        std::cerr << "Failed to load font" << std::endl;
+    }
+    if (!texture.loadFromFile("../image/spritesheet.png")) {
+        std::cerr << "Failed to load texture" << std::endl;
+    }
+    sprite.setTexture(texture);
+    sprite.setScale(blockScale, blockScale);
+
+    face.setTexture(texture);
+    face.setScale(blockScale, blockScale);
+    face.setPosition(window.getSize().x / 2 - 26, 4);
+    face.setTextureRect(sf::IntRect(0, 24, 26, 26));
+
+    number.setTexture(texture);
+    number.setScale(blockScale, blockScale);
+
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(20);
+    text.setFillColor(sf::Color::White);
+    text.setPosition(10, 10);
+    text.setString("Waiting for game to start...");
+    window.draw(text);
+    window.display();
+}
+
 int SFML::init_block() {
     int pos = std::min(window.getSize().x / row, window.getSize().y / col);
     for (block& block : blocks) {

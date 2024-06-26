@@ -13,6 +13,7 @@ Board::Board(int row, int col, int n_mines)
         i.index = &i - &blocks[0];
     }
 }
+Board::Board() {}
 
 Board::~Board() {}
 

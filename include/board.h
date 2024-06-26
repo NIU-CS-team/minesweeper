@@ -9,6 +9,7 @@
 class Board {
 public:
     Board(int row, int col, int mines);
+    Board();
     ~Board();
 
     int start_game();
