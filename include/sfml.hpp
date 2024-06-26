@@ -17,7 +17,7 @@ public:
     SFML();
     int play_single();
     
-private:
+protected:
     sf::RenderWindow window;
     sf::Font font;
     sf::Texture texture;
