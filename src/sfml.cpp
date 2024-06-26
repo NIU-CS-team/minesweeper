@@ -51,15 +51,6 @@ SFML::SFML() : Board() {
 
     number.setTexture(texture);
     number.setScale(blockScale, blockScale);
-
-    sf::Text text;
-    text.setFont(font);
-    text.setCharacterSize(20);
-    text.setFillColor(sf::Color::White);
-    text.setPosition(10, 10);
-    text.setString("Waiting for game to start...");
-    window.draw(text);
-    window.display();
 }
 
 int SFML::init_block() {
