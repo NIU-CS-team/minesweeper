@@ -134,3 +134,8 @@ int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip) {
 
     return 0;
 }
+
+int Network::close_socket(sf::UdpSocket& socket) {
+    socket.unbind();
+    return SUCESS;
+}

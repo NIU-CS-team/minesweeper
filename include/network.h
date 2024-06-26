@@ -39,7 +39,7 @@ private:
     int play_multi(sf::UdpSocket& socket, sf::IpAddress& ip);
     int recv_data(sf::UdpSocket& socket, sf::Packet& packet);
     int send_data(sf::UdpSocket& socket, sf::IpAddress& ip, sf::Packet& packet);
-    int close_socket(int &socket_fd);
+    int close_socket(sf::UdpSocket& socket);
 };
 
 #endif
