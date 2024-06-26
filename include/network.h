@@ -2,6 +2,7 @@
 #define NETWORK_H
 
 #include <SFML/Network.hpp>
+#include <mutex>
 
 #include "sfml.hpp"
 
@@ -33,6 +34,7 @@ public:
 
 private:
     unsigned short port = 6969;
+    std::mutex mtx;
 
     int play_multi(sf::UdpSocket& socket, sf::IpAddress& ip);
     int recv_data(sf::UdpSocket& socket, sf::Packet& packet);
