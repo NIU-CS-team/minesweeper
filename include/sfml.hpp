@@ -14,7 +14,6 @@ public:
     enum game_action { REVEAL, FLAG, NONE };
 
     SFML(int row, int col, int mines);
-    SFML();
     int play_single();
     
 protected:
