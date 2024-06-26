@@ -71,6 +71,14 @@ int Network::host() {
     return 0;
 }
 
+int Network::send_data(sf::UdpSocket& socket, sf::IpAddress& ip, sf::Packet& packet){
+    if (socket.send(packet, ip, this->port) != sf::Socket::Done) {
+        std::cerr << "Failed to send packet" << std::endl;
+        return MESSENGE_SEND_ERROR;
+    }
+    return SUCESS;
+}
+
 int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip) {
     init_block();
     generate_mines();
