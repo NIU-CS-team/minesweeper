@@ -79,6 +79,31 @@ int Network::send_data(sf::UdpSocket& socket, sf::IpAddress& ip, sf::Packet& pac
     return SUCESS;
 }
 
+sf::Packet& operator>>(sf::Packet& packet, const SFML::game_action& action) {
+    return packet;
+}
+
+int Network::recv_data(sf::UdpSocket& socket, sf::Packet& packet) {
+    sf::IpAddress ip;
+    if (socket.receive(packet, ip, this->port) != sf::Socket::Done) {
+        std::cerr << "Failed to receive packet" << std::endl;
+        return MESSENGE_RECV_ERROR;
+    }
+
+    game_action action;
+    int block;
+    packet >> action >> block;
+    mtx.lock();
+    if (action == REVEAL) {
+        reveal(blocks[block]);
+    } else if (action == FLAG) {
+        flip_flag(blocks[block]);
+    }
+    mtx.unlock();
+
+    return SUCESS;
+}
+
 int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip) {
     init_block();
     generate_mines();
