@@ -30,12 +30,12 @@ class Network : public SFML {
 public:
     int host();
     int client();
+    int play_multi(sf::UdpSocket& socket, sf::IpAddress& ip);
 
 private:
     unsigned short port = 6969;
     std::mutex mtx;
 
-    int play_multi(sf::UdpSocket& socket, sf::IpAddress& ip);
     int recv_data(sf::UdpSocket& socket, sf::Packet& packet);
     int send_data(sf::UdpSocket& socket, sf::IpAddress& ip, sf::Packet& packet);
     int close_socket(sf::UdpSocket& socket);
