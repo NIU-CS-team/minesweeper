@@ -5,9 +5,7 @@
 #include <vector>
 #include <algorithm>
 
-Network::~Network() {
-    socket.unbind();
-}
+Network::~Network() { socket.unbind(); }
 
 int Network::generate_mines(unsigned seed) {
     std::mt19937 gen(seed);
@@ -41,12 +39,11 @@ int Network::generate_mines(unsigned seed) {
             break;
         }
     }
-    
-    return 0;
 
+    return 0;
 }
 
-int Network::send_data(sf::IpAddress& ip, sf::Packet& packet){
+int Network::send_data(sf::IpAddress& ip, sf::Packet& packet) {
     if (socket.send(packet, ip, this->port) != sf::Socket::Done) {
         std::cerr << "Failed to send packet" << std::endl;
         return MESSENGE_SEND_ERROR;

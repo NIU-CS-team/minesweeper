@@ -2,6 +2,8 @@
 #include "network.h"
 #include "sfml.hpp"
 
+#include <functional>
+
 Menu::Menu() {
     window.create(sf::VideoMode(260, 260), "Minesweeper");
     icon.loadFromFile("../image/icon/menu.png");
@@ -130,12 +132,15 @@ int Menu::Server::client() {
         std::cerr << "Failed to send packet" << std::endl;
         return MESSENGE_SEND_ERROR;
     }
-    
+
     if (socket.receive(packet, server_ip.value(), this->port) != sf::Socket::Done) {
         std::cerr << "Failed to receive packet" << std::endl;
         return MESSENGE_RECV_ERROR;
     }
     packet >> seed;
+    Network game(30, 16, 99);
+    sf::Thread recv = sf::Thread(std::bind(&Network::recv_data, &game));
+    game.play_multi(server_ip.value(), seed);
     
     return 0;
 }
@@ -173,16 +178,18 @@ int Menu::Server::host() {
             if (std::find(clients.begin(), clients.end(), client) == clients.end()){
                 clients.push_back(client);
             }
-            if (socket.send(seed, client, this->port) != sf::Socket::Done) {
-                std::cerr << "Failed to send packet" << std::endl;
-                return MESSENGE_SEND_ERROR;
-            }
             if (clients.size() == max_clients) {
                 break;
             }
         }
     }
     
+    for (auto& client : clients) {
+        if (socket.send(seed, client, this->port) != sf::Socket::Done) {
+            std::cerr << "Failed to send packet" << std::endl;
+            return MESSENGE_SEND_ERROR;
+        }
+    }
 
     return 0;
 }
