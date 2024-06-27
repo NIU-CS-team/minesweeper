@@ -5,6 +5,10 @@
 #include <vector>
 #include <algorithm>
 
+Network::~Network() {
+    socket.unbind();
+}
+
 int Network::client() {
     sf::Packet packet;
 
@@ -171,9 +175,4 @@ int Network::play_multi(sf::IpAddress& ip, unsigned seed) {
     end_game();
 
     return 0;
-}
-
-int Network::close_socket() {
-    socket.unbind();
-    return SUCCESS;
 }

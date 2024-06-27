@@ -29,6 +29,7 @@ enum connect_status {
 
 class Network : public SFML {
 public:
+    ~Network();
     int host();
     int client();
     int play_multi(sf::IpAddress& ip, unsigned seed);
@@ -43,7 +44,6 @@ private:
     int generate_mines(unsigned seed);
     int recv_data(sf::Packet& packet);
     int send_data(sf::IpAddress& ip, sf::Packet& packet);
-    int close_socket();
 };
 
 #endif
