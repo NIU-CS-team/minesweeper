@@ -3,7 +3,6 @@
 
 #include <SFML/Network.hpp>
 #include <random>
-#include <mutex>
 
 #include "sfml.hpp"
 
@@ -35,7 +34,7 @@ public:
 
 private:
     unsigned short port = 6969;
-    std::mutex mtx;
+    sf::Mutex mtx;
 
     unsigned create_seed();
     int generate_mines(unsigned seed);
