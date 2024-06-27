@@ -2,6 +2,7 @@
 #define MENU_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 #include <iostream>
 #include <vector>
 
@@ -33,8 +34,28 @@ private:
 
 public:
     Menu();
+    class Server;
 
     int run();
+};
+
+class Menu::Server {
+public:
+    Server();
+    int host();
+    int client();
+private:
+    sf::UdpSocket socket;
+    std::optional<sf::IpAddress> server_ip;
+    unsigned short port = 6969;
+    sf::Packet packet;
+    sf::Event event;
+    sf::Text text;
+    sf::Font font;
+    sf::RenderWindow window;
+    std::string message;
+
+    unsigned create_seed();
 };
 
 #endif
