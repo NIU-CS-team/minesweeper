@@ -79,6 +79,36 @@ int Network::recv_data() {
     return SUCCESS;
 }
 
+int Network::recv_data(std::vector<sf::IpAddress>& clients) {
+    sf::Packet recv_packet;
+    sf::IpAddress ip;
+    while (window.isOpen() && status == PLAYING) {
+        if (socket.receive(recv_packet, ip, this->port) != sf::Socket::Done) {
+            std::cerr << "Failed to receive packet" << std::endl;
+            return MESSENGE_RECV_ERROR;
+        }
+
+        game_action action;
+        int block;
+        recv_packet >> action >> block;
+        mtx.lock();
+        if (action == REVEAL) {
+            reveal(blocks[block]);
+        } else if (action == FLAG) {
+            flip_flag(blocks[block]);
+        }
+        mtx.unlock();
+
+        for (auto& client : clients) {
+            if (client != ip) {
+                send_data(client, recv_packet);
+            }
+        }
+    }
+
+    return SUCCESS;
+}
+
 int Network::play_multi(sf::IpAddress& ip, unsigned seed) {
     init_block();
     generate_mines(seed);

@@ -34,6 +34,7 @@ public:
 
     int play_multi(sf::IpAddress& ip, unsigned seed);
     int recv_data();
+    int recv_data(std::vector<sf::IpAddress>& clients);
 
 protected:
     unsigned short port = 6969;
