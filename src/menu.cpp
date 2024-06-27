@@ -192,6 +192,15 @@ int Menu::Server::host() {
         }
     }
 
+    unsigned seed_value;
+    seed >> seed_value;
+    Network game(30, 16, 99);
+    std::thread(static_cast<int (Network::*)(std::vector<sf::IpAddress>&)>(
+                    &Network::recv_data),
+                &game, std::ref(clients))
+        .detach();
+    game.play_multi(clients, seed_value);
+
     return 0;
 }
 
