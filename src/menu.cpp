@@ -129,20 +129,23 @@ int Menu::Server::client() {
     } while (server_ip.has_value());
 
     packet << "Minesweeper";
-    if (socket.send(packet, server_ip.value(), this->port) != sf::Socket::Done) {
+    if (socket.send(packet, server_ip.value(), this->port) !=
+        sf::Socket::Done) {
         std::cerr << "Failed to send packet" << std::endl;
         return MESSENGE_SEND_ERROR;
     }
 
-    if (socket.receive(packet, server_ip.value(), this->port) != sf::Socket::Done) {
+    if (socket.receive(packet, server_ip.value(), this->port) !=
+        sf::Socket::Done) {
         std::cerr << "Failed to receive packet" << std::endl;
         return MESSENGE_RECV_ERROR;
     }
     packet >> seed;
     Network game(30, 16, 99);
-    std::thread(static_cast<int (Network::*)()>(&Network::recv_data), &game).detach();
+    std::thread(static_cast<int (Network::*)()>(&Network::recv_data), &game)
+        .detach();
     game.play_multi(server_ip.value(), seed);
-    
+
     return 0;
 }
 
@@ -166,17 +169,19 @@ int Menu::Server::host() {
 
     sf::Packet seed;
     seed << create_seed();
-    
+
     std::cout << "Waiting for clients..." << std::endl;
     while (selector.wait()) {
         if (selector.isReady(socket)) {
             sf::IpAddress client;
             sf::Packet packet;
-            if (socket.receive(packet, client, this->port) != sf::Socket::Done) {
+            if (socket.receive(packet, client, this->port) !=
+                sf::Socket::Done) {
                 std::cerr << "Failed to receive packet" << std::endl;
                 return MESSENGE_RECV_ERROR;
             }
-            if (std::find(clients.begin(), clients.end(), client) == clients.end()){
+            if (std::find(clients.begin(), clients.end(), client) ==
+                clients.end()) {
                 clients.push_back(client);
             }
             if (clients.size() == max_clients) {
@@ -184,7 +189,7 @@ int Menu::Server::host() {
             }
         }
     }
-    
+
     for (auto& client : clients) {
         if (socket.send(seed, client, this->port) != sf::Socket::Done) {
             std::cerr << "Failed to send packet" << std::endl;
