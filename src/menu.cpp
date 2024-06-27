@@ -3,6 +3,7 @@
 #include "sfml.hpp"
 
 #include <functional>
+#include <thread>
 
 Menu::Menu() {
     window.create(sf::VideoMode(260, 260), "Minesweeper");
@@ -139,7 +140,7 @@ int Menu::Server::client() {
     }
     packet >> seed;
     Network game(30, 16, 99);
-    sf::Thread recv = sf::Thread(std::bind(&Network::recv_data, &game));
+    std::thread(static_cast<int (Network::*)()>(&Network::recv_data), &game).detach();
     game.play_multi(server_ip.value(), seed);
     
     return 0;
