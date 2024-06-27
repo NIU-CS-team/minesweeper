@@ -7,7 +7,6 @@
 #include <algorithm>
 
 int Network::client() {
-    sf::UdpSocket socket;
     std::optional<sf::IpAddress> ip;
     sf::Packet packet;
 
@@ -31,7 +30,6 @@ int Network::client() {
 }
 
 int Network::host() {
-    sf::UdpSocket socket;
     sf::IpAddress ip = sf::IpAddress::getLocalAddress();
     std::vector<sf::IpAddress> clients;
     sf::SocketSelector selector;
@@ -104,7 +102,7 @@ int Network::generate_mines(unsigned seed) {
 
 }
 
-int Network::send_data(sf::UdpSocket& socket, sf::IpAddress& ip, sf::Packet& packet){
+int Network::send_data(sf::IpAddress& ip, sf::Packet& packet){
     if (socket.send(packet, ip, this->port) != sf::Socket::Done) {
         std::cerr << "Failed to send packet" << std::endl;
         return MESSENGE_SEND_ERROR;
@@ -116,7 +114,7 @@ sf::Packet& operator>>(sf::Packet& packet, const SFML::game_action& action) {
     return packet;
 }
 
-int Network::recv_data(sf::UdpSocket& socket, sf::Packet& packet) {
+int Network::recv_data(sf::Packet& packet) {
     sf::IpAddress ip;
     if (socket.receive(packet, ip, this->port) != sf::Socket::Done) {
         std::cerr << "Failed to receive packet" << std::endl;
@@ -137,7 +135,7 @@ int Network::recv_data(sf::UdpSocket& socket, sf::Packet& packet) {
     return SUCCESS;
 }
 
-int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip, unsigned seed) {
+int Network::play_multi(sf::IpAddress& ip, unsigned seed) {
     init_block();
     generate_mines(seed);
     while (window.isOpen() && status == PLAYING) {
@@ -157,7 +155,7 @@ int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip, unsigned seed)
         if (input.first != NONE) {
             sf::Packet packet;
             packet << input.first << input.second;
-            if (send_data(socket, ip, packet) != SUCCESS) {
+            if (send_data(ip, packet) != SUCCESS) {
                 return GAME_INTERACTION_ERROR;
             }
         }
@@ -168,7 +166,7 @@ int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip, unsigned seed)
     return 0;
 }
 
-int Network::close_socket(sf::UdpSocket& socket) {
+int Network::close_socket() {
     socket.unbind();
     return SUCCESS;
 }

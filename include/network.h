@@ -30,17 +30,18 @@ class Network : public SFML {
 public:
     int host();
     int client();
-    int play_multi(sf::UdpSocket& socket, sf::IpAddress& ip, unsigned seed);
+    int play_multi(sf::IpAddress& ip, unsigned seed);
 
 private:
     unsigned short port = 6969;
     sf::Mutex mtx;
+    sf::UdpSocket socket;
 
     unsigned create_seed();
     int generate_mines(unsigned seed);
-    int recv_data(sf::UdpSocket& socket, sf::Packet& packet);
-    int send_data(sf::UdpSocket& socket, sf::IpAddress& ip, sf::Packet& packet);
-    int close_socket(sf::UdpSocket& socket);
+    int recv_data(sf::Packet& packet);
+    int send_data(sf::IpAddress& ip, sf::Packet& packet);
+    int close_socket();
 };
 
 #endif
