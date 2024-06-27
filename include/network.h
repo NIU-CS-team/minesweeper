@@ -29,12 +29,14 @@ enum connect_status {
 
 class Network : public SFML {
 public:
+    Network(int width, int height, int mines) : SFML(width, height, mines) {};
     ~Network();
 
     int play_multi(sf::IpAddress& ip, unsigned seed);
 
-private:
+protected:
     unsigned short port = 6969;
+    unsigned seed;
     sf::Mutex mtx;
     sf::UdpSocket socket;
     std::optional<sf::IpAddress> server_ip;
