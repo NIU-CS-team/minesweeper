@@ -30,6 +30,7 @@ private:
     sf::Texture difficulty_texture;
     sf::Sprite difficulty_sprite;
 
+    int draw_multi();
     int draw_difficulty();
     int draw_menu();
     int get_input();
