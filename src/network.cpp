@@ -11,6 +11,7 @@ Network::~Network() {
 
 int Network::client() {
     sf::Packet packet;
+    unsigned seed;
 
     if (socket.bind(this->port) != sf::Socket::Done) {
         std::cerr << "Failed to bind socket" << std::endl;
@@ -27,6 +28,12 @@ int Network::client() {
         std::cerr << "Failed to send packet" << std::endl;
         return MESSENGE_SEND_ERROR;
     }
+    
+    if (socket.receive(packet, server_ip.value(), this->port) != sf::Socket::Done) {
+        std::cerr << "Failed to receive packet" << std::endl;
+        return MESSENGE_RECV_ERROR;
+    }
+    packet >> seed;
     
     return 0;
 }
@@ -48,6 +55,9 @@ int Network::host() {
         std::cout << "Enter max clients(1 ~ 10):";
         std::cin >> max_clients;
     } while (max_clients < 1 || max_clients > 10);
+
+    sf::Packet seed;
+    seed << create_seed();
     
     std::cout << "Waiting for clients..." << std::endl;
     while (selector.wait()) {
@@ -60,6 +70,10 @@ int Network::host() {
             }
             if (std::find(clients.begin(), clients.end(), client) == clients.end()){
                 clients.push_back(client);
+            }
+            if (socket.send(seed, client, this->port) != sf::Socket::Done) {
+                std::cerr << "Failed to send packet" << std::endl;
+                return MESSENGE_SEND_ERROR;
             }
             if (clients.size() == max_clients) {
                 break;
