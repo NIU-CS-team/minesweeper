@@ -58,23 +58,26 @@ sf::Packet& operator>>(sf::Packet& packet, const SFML::game_action& action) {
     return packet;
 }
 
-int Network::recv_data(sf::Packet& packet) {
+int Network::recv_data() {
+    sf::Packet recv_packet;
     sf::IpAddress ip;
-    if (socket.receive(packet, ip, this->port) != sf::Socket::Done) {
-        std::cerr << "Failed to receive packet" << std::endl;
-        return MESSENGE_RECV_ERROR;
-    }
+    while (window.isOpen() && status == PLAYING) {
+        if (socket.receive(recv_packet, ip, this->port) != sf::Socket::Done) {
+            std::cerr << "Failed to receive packet" << std::endl;
+            return MESSENGE_RECV_ERROR;
+        }
 
-    game_action action;
-    int block;
-    packet >> action >> block;
-    mtx.lock();
-    if (action == REVEAL) {
-        reveal(blocks[block]);
-    } else if (action == FLAG) {
-        flip_flag(blocks[block]);
+        game_action action;
+        int block;
+        recv_packet >> action >> block;
+        mtx.lock();
+        if (action == REVEAL) {
+            reveal(blocks[block]);
+        } else if (action == FLAG) {
+            flip_flag(blocks[block]);
+        }
+        mtx.unlock();
     }
-    mtx.unlock();
 
     return SUCCESS;
 }

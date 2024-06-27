@@ -33,6 +33,7 @@ public:
     ~Network();
 
     int play_multi(sf::IpAddress& ip, unsigned seed);
+    int recv_data();
 
 protected:
     unsigned short port = 6969;
@@ -42,7 +43,6 @@ protected:
     std::optional<sf::IpAddress> server_ip;
 
     int generate_mines(unsigned seed);
-    int recv_data(sf::Packet& packet);
     int send_data(sf::IpAddress& ip, sf::Packet& packet);
 };
 
