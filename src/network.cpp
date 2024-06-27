@@ -96,6 +96,15 @@ int Network::generate_mines(unsigned seed) {
             }
         }
     }
+
+    while (true) {
+        int rand = dis(gen);
+        if (this->blocks[rand].value == block::EMPTY) {
+            reveal(blocks[rand]);
+            break;
+        }
+    }
+    
     return 0;
 
 }
