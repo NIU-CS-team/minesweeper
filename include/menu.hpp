@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
-#include <iostream>
+#include <optional>
 #include <vector>
 
 class Menu {
