@@ -2,6 +2,7 @@
 #define NETWORK_H
 
 #include <SFML/Network.hpp>
+#include <random>
 #include <mutex>
 
 #include "sfml.hpp"
@@ -30,12 +31,14 @@ class Network : public SFML {
 public:
     int host();
     int client();
-    int play_multi(sf::UdpSocket& socket, sf::IpAddress& ip);
+    int play_multi(sf::UdpSocket& socket, sf::IpAddress& ip, unsigned seed);
 
 private:
     unsigned short port = 6969;
     std::mutex mtx;
 
+    unsigned create_seed();
+    int generate_mines(unsigned seed);
     int recv_data(sf::UdpSocket& socket, sf::Packet& packet);
     int send_data(sf::UdpSocket& socket, sf::IpAddress& ip, sf::Packet& packet);
     int close_socket(sf::UdpSocket& socket);

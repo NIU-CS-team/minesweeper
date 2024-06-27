@@ -71,6 +71,39 @@ int Network::host() {
     return 0;
 }
 
+unsigned Network::create_seed() {
+    std::random_device rd;
+    return rd();
+}
+
+int Network::generate_mines(unsigned seed) {
+    std::mt19937 gen(seed);
+    std::uniform_int_distribution<int> dis(0, this->row * this->col - 1);
+    for (int i = 0; i < this->n_mines; i++) {
+        int rand = dis(gen);
+        if (this->blocks[rand].value >= block::MINE) {
+            i--;
+            continue;
+        }
+
+        this->blocks[rand].value = 9;
+        for (int j = -1; j <= 1; j++) {
+            if (rand < row && j == -1) continue;
+            if (rand >= row * (col - 1) && j == 1) continue;
+
+            for (int k = -1; k <= 1; k++) {
+                if (rand % row == 0 && k == -1) continue;
+                if (rand % row == row - 1 && k == 1) continue;
+                if (this->blocks[rand + j * row + k].value < block::MINE) {
+                    this->blocks[rand + j * row + k].value++;
+                }
+            }
+        }
+    }
+    return 0;
+
+}
+
 int Network::send_data(sf::UdpSocket& socket, sf::IpAddress& ip, sf::Packet& packet){
     if (socket.send(packet, ip, this->port) != sf::Socket::Done) {
         std::cerr << "Failed to send packet" << std::endl;
@@ -104,9 +137,9 @@ int Network::recv_data(sf::UdpSocket& socket, sf::Packet& packet) {
     return SUCCESS;
 }
 
-int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip) {
+int Network::play_multi(sf::UdpSocket& socket, sf::IpAddress& ip, unsigned seed) {
     init_block();
-    generate_mines();
+    generate_mines(seed);
     while (window.isOpen() && status == PLAYING) {
         window.clear(sf::Color::Black);
         draw_board();
