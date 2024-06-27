@@ -2,12 +2,10 @@
 #include "board.h"
 
 #include <iostream>
-#include <optional>
 #include <vector>
 #include <algorithm>
 
 int Network::client() {
-    std::optional<sf::IpAddress> ip;
     sf::Packet packet;
 
     if (socket.bind(this->port) != sf::Socket::Done) {
@@ -17,11 +15,11 @@ int Network::client() {
 
     do {
         std::cout << "Enter server ip: ";
-        std::cin >> ip.value();
-    } while (ip.has_value());
+        std::cin >> server_ip.value();
+    } while (server_ip.has_value());
 
     packet << "Minesweeper";
-    if (socket.send(packet, ip.value(), this->port) != sf::Socket::Done) {
+    if (socket.send(packet, server_ip.value(), this->port) != sf::Socket::Done) {
         std::cerr << "Failed to send packet" << std::endl;
         return MESSENGE_SEND_ERROR;
     }
@@ -30,7 +28,7 @@ int Network::client() {
 }
 
 int Network::host() {
-    sf::IpAddress ip = sf::IpAddress::getLocalAddress();
+    server_ip.value() = sf::IpAddress::getLocalAddress();
     std::vector<sf::IpAddress> clients;
     sf::SocketSelector selector;
     unsigned int max_clients = 0;
@@ -40,7 +38,7 @@ int Network::host() {
         return SOCKET_CREATE_FAILED;
     }
     selector.add(socket);
-    std::cout << "Server ip: " << ip << std::endl;
+    std::cout << "Server ip: " << server_ip.value() << std::endl;
 
     do {
         std::cout << "Enter max clients(1 ~ 10):";

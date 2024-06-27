@@ -3,6 +3,7 @@
 
 #include <SFML/Network.hpp>
 #include <random>
+#include <optional>
 
 #include "sfml.hpp"
 
@@ -36,6 +37,7 @@ private:
     unsigned short port = 6969;
     sf::Mutex mtx;
     sf::UdpSocket socket;
+    std::optional<sf::IpAddress> server_ip;
 
     unsigned create_seed();
     int generate_mines(unsigned seed);
