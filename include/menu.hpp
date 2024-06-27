@@ -1,6 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include "network.h"
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <optional>
@@ -39,15 +41,12 @@ public:
     int run();
 };
 
-class Menu::Server {
+class Menu::Server : public Network{
 public:
     Server();
     int host();
     int client();
 private:
-    sf::UdpSocket socket;
-    std::optional<sf::IpAddress> server_ip;
-    unsigned short port = 6969;
     sf::Packet packet;
     sf::Event event;
     sf::Text text;
