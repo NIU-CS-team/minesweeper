@@ -28,9 +28,17 @@ enum connect_status {
     CONNECT_FAILED
 };
 
+struct connect_data {
+    sf::UdpSocket socket;
+    std::optional<sf::IpAddress> server_ip;
+    unsigned seed;
+    
+};
 class Network : public SFML {
 public:
-    Network(int width, int height, int mines) : SFML(width, height, mines) {};
+    Network(int width, int height, int mines, connect_data* data) : SFML(width, height, mines) {
+        this->data = data;
+    };
     ~Network();
 
     int play_multi(sf::IpAddress& ip, unsigned seed);
@@ -40,10 +48,8 @@ public:
 
 protected:
     unsigned short port = 6969;
-    unsigned seed;
     sf::Mutex mtx;
-    sf::UdpSocket socket;
-    std::optional<sf::IpAddress> server_ip;
+    connect_data *data;
 
     int generate_mines(unsigned seed);
     int send_data(sf::IpAddress& ip, sf::Packet& packet);

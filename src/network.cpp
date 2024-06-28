@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 
-Network::~Network() { socket.unbind(); }
+Network::~Network() { data->socket.unbind(); }
 
 int Network::generate_mines(unsigned seed) {
     std::mt19937 gen(seed);
@@ -44,7 +44,7 @@ int Network::generate_mines(unsigned seed) {
 }
 
 int Network::send_data(sf::IpAddress& ip, sf::Packet& packet) {
-    if (socket.send(packet, ip, this->port) != sf::Socket::Done) {
+    if (data->socket.send(packet, ip, this->port) != sf::Socket::Done) {
         std::cerr << "Failed to send packet" << std::endl;
         return MESSENGE_SEND_ERROR;
     }
@@ -59,7 +59,7 @@ int Network::recv_data() {
     sf::Packet recv_packet;
     sf::IpAddress ip;
     while (window.isOpen() && status == PLAYING) {
-        if (socket.receive(recv_packet, ip, this->port) != sf::Socket::Done) {
+        if (data->socket.receive(recv_packet, ip, this->port) != sf::Socket::Done) {
             std::cerr << "Failed to receive packet" << std::endl;
             return MESSENGE_RECV_ERROR;
         }
@@ -83,7 +83,7 @@ int Network::recv_data(std::vector<sf::IpAddress>& clients) {
     sf::Packet recv_packet;
     sf::IpAddress ip;
     while (window.isOpen() && status == PLAYING) {
-        if (socket.receive(recv_packet, ip, this->port) != sf::Socket::Done) {
+        if (data->socket.receive(recv_packet, ip, this->port) != sf::Socket::Done) {
             std::cerr << "Failed to receive packet" << std::endl;
             return MESSENGE_RECV_ERROR;
         }
