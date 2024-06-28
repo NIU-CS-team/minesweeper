@@ -32,6 +32,7 @@ struct connect_data {
     sf::UdpSocket socket;
     std::optional<sf::IpAddress> server_ip;
     unsigned seed;
+    unsigned short port = 6969;
     
 };
 class Network : public SFML {
@@ -47,7 +48,6 @@ public:
     int recv_data(std::vector<sf::IpAddress>& clients);
 
 protected:
-    unsigned short port = 6969;
     sf::Mutex mtx;
     connect_data *data;
 
