@@ -114,53 +114,55 @@ int Menu::run() {
     return 0;
 }
 
-int Menu::Server::client() {
+int Menu::client() {
+    connect_data data;
     sf::Packet packet;
     unsigned seed;
 
-    if (socket.bind(this->port) != sf::Socket::Done) {
+    if (data.socket.bind(data.port) != sf::Socket::Done) {
         std::cerr << "Failed to bind socket" << std::endl;
         return SOCKET_CREATE_FAILED;
     }
 
     do {
         std::cout << "Enter server ip: ";
-        std::cin >> server_ip.value();
-    } while (server_ip.has_value());
+        std::cin >> data.server_ip.value();
+    } while (data.server_ip.has_value());
 
     packet << "Minesweeper";
-    if (socket.send(packet, server_ip.value(), this->port) !=
+    if (data.socket.send(packet, data.server_ip.value(), data.port) !=
         sf::Socket::Done) {
         std::cerr << "Failed to send packet" << std::endl;
         return MESSENGE_SEND_ERROR;
     }
 
-    if (socket.receive(packet, server_ip.value(), this->port) !=
+    if (data.socket.receive(packet, data.server_ip.value(), data.port) !=
         sf::Socket::Done) {
         std::cerr << "Failed to receive packet" << std::endl;
         return MESSENGE_RECV_ERROR;
     }
     packet >> seed;
-    Network game(30, 16, 99);
+    Network game(30, 16, 99, &data);
     std::thread(static_cast<int (Network::*)()>(&Network::recv_data), &game)
         .detach();
-    game.play_multi(server_ip.value(), seed);
+    game.play_multi(data.server_ip.value(), seed);
 
     return 0;
 }
 
-int Menu::Server::host() {
-    server_ip.value() = sf::IpAddress::getLocalAddress();
+int Menu::host() {
+    connect_data data;
+    data.server_ip.value() = sf::IpAddress::getLocalAddress();
     std::vector<sf::IpAddress> clients;
     sf::SocketSelector selector;
     unsigned int max_clients = 0;
 
-    if (socket.bind(this->port) != sf::Socket::Done) {
+    if (data.socket.bind(data.port) != sf::Socket::Done) {
         std::cerr << "Failed to bind socket" << std::endl;
         return SOCKET_CREATE_FAILED;
     }
-    selector.add(socket);
-    std::cout << "Server ip: " << server_ip.value() << std::endl;
+    selector.add(data.socket);
+    std::cout << "Server ip: " << data.server_ip.value() << std::endl;
 
     do {
         std::cout << "Enter max clients(1 ~ 10):";
@@ -172,10 +174,10 @@ int Menu::Server::host() {
 
     std::cout << "Waiting for clients..." << std::endl;
     while (selector.wait()) {
-        if (selector.isReady(socket)) {
+        if (selector.isReady(data.socket)) {
             sf::IpAddress client;
             sf::Packet packet;
-            if (socket.receive(packet, client, this->port) !=
+            if (data.socket.receive(packet, client, data.port) !=
                 sf::Socket::Done) {
                 std::cerr << "Failed to receive packet" << std::endl;
                 return MESSENGE_RECV_ERROR;
@@ -191,7 +193,7 @@ int Menu::Server::host() {
     }
 
     for (auto& client : clients) {
-        if (socket.send(seed, client, this->port) != sf::Socket::Done) {
+        if (data.socket.send(seed, client, data.port) != sf::Socket::Done) {
             std::cerr << "Failed to send packet" << std::endl;
             return MESSENGE_SEND_ERROR;
         }
@@ -199,7 +201,7 @@ int Menu::Server::host() {
 
     unsigned seed_value;
     seed >> seed_value;
-    Network game(30, 16, 99);
+    Network game(30, 16, 99, &data);
     std::thread(static_cast<int (Network::*)(std::vector<sf::IpAddress>&)>(
                     &Network::recv_data),
                 &game, std::ref(clients))
@@ -209,7 +211,7 @@ int Menu::Server::host() {
     return 0;
 }
 
-unsigned Menu::Server::create_seed() {
+unsigned Menu::create_seed() {
     std::random_device rd;
     return rd();
 }

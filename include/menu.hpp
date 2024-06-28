@@ -34,28 +34,15 @@ private:
     int draw_difficulty();
     int draw_menu();
     int get_input();
+    int host();
+    int client();
+    unsigned create_seed();
 
 public:
     Menu();
     class Server;
 
     int run();
-};
-
-class Menu::Server : public Network{
-public:
-    Server();
-    int host();
-    int client();
-private:
-    sf::Packet packet;
-    sf::Event event;
-    sf::Text text;
-    sf::Font font;
-    sf::RenderWindow window;
-    std::string message;
-
-    unsigned create_seed();
 };
 
 #endif
