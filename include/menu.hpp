@@ -27,8 +27,8 @@ private:
     sf::Font font;
     sf::Text title;
     sf::Text difficulty_text;
-    sf::Texture difficulty_texture;
-    sf::Sprite difficulty_sprite;
+    sf::Texture texture;
+    sf::Sprite sprite;
 
     int draw_multi();
     int draw_difficulty();

@@ -12,7 +12,7 @@ Menu::Menu() {
     if (!font.loadFromFile("../font/Cubic_11_1.100_R.ttf")) {
         std::cerr << "Failed to load font" << std::endl;
     }
-    if (!difficulty_texture.loadFromFile("../image/difficulty.png")) {
+    if (!texture.loadFromFile("../image/menu_button.png")) {
         std::cerr << "Failed to load difficulty.png" << std::endl;
     }
 
@@ -22,8 +22,8 @@ Menu::Menu() {
     title.setPosition(60, 20);
     title.setFillColor(sf::Color::White);
 
-    difficulty_sprite.setTexture(difficulty_texture);
-    difficulty_sprite.setScale(2, 2);
+    sprite.setTexture(texture);
+    sprite.setScale(2, 2);
 
     difficulty_text.setFont(font);
     difficulty_text.setCharacterSize(16);
@@ -32,9 +32,9 @@ Menu::Menu() {
 
 int Menu::draw_difficulty() {
     for (int i = 0; i < 3; i++) {
-        difficulty_sprite.setTextureRect(sf::IntRect(0, i * 54, 130, 26));
-        difficulty_sprite.setPosition(0, 80 + i * 60);
-        window.draw(difficulty_sprite);
+        sprite.setTextureRect(sf::IntRect(0, i * 54, 130, 26));
+        sprite.setPosition(0, 80 + i * 60);
+        window.draw(sprite);
         difficulty_text.setString(difficulty_name[i] + "\n" +
                                   std::to_string(difficulty[i][0]) + "x" +
                                   std::to_string(difficulty[i][1]) + " " +
@@ -45,10 +45,10 @@ int Menu::draw_difficulty() {
 
     int input = get_input();
     if (input != -1) {
-        difficulty_sprite.setTextureRect(
+        sprite.setTextureRect(
             sf::IntRect(0, 27 + input * 54, 130, 26));
-        difficulty_sprite.setPosition(0, 80 + input * 60);
-        window.draw(difficulty_sprite);
+        sprite.setPosition(0, 80 + input * 60);
+        window.draw(sprite);
         difficulty_text.setString(difficulty_name[input] + "\n" +
                                   std::to_string(difficulty[input][0]) + "x" +
                                   std::to_string(difficulty[input][1]) + " " +
@@ -60,10 +60,10 @@ int Menu::draw_difficulty() {
 
         while (window.waitEvent(event)) {
             if (event.type == sf::Event::MouseButtonReleased) {
-                difficulty_sprite.setTextureRect(
+                sprite.setTextureRect(
                     sf::IntRect(0, input * 54, 130, 26));
-                difficulty_sprite.setPosition(0, 80 + input * 60);
-                window.draw(difficulty_sprite);
+                sprite.setPosition(0, 80 + input * 60);
+                window.draw(sprite);
                 difficulty_text.setString(
                     difficulty_name[input] + "\n" +
                     std::to_string(difficulty[input][0]) + "x" +
