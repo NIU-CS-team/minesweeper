@@ -163,6 +163,51 @@ int Menu::draw_difficulty() {
     return 0;
 }
 
+int Menu::draw_multi() {
+    draw_quit();
+    std::vector<std::string> menu = {"Host", "Join"};
+    for (int i = 0; i < 2; i++) {
+        sprite.setTextureRect(sf::IntRect(0, (i + 2) * 27, 130, 26));
+        sprite.setPosition(0, 80 + i * 60);
+        window.draw(sprite);
+        menu_text.setString(menu[i]);
+        menu_text.setPosition(65, 82 + i * 60);
+        window.draw(menu_text);
+    }
+
+    int input = get_input();
+    if (input == 3) {
+        return draw_quit(true);
+    } else if (input != -1) {
+        sprite.setTextureRect(sf::IntRect(131, (input + 2) * 27, 130, 26));
+        sprite.setPosition(0, 80 + input * 60);
+        window.draw(sprite);
+        menu_text.setString(menu[input]);
+        menu_text.setPosition(68, 85 + input * 60);
+        window.draw(menu_text);
+        window.display();
+
+        while (window.waitEvent(event)) {
+            if (event.type == sf::Event::MouseButtonReleased) {
+                sprite.setTextureRect(sf::IntRect(0, (input + 2) * 27, 130, 26));
+                sprite.setPosition(0, 80 + input * 60);
+                window.draw(sprite);
+                menu_text.setString(menu[input]);
+                menu_text.setPosition(65, 82 + input * 60);
+                window.draw(menu_text);
+                window.display();
+                if (input == 0) {
+                    return host();
+                } else {
+                    return client();
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
 int Menu::get_input() {
     sf::Vector2i mouse = sf::Mouse::getPosition(window);
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
