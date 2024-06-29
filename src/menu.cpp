@@ -63,6 +63,51 @@ int Menu::draw_quit(bool is_pressed) {
     return 0;
 }
 
+int Menu::draw_menu() {
+    draw_quit();
+    std::vector<std::string> menu = {"Single", "Multigle"};
+    for (int i = 0; i < 2; i++) {
+        sprite.setTextureRect(sf::IntRect(0, i * 27, 130, 26));
+        sprite.setPosition(0, 80 + i * 60);
+        window.draw(sprite);
+        menu_text.setString(menu[i]);
+        menu_text.setPosition(65, 82 + i * 60);
+        window.draw(menu_text);
+    }
+
+    int input = get_input();
+    if (input == 3) {
+        return draw_quit(true);
+    } else if (input != -1) {
+        sprite.setTextureRect(sf::IntRect(131, input * 27, 130, 26));
+        sprite.setPosition(0, 80 + input * 60);
+        window.draw(sprite);
+        menu_text.setString(menu[input]);
+        menu_text.setPosition(68, 85 + input * 60);
+        window.draw(menu_text);
+        window.display();
+
+        while (window.waitEvent(event)) {
+            if (event.type == sf::Event::MouseButtonReleased) {
+                sprite.setTextureRect(sf::IntRect(0, input * 27, 130, 26));
+                sprite.setPosition(0, 80 + input * 60);
+                window.draw(sprite);
+                menu_text.setString(menu[input]);
+                menu_text.setPosition(65, 82 + input * 60);
+                window.draw(menu_text);
+                window.display();
+                if (input == 0) {
+                    return draw_difficulty();
+                } else {
+                    return draw_multi();
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
 int Menu::draw_difficulty() {
     draw_quit();
     for (int i = 0; i < 3; i++) {
