@@ -6,7 +6,7 @@
 #include <thread>
 
 Menu::Menu() {
-    window.create(sf::VideoMode(260, 260), "Minesweeper");
+    window.create(sf::VideoMode(260, 320), "Minesweeper");
     icon.loadFromFile("../image/icon/menu.png");
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     if (!font.loadFromFile("../font/Cubic_11_1.100_R.ttf")) {
@@ -64,6 +64,7 @@ int Menu::draw_quit(bool is_pressed) {
 }
 
 int Menu::draw_difficulty() {
+    draw_quit();
     for (int i = 0; i < 3; i++) {
         sprite.setTextureRect(sf::IntRect(0, (i + 5) * 27, 130, 26));
         sprite.setPosition(0, 80 + i * 60);
@@ -77,9 +78,10 @@ int Menu::draw_difficulty() {
     }
 
     int input = get_input();
-    if (input != -1) {
-        sprite.setTextureRect(
-            sf::IntRect(131, (input + 5) * 27, 130, 26));
+    if (input == 3) {
+        return draw_quit(true);
+    } else if (input != -1) {
+        sprite.setTextureRect(sf::IntRect(131, (input + 5) * 27, 130, 26));
         sprite.setPosition(0, 80 + input * 60);
         window.draw(sprite);
         difficulty_text.setString(difficulty_name[input] + "\n" +
@@ -125,6 +127,8 @@ int Menu::get_input() {
             return 1;
         } else if (mouse.y >= 200 && mouse.y <= 252) {
             return 2;
+        } else if (mouse.y >= 260 && mouse.y <= 312) {
+            return 3;
         }
     }
     return -1;
@@ -140,7 +144,10 @@ int Menu::run() {
         }
         window.clear(sf::Color::Black);
         window.draw(title);
-        draw_difficulty();
+        if (draw_difficulty() == 1) {
+            window.close();
+            return 0;
+        }
 
         window.display();
     }
