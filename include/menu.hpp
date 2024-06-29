@@ -27,12 +27,14 @@ private:
     sf::Font font;
     sf::Text title;
     sf::Text difficulty_text;
+    sf::Text menu_text;
     sf::Texture texture;
     sf::Sprite sprite;
 
     int draw_multi();
     int draw_difficulty();
     int draw_menu();
+    int draw_quit(bool is_pressed = false);
     int get_input();
     int host();
     int client();

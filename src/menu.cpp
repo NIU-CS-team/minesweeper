@@ -28,6 +28,28 @@ Menu::Menu() {
     difficulty_text.setFont(font);
     difficulty_text.setCharacterSize(16);
     difficulty_text.setFillColor(sf::Color::White);
+
+    menu_text.setFont(font);
+    menu_text.setCharacterSize(26);
+    menu_text.setFillColor(sf::Color::White);
+}
+
+int Menu::draw_quit(bool is_pressed) {
+    if (!is_pressed) {
+        sprite.setTextureRect(sf::IntRect(0, 108, 130, 26));
+        sprite.setPosition(0, 260);
+        menu_text.setString("Quit");
+        menu_text.setPosition(65, 265);
+        
+    } else {
+        sprite.setTextureRect(sf::IntRect(131, 108, 130, 26));
+        sprite.setPosition(0, 260);
+        menu_text.setString("Quit");
+        menu_text.setPosition(68, 268);
+    }
+    window.draw(sprite);
+    window.draw(menu_text);
+    return 0;
 }
 
 int Menu::draw_difficulty() {
