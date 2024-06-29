@@ -40,15 +40,26 @@ int Menu::draw_quit(bool is_pressed) {
         sprite.setPosition(0, 260);
         menu_text.setString("Quit");
         menu_text.setPosition(65, 265);
-        
+        window.draw(sprite);
+        window.draw(menu_text);
     } else {
         sprite.setTextureRect(sf::IntRect(131, 108, 130, 26));
         sprite.setPosition(0, 260);
         menu_text.setString("Quit");
         menu_text.setPosition(68, 268);
+        window.draw(sprite);
+        window.draw(menu_text);
+        window.display();
+
+        while (window.waitEvent(event)) {
+            if (event.type == sf::Event::MouseButtonReleased) {
+                draw_quit();
+                window.display();
+                return 1;
+            }
+        }
     }
-    window.draw(sprite);
-    window.draw(menu_text);
+
     return 0;
 }
 
