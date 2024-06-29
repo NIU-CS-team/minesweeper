@@ -32,7 +32,7 @@ Menu::Menu() {
 
 int Menu::draw_difficulty() {
     for (int i = 0; i < 3; i++) {
-        sprite.setTextureRect(sf::IntRect(0, i * 54, 130, 26));
+        sprite.setTextureRect(sf::IntRect(0, (i + 5) * 27, 130, 26));
         sprite.setPosition(0, 80 + i * 60);
         window.draw(sprite);
         difficulty_text.setString(difficulty_name[i] + "\n" +
@@ -46,7 +46,7 @@ int Menu::draw_difficulty() {
     int input = get_input();
     if (input != -1) {
         sprite.setTextureRect(
-            sf::IntRect(0, 27 + input * 54, 130, 26));
+            sf::IntRect(131, (input + 5) * 27, 130, 26));
         sprite.setPosition(0, 80 + input * 60);
         window.draw(sprite);
         difficulty_text.setString(difficulty_name[input] + "\n" +
@@ -61,7 +61,7 @@ int Menu::draw_difficulty() {
         while (window.waitEvent(event)) {
             if (event.type == sf::Event::MouseButtonReleased) {
                 sprite.setTextureRect(
-                    sf::IntRect(0, input * 54, 130, 26));
+                    sf::IntRect(0, (input + 5) * 27, 130, 26));
                 sprite.setPosition(0, 80 + input * 60);
                 window.draw(sprite);
                 difficulty_text.setString(
