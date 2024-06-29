@@ -36,14 +36,14 @@ Menu::Menu() {
 
 int Menu::draw_quit(bool is_pressed) {
     if (!is_pressed) {
-        sprite.setTextureRect(sf::IntRect(0, 108, 130, 26));
+        sprite.setTextureRect(sf::IntRect(0, 216, 130, 26));
         sprite.setPosition(0, 260);
         menu_text.setString("Quit");
         menu_text.setPosition(65, 265);
         window.draw(sprite);
         window.draw(menu_text);
     } else {
-        sprite.setTextureRect(sf::IntRect(131, 108, 130, 26));
+        sprite.setTextureRect(sf::IntRect(131, 216, 130, 26));
         sprite.setPosition(0, 260);
         menu_text.setString("Quit");
         menu_text.setPosition(68, 268);
@@ -111,7 +111,7 @@ int Menu::draw_menu() {
 int Menu::draw_difficulty() {
     draw_quit();
     for (int i = 0; i < 3; i++) {
-        sprite.setTextureRect(sf::IntRect(0, (i + 5) * 27, 130, 26));
+        sprite.setTextureRect(sf::IntRect(0, (i + 4) * 27, 130, 26));
         sprite.setPosition(0, 80 + i * 60);
         window.draw(sprite);
         difficulty_text.setString(difficulty_name[i] + "\n" +
@@ -126,7 +126,7 @@ int Menu::draw_difficulty() {
     if (input == 3) {
         return draw_quit(true);
     } else if (input != -1) {
-        sprite.setTextureRect(sf::IntRect(131, (input + 5) * 27, 130, 26));
+        sprite.setTextureRect(sf::IntRect(131, (input + 4) * 27, 130, 26));
         sprite.setPosition(0, 80 + input * 60);
         window.draw(sprite);
         difficulty_text.setString(difficulty_name[input] + "\n" +
@@ -141,7 +141,7 @@ int Menu::draw_difficulty() {
         while (window.waitEvent(event)) {
             if (event.type == sf::Event::MouseButtonReleased) {
                 sprite.setTextureRect(
-                    sf::IntRect(0, (input + 5) * 27, 130, 26));
+                    sf::IntRect(0, (input + 4) * 27, 130, 26));
                 sprite.setPosition(0, 80 + input * 60);
                 window.draw(sprite);
                 difficulty_text.setString(
