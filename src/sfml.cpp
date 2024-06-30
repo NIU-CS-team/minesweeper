@@ -197,7 +197,7 @@ int SFML::end_game() {
     draw_board();
     window.display();
 
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    sf::sleep(sf::seconds(1));
     sf::Event event;
     while (window.waitEvent(event)) {
         if (event.type == sf::Event::Closed) {

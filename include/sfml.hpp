@@ -3,8 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <thread>
-#include <mutex>
 
 #include "board.h"
 #include "config.h"
