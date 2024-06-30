@@ -35,22 +35,16 @@ Menu::Menu() {
 }
 
 int Menu::draw_quit(bool is_pressed) {
-    if (!is_pressed) {
-        sprite.setTextureRect(sf::IntRect(0, 216, 130, 26));
-        sprite.setPosition(0, 260);
-        menu_text.setString("Quit");
-        menu_text.setPosition(65, 265);
-        window.draw(sprite);
-        window.draw(menu_text);
-    } else {
-        sprite.setTextureRect(sf::IntRect(131, 216, 130, 26));
-        sprite.setPosition(0, 260);
-        menu_text.setString("Quit");
-        menu_text.setPosition(68, 268);
-        window.draw(sprite);
-        window.draw(menu_text);
-        window.display();
+    int move = is_pressed ? 3 : 0;
+    sprite.setTextureRect(sf::IntRect(131 * is_pressed, 216, 130, 26));
+    sprite.setPosition(0, 260);
+    menu_text.setString(mode_index == 0 ? "Exit" : "Back");
+    menu_text.setPosition(65 + move, 265 + move);
+    window.draw(sprite);
+    window.draw(menu_text);
 
+    if (is_pressed) {
+        window.display();
         while (window.waitEvent(event)) {
             if (event.type == sf::Event::MouseButtonReleased) {
                 draw_quit();
