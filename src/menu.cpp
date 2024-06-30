@@ -191,9 +191,11 @@ int Menu::client() {
     }
 
     do {
+        std::string ip;
         std::cout << "Enter server ip: ";
-        std::cin >> data.server_ip.value();
-    } while (data.server_ip.has_value());
+        std::cin >> ip;
+        data.server_ip = sf::IpAddress(ip);
+    } while (!data.server_ip.has_value());
 
     packet << "Minesweeper";
     if (data.socket.send(packet, data.server_ip.value(), data.port) !=
@@ -218,7 +220,7 @@ int Menu::client() {
 
 int Menu::host() {
     connect_data data;
-    data.server_ip.value() = sf::IpAddress::getLocalAddress();
+    data.server_ip = sf::IpAddress::getLocalAddress();
     std::vector<sf::IpAddress> clients;
     sf::SocketSelector selector;
     unsigned int max_clients = 0;
