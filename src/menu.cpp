@@ -63,7 +63,7 @@ int Menu::draw_quit(bool is_pressed) {
     return 0;
 }
 
-int Menu::draw_button(int mode_index, int button_index, bool is_pressed) {
+int Menu::draw_button(int button_index, bool is_pressed) {
     int j = button_index + mode_index * 2;
     int move = is_pressed ? 3 : 0;
     sprite.setTextureRect(sf::IntRect(131 * is_pressed, j * 27, 130, 26));
@@ -86,13 +86,12 @@ int Menu::draw_button(int mode_index, int button_index, bool is_pressed) {
     return 0;
 }
 
-int Menu::draw_menu(int mode_index) {
+int Menu::draw_menu() {
     window.clear(sf::Color::Black);
     window.draw(title);
     draw_quit();
     for (int i = 0; i < mode[mode_index].size(); i++) {
-        int j = i + mode_index * 2;
-        draw_button(mode_index, i);
+        draw_button(i);
     }
     window.display();
 
@@ -100,12 +99,12 @@ int Menu::draw_menu(int mode_index) {
     if (input == 3) {
         return draw_quit(true);
     } else if (input != -1) {
-        draw_button(mode_index, input, true);
+        draw_button(input, true);
         window.display();
 
         while (window.waitEvent(event)) {
             if (event.type == sf::Event::MouseButtonReleased) {
-                draw_button(mode_index, input);
+                draw_button(input);
                 window.display();
             }
         }
@@ -119,7 +118,7 @@ int Menu::draw_difficulty() {
     window.draw(title);
     draw_quit();
     for (int i = 0; i < 3; i++) {
-        draw_button(2, i);
+        draw_button(i);
     }
     window.display();
 
@@ -127,12 +126,12 @@ int Menu::draw_difficulty() {
     if (input == 3) {
         return draw_quit(true);
     } else if (input != -1) {
-        draw_button(2, input, true);
+        draw_button(input, true);
         window.display();
 
         while (window.waitEvent(event)) {
             if (event.type == sf::Event::MouseButtonReleased) {
-                draw_button(2, input);
+                draw_button(input);
                 window.display();
                 SFML game(difficulty[input][0], difficulty[input][1],
                           difficulty[input][2]);

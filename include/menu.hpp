@@ -26,11 +26,13 @@ private:
     sf::Text menu_text;
     sf::Texture texture;
     sf::Sprite sprite;
+    int mode_index = 2;
 
     int draw_difficulty();
-    int draw_menu(int mode_index);
+    int draw_menu();
     int draw_quit(bool is_pressed = false);
-    int draw_button(int mode_index, int button_index, bool is_pressed = false);
+    int draw_button(int button_index, bool is_pressed = false);
+    int mode_select();
     int get_input();
     int host();
     int client();
