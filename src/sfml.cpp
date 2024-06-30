@@ -209,7 +209,6 @@ int SFML::end_game() {
                 play_single();
                 break;
             }
-            window.close();
         }
     }
     return 0;
