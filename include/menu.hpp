@@ -11,15 +11,9 @@
 class Menu {
 private:
     std::vector<std::vector<int>> difficulty = {
-        {9, 9, 10},
-        {16, 16, 40},
-        {30, 16, 99}
-    };
-    std::vector<std::string> difficulty_name = {
-        "Easy",
-        "Medium",
-        "Hard"
-    };
+        {9, 9, 10}, {16, 16, 40}, {30, 16, 99}};
+    std::vector<std::string> difficulty_name = {"Easy", "Medium", "Hard"};
+    std::vector<std::string> mode = {"Single", "multiplayer", "Host", "Join"};
 
     sf::Event event;
     sf::RenderWindow window;
@@ -30,8 +24,8 @@ private:
     sf::Text menu_text;
     sf::Texture texture;
     sf::Sprite sprite;
+    int mode_index = 0;
 
-    int draw_multi();
     int draw_difficulty();
     int draw_menu();
     int draw_quit(bool is_pressed = false);
