@@ -64,6 +64,10 @@ int Menu::draw_quit(bool is_pressed) {
 }
 
 int Menu::draw_button(int button_index, bool is_pressed) {
+    if (button_index < 0 || button_index >= mode[mode_index].size()) {
+        return -1;
+    }
+
     int j = button_index + mode_index * 2;
     int move = is_pressed ? 3 : 0;
     sprite.setTextureRect(sf::IntRect(131 * is_pressed, j * 27, 130, 26));
