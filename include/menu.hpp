@@ -32,7 +32,7 @@ private:
     int draw_menu();
     int draw_quit(bool is_pressed = false);
     int draw_button(int button_index, bool is_pressed = false);
-    int mode_select();
+    int mode_select(int input);
     int get_input();
     int host();
     int client();

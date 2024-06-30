@@ -113,6 +113,35 @@ int Menu::draw_menu() {
     return 0;
 }
 
+int Menu::mode_select(int input) {
+    switch (mode_index) {
+        case 0:
+            if (input == 0) {
+                mode_index = 1;
+            } else if (input == 1) {
+                mode_index = 2;
+            }
+            break;
+        case 1:
+            if (input == 0) {
+                host();
+            } else if (input == 1) {
+                client();
+            }
+            break;
+        case 2:
+            if (input >= 0 && input <= 2) {
+                SFML game(difficulty[input][0], difficulty[input][1],
+                          difficulty[input][2]);
+                game.play_single();
+                mode_index = 0;
+            }
+            break;
+    }
+
+    return 0;
+}
+
 int Menu::draw_difficulty() {
     window.clear(sf::Color::Black);
     window.draw(title);
