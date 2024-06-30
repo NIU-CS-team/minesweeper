@@ -63,39 +63,49 @@ int Menu::draw_quit(bool is_pressed) {
     return 0;
 }
 
-int Menu::draw_menu() {
-    draw_quit();
-    for (int i = 0; i < 2; i++) {
-        int j = i + mode_index * 2;
-        sprite.setTextureRect(sf::IntRect(0, j * 27, 130, 26));
-        sprite.setPosition(0, 80 + i  * 60);
-        window.draw(sprite);
-        menu_text.setString(mode[j]);
-        menu_text.setPosition(65, 82 + i * 60);
+int Menu::draw_button(int mode_index, int button_index, bool is_pressed) {
+    int j = button_index + mode_index * 2;
+    int move = is_pressed ? 3 : 0;
+    sprite.setTextureRect(sf::IntRect(131 * is_pressed, j * 27, 130, 26));
+    sprite.setPosition(0, 80 + button_index * 60);
+    window.draw(sprite);
+    if (mode_index == 0 && button_index == 1) {
+        menu_text.setString(mode[mode_index][button_index]);
+        menu_text.setPosition(65 + move, 82 + move + button_index * 60);
         window.draw(menu_text);
+    } else if (mode_index == 2) {
+        difficulty_text.setString(
+            difficulty_name[button_index] + "\n" +
+            std::to_string(difficulty[button_index][0]) + "x" +
+            std::to_string(difficulty[button_index][1]) + " " +
+            std::to_string(difficulty[button_index][2]) + " mines");
+        difficulty_text.setPosition(65 + move, 82 + move + button_index * 60);
+        window.draw(difficulty_text);
     }
+
+    return 0;
+}
+
+int Menu::draw_menu(int mode_index) {
+    window.clear(sf::Color::Black);
+    window.draw(title);
+    draw_quit();
+    for (int i = 0; i < mode[mode_index].size(); i++) {
+        int j = i + mode_index * 2;
+        draw_button(mode_index, i);
+    }
+    window.display();
 
     int input = get_input();
     if (input == 3) {
         return draw_quit(true);
     } else if (input != -1) {
-        int j = input + mode_index * 2;
-        sprite.setTextureRect(sf::IntRect(131, j  * 27, 130, 26));
-        sprite.setPosition(0, 80 + input * 60);
-        window.draw(sprite);
-        menu_text.setString(mode[j]);
-        menu_text.setPosition(68, 85 + input * 60);
-        window.draw(menu_text);
+        draw_button(mode_index, input, true);
         window.display();
 
         while (window.waitEvent(event)) {
             if (event.type == sf::Event::MouseButtonReleased) {
-                sprite.setTextureRect(sf::IntRect(0, j * 27, 130, 26));
-                sprite.setPosition(0, 80 + input * 60);
-                window.draw(sprite);
-                menu_text.setString(mode[j]);
-                menu_text.setPosition(65, 82 + input * 60);
-                window.draw(menu_text);
+                draw_button(mode_index, input);
                 window.display();
             }
         }
@@ -105,48 +115,24 @@ int Menu::draw_menu() {
 }
 
 int Menu::draw_difficulty() {
+    window.clear(sf::Color::Black);
+    window.draw(title);
     draw_quit();
     for (int i = 0; i < 3; i++) {
-        sprite.setTextureRect(sf::IntRect(0, (i + 4) * 27, 130, 26));
-        sprite.setPosition(0, 80 + i * 60);
-        window.draw(sprite);
-        difficulty_text.setString(difficulty_name[i] + "\n" +
-                                  std::to_string(difficulty[i][0]) + "x" +
-                                  std::to_string(difficulty[i][1]) + " " +
-                                  std::to_string(difficulty[i][2]) + " mines");
-        difficulty_text.setPosition(65, 82 + i * 60);
-        window.draw(difficulty_text);
+        draw_button(2, i);
     }
+    window.display();
 
     int input = get_input();
     if (input == 3) {
         return draw_quit(true);
     } else if (input != -1) {
-        sprite.setTextureRect(sf::IntRect(131, (input + 4) * 27, 130, 26));
-        sprite.setPosition(0, 80 + input * 60);
-        window.draw(sprite);
-        difficulty_text.setString(difficulty_name[input] + "\n" +
-                                  std::to_string(difficulty[input][0]) + "x" +
-                                  std::to_string(difficulty[input][1]) + " " +
-                                  std::to_string(difficulty[input][2]) +
-                                  " mines");
-        difficulty_text.setPosition(68, 85 + input * 60);
-        window.draw(difficulty_text);
+        draw_button(2, input, true);
         window.display();
 
         while (window.waitEvent(event)) {
             if (event.type == sf::Event::MouseButtonReleased) {
-                sprite.setTextureRect(
-                    sf::IntRect(0, (input + 4) * 27, 130, 26));
-                sprite.setPosition(0, 80 + input * 60);
-                window.draw(sprite);
-                difficulty_text.setString(
-                    difficulty_name[input] + "\n" +
-                    std::to_string(difficulty[input][0]) + "x" +
-                    std::to_string(difficulty[input][1]) + " " +
-                    std::to_string(difficulty[input][2]) + " mines");
-                difficulty_text.setPosition(65, 82 + input * 60);
-                window.draw(difficulty_text);
+                draw_button(2, input);
                 window.display();
                 SFML game(difficulty[input][0], difficulty[input][1],
                           difficulty[input][2]);
@@ -176,21 +162,17 @@ int Menu::get_input() {
 }
 
 int Menu::run() {
-    sf::Event event;
     while (window.isOpen()) {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
         }
-        window.clear(sf::Color::Black);
-        window.draw(title);
+
         if (draw_difficulty() == 1) {
             window.close();
             return 0;
         }
-
-        window.display();
     }
     return 0;
 }
