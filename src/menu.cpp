@@ -121,9 +121,9 @@ int Menu::mode_select(int input) {
     switch (mode_index) {
         case 0:
             if (input == 0) {
-                mode_index = 1;
-            } else if (input == 1) {
                 mode_index = 2;
+            } else if (input == 1) {
+                mode_index = 1;
             }
             break;
         case 1:
