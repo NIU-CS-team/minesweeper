@@ -68,11 +68,7 @@ int Menu::draw_button(int button_index, bool is_pressed) {
     sprite.setTextureRect(sf::IntRect(131 * is_pressed, j * 27, 130, 26));
     sprite.setPosition(0, 80 + button_index * 60);
     window.draw(sprite);
-    if (mode_index == 0 && button_index == 1) {
-        menu_text.setString(mode[mode_index][button_index]);
-        menu_text.setPosition(65 + move, 82 + move + button_index * 60);
-        window.draw(menu_text);
-    } else if (mode_index == 2) {
+    if (mode_index == 2) {
         difficulty_text.setString(
             mode[2][button_index] + "\n" +
             std::to_string(difficulty[button_index][0]) + "x" +
@@ -80,6 +76,10 @@ int Menu::draw_button(int button_index, bool is_pressed) {
             std::to_string(difficulty[button_index][2]) + " mines");
         difficulty_text.setPosition(65 + move, 82 + move + button_index * 60);
         window.draw(difficulty_text);
+    } else {
+        menu_text.setString(mode[mode_index][button_index]);
+        menu_text.setPosition(65 + move, 82 + move + button_index * 60);
+        window.draw(menu_text);
     }
 
     return 0;

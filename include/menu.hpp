@@ -12,7 +12,7 @@ class Menu {
 private:
     std::vector<std::vector<int>> difficulty = {
         {9, 9, 10}, {16, 16, 40}, {30, 16, 99}};
-    std::vector<std::vector<std::string>> mode = {{"Single", "multiplayer"},
+    std::vector<std::vector<std::string>> mode = {{"Single", "Multiplayer"},
                                                   {"Host", "Join"},
                                                   {"Easy", "Medium", "Hard"}};
 
