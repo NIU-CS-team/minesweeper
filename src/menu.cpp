@@ -79,7 +79,7 @@ int Menu::draw_button(int button_index, bool is_pressed) {
         window.draw(menu_text);
     } else if (mode_index == 2) {
         difficulty_text.setString(
-            difficulty_name[button_index] + "\n" +
+            mode[2][button_index] + "\n" +
             std::to_string(difficulty[button_index][0]) + "x" +
             std::to_string(difficulty[button_index][1]) + " " +
             std::to_string(difficulty[button_index][2]) + " mines");
@@ -148,37 +148,6 @@ int Menu::mode_select(int input) {
     return 0;
 }
 
-int Menu::draw_difficulty() {
-    window.clear(sf::Color::Black);
-    window.draw(title);
-    draw_quit();
-    for (int i = 0; i < 3; i++) {
-        draw_button(i);
-    }
-    window.display();
-
-    int input = get_input();
-    if (input == 3) {
-        return draw_quit(true);
-    } else if (input != -1) {
-        draw_button(input, true);
-        window.display();
-
-        while (window.waitEvent(event)) {
-            if (event.type == sf::Event::MouseButtonReleased) {
-                draw_button(input);
-                window.display();
-                SFML game(difficulty[input][0], difficulty[input][1],
-                          difficulty[input][2]);
-                game.play_single();
-                return 0;
-            }
-        }
-    }
-
-    return 0;
-}
-
 int Menu::get_input() {
     sf::Vector2i mouse = sf::Mouse::getPosition(window);
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -203,7 +172,7 @@ int Menu::run() {
             }
         }
 
-        if (draw_difficulty() == 1) {
+        if (draw_menu() == 1) {
             window.close();
             return 0;
         }
