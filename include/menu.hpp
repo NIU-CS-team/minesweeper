@@ -26,7 +26,7 @@ private:
     sf::Text menu_text;
     sf::Texture texture;
     sf::Sprite sprite;
-    int mode_index = 2;
+    int mode_index = 0;
 
     int draw_difficulty();
     int draw_menu();

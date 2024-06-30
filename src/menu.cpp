@@ -110,6 +110,8 @@ int Menu::draw_menu() {
             if (event.type == sf::Event::MouseButtonReleased) {
                 draw_button(input);
                 window.display();
+                mode_select(input);
+                return 0;
             }
         }
     }
