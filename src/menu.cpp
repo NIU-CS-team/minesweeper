@@ -55,7 +55,8 @@ int Menu::draw_quit(bool is_pressed) {
             if (event.type == sf::Event::MouseButtonReleased) {
                 draw_quit();
                 window.display();
-                return 1;
+                mode_select(3);
+                return 0;
             }
         }
     }
@@ -120,6 +121,15 @@ int Menu::draw_menu() {
 }
 
 int Menu::mode_select(int input) {
+    if (input == 3) {
+        if (mode_index == 0) {
+            window.close();
+        } else {
+            mode_index = 0;
+        }
+        return 0;
+    }
+
     switch (mode_index) {
         case 0:
             if (input == 0) {
@@ -171,11 +181,7 @@ int Menu::run() {
                 window.close();
             }
         }
-
-        if (draw_menu() == 1) {
-            window.close();
-            return 0;
-        }
+        draw_menu();
     }
     return 0;
 }
