@@ -25,7 +25,8 @@ enum connect_status {
 
     // client connect error: 2XX
     CLIENT_ERROR_CODE_SERIES = 200,
-    CONNECT_FAILED
+    CONNECT_FAILED,
+    SERVER_NOT_RESPONDING
 };
 
 struct connect_data {
