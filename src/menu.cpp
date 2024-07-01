@@ -100,6 +100,8 @@ int Menu::mode_select(int input) {
     if (input == 3) {
         if (mode_index == 0) {
             window.close();
+        } else if (mode_index == 3){
+            mode_index = 1;
         } else {
             mode_index = 0;
         }
@@ -120,6 +122,7 @@ int Menu::mode_select(int input) {
             } else if (input == 1) {
                 client();
             }
+            mode_index = 3;
             break;
         case 2:
             if (input >= 0 && input <= 2) {
