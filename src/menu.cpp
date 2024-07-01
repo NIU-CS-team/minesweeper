@@ -34,41 +34,19 @@ Menu::Menu() {
     menu_text.setFillColor(sf::Color::White);
 }
 
-int Menu::draw_quit(bool is_pressed) {
-    int move = is_pressed ? 3 : 0;
-    sprite.setTextureRect(sf::IntRect(131 * is_pressed, 216, 130, 26));
-    sprite.setPosition(0, 260);
-    menu_text.setString(mode_index == 0 ? "Exit" : "Back");
-    menu_text.setPosition(65 + move, 265 + move);
-    window.draw(sprite);
-    window.draw(menu_text);
-
-    if (is_pressed) {
-        window.display();
-        while (window.waitEvent(event)) {
-            if (event.type == sf::Event::MouseButtonReleased) {
-                draw_quit();
-                window.display();
-                mode_select(3);
-                return 0;
-            }
-        }
-    }
-
-    return 0;
-}
-
 int Menu::draw_button(int button_index, bool is_pressed) {
-    if (button_index < 0 || button_index >= mode[mode_index].size()) {
+    if (button_index != 3 &&
+        (button_index < 0 || button_index >= mode[mode_index].size())) {
         return -1;
     }
 
-    int j = button_index + mode_index * 2;
+    int j = button_index == 3 ? 8 : button_index + mode_index * 2;
     int move = is_pressed ? 3 : 0;
     sprite.setTextureRect(sf::IntRect(131 * is_pressed, j * 27, 130, 26));
     sprite.setPosition(0, 80 + button_index * 60);
     window.draw(sprite);
-    if (mode_index == 2) {
+
+    if (mode_index == 2 && button_index != 3) {
         difficulty_text.setString(
             mode[2][button_index] + "\n" +
             std::to_string(difficulty[button_index][0]) + "x" +
@@ -77,9 +55,25 @@ int Menu::draw_button(int button_index, bool is_pressed) {
         difficulty_text.setPosition(65 + move, 82 + move + button_index * 60);
         window.draw(difficulty_text);
     } else {
-        menu_text.setString(mode[mode_index][button_index]);
+        if (button_index == 3) {
+            menu_text.setString(!mode_index ? "Exit" : "Back");
+        } else {
+            menu_text.setString(mode[mode_index][button_index]);
+        }
         menu_text.setPosition(65 + move, 82 + move + button_index * 60);
         window.draw(menu_text);
+    }
+
+    if (is_pressed) {
+        window.display();
+        while (window.waitEvent(event)) {
+            if (event.type == sf::Event::MouseButtonReleased) {
+                draw_button(button_index);
+                window.display();
+                mode_select(button_index);
+                return 0;
+            }
+        }
     }
 
     return 0;
@@ -88,27 +82,15 @@ int Menu::draw_button(int button_index, bool is_pressed) {
 int Menu::draw_menu() {
     window.clear(sf::Color::Black);
     window.draw(title);
-    draw_quit();
+    draw_button(3);
     for (int i = 0; i < mode[mode_index].size(); i++) {
         draw_button(i);
     }
     window.display();
 
     int input = get_input();
-    if (input == 3) {
-        return draw_quit(true);
-    } else if (input != -1) {
+    if (input != -1) {
         draw_button(input, true);
-        window.display();
-
-        while (window.waitEvent(event)) {
-            if (event.type == sf::Event::MouseButtonReleased) {
-                draw_button(input);
-                window.display();
-                mode_select(input);
-                return 0;
-            }
-        }
     }
 
     return 0;

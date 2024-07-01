@@ -28,7 +28,6 @@ private:
     int mode_index = 0;
 
     int draw_menu();
-    int draw_quit(bool is_pressed = false);
     int draw_button(int button_index, bool is_pressed = false);
     int mode_select(int input);
     int get_input();
