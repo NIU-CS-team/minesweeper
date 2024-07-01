@@ -30,6 +30,7 @@ enum connect_status {
 
 struct connect_data {
     sf::UdpSocket socket;
+    sf::SocketSelector selector;
     std::optional<sf::IpAddress> server_ip;
     unsigned seed;
     unsigned short port = 6969;
